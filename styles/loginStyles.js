@@ -9,12 +9,11 @@ export const styles = StyleSheet.create({
     paddingBottom: 140,
     justifyContent: 'flex-end',
   },
-    logo: {
-      height: 290,
-      width: 230,
-      alignSelf: 'center',
-      marginBottom: 15,
-    },
+  background:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
     boasVindas: {
       color: COLORS.textMuted,
       fontSize: 22,

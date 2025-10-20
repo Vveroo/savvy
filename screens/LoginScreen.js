@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
+  ImageBackground,
 } from 'react-native';
 import { styles } from '../styles/loginStyles';
 import { COLORS } from '../styles/colors';
@@ -18,12 +18,12 @@ export default function LoginScreen() {
   const [errors, setErrors] = useState({});
   const { addUser } = useUserContext();
   const btnCadastro = () => {
-    
+
   }
 
   const handleEntrar = () => {
     const novosErros = {};
-    if (!validarEmail(email)) novosErros.email = 'E-mail inválido.';
+    if (!validarEmail(email)) novosErros.email = 'Login inválido.';
     if (!validarSenha(senha))
       novosErros.senha =
         'Mínimo 8 caracteres, 1 maiúscula e 1 caractere especial.';
@@ -36,52 +36,59 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.boasVindas}>Bem-Vindo!</Text>
+    <ImageBackground
+      source={require('../assets/senai_fundoLogin.jpg')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Text style={styles.boasVindas}>Bem-Vindo!</Text>
 
-      <View style={styles.campoInputs}>
-        <TextInput
-          style={[styles.input, errors.email && { borderColor: COLORS.error }]}
-          placeholder="Usuário ou CPF"
-          placeholderTextColor="#929292"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
-        {errors.email && <Text style={styles.error}>{errors.email}</Text>}
-      </View>
-
-      <View style={styles.campoInputs}>
-        <View style={styles.btnMostrar}>
+        <View style={styles.campoInputs}>
           <TextInput
-            style={[
-              styles.input,
-              styles.senhaInput,
-              errors.senha && { borderColor: COLORS.error },
-            ]}
-            placeholder="Senha"
+            style={[styles.input, errors.email && { borderColor: COLORS.error }]}
+            placeholder="Usuário ou CPF"
             placeholderTextColor="#929292"
-            secureTextEntry={!mostrarSenha}
-            value={senha}
-            onChangeText={setSenha}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
           />
-          <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
-            <Text style={styles.mostrarEsconderSenha}>
-              {mostrarSenha ? 'Ocultar' : 'Mostrar'}
-            </Text>
-          </TouchableOpacity>
+          {errors.email && <Text style={styles.error}>{errors.email}</Text>}
         </View>
-        {errors.senha && <Text style={styles.error}>{errors.senha}</Text>}
+
+        <View style={styles.campoInputs}>
+          <View style={styles.btnMostrar}>
+            <TextInput
+              style={[
+                styles.input,
+                styles.senhaInput,
+                errors.senha && { borderColor: COLORS.error },
+              ]}
+              placeholder="Senha"
+              placeholderTextColor="#929292"
+              secureTextEntry={!mostrarSenha}
+              value={senha}
+              onChangeText={setSenha}
+            />
+            <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+              <Text style={styles.mostrarEsconderSenha}>
+                {mostrarSenha ? 'Ocultar' : 'Mostrar'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {errors.senha && <Text style={styles.error}>{errors.senha}</Text>}
+        </View>
+
+        <TouchableOpacity>
+          <Text style={styles.esqueciSenha}>Recuperar senha</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.btnEntrar} onPress={handleEntrar}>
+          <Text style={styles.txtBtnEntrar}>Entrar</Text>
+        </TouchableOpacity>
       </View>
+    </ImageBackground>
 
-      <TouchableOpacity>
-        <Text style={styles.esqueciSenha}>Recuperar senha</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.btnEntrar} onPress={handleEntrar}>
-        <Text style={styles.txtBtnEntrar}>Entrar</Text>
-      </TouchableOpacity>
-    </View>
   );
 }
