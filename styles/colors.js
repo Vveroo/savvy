@@ -6,5 +6,8 @@ export const COLORS = {
     button: '#0047B6',
     divider: '#424242',
     textMuted: '#0047B6',
+    preco: '#01001fff',
+    buttonFav: '#be8686ff',
+    buttonFavAtive: '#ffd700',
   };
   
