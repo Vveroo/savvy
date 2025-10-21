@@ -4,15 +4,9 @@ import { COLORS } from './colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
     padding: 24,
     paddingBottom: 140,
     justifyContent: 'flex-end',
-  },
-  background:{
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
     boasVindas: {
       color: COLORS.textMuted,
@@ -74,53 +68,5 @@ export const styles = StyleSheet.create({
       color: COLORS.background,
       textAlign: 'center',
       fontWeight: 'bold',
-    },
-    divider: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 30,
-      alignItems: 'center',
-    },
-    linha: {
-      width: '40%',
-      height: 1,
-      backgroundColor: COLORS.divider,
-    },
-    txtOu: {
-      color: COLORS.divider,
-    },
-    cadastro: {
-      marginTop: 14,
-      alignItems: 'center',
-    },
-    contComG: {
-      backgroundColor: 'white',
-      padding: 10,
-      borderRadius: 25,
-      width: 210,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    txtBtn: {
-      marginLeft: 10,
-      flex: 1,
-      textAlign: 'center',
-    },
-    googleIcon: {
-      width: 24,
-      height: 24,
-    },
-    semConta: {
-      flexDirection: 'row',
-      marginTop: 10,
-      gap: 7,
-    },
-    txtSemConta: {
-      color: COLORS.textMuted,
-    },
-    btnSemConta: {
-      color: COLORS.button,
-      textDecorationLine: 'underline',
     },
   });

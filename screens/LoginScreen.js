@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ImageBackground,
+
 } from 'react-native';
 import { styles } from '../styles/loginStyles';
 import { COLORS } from '../styles/colors';
@@ -36,11 +36,6 @@ export default function LoginScreen() {
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/senai_fundoLogin.jpg')}
-      style={styles.background}
-      resizeMode="cover"
-    >
       <View style={styles.container}>
         <Text style={styles.boasVindas}>Bem-Vindo!</Text>
 
@@ -88,7 +83,6 @@ export default function LoginScreen() {
           <Text style={styles.txtBtnEntrar}>Entrar</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
 
   );
 }
