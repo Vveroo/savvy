@@ -1,54 +1,56 @@
-import { StyleSheet } from 'react-native';
 import { COLORS } from './colors';
-
-const styles = StyleSheet.create({
+export const styles ={
   container: {
     flex: 1,
+    backgroundColor: COLORS.telaCardapio,
     padding: 16,
-    backgroundColor: COLORS.background,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    textAlign: 'center',
+    color: COLORS.textMuted,
     marginBottom: 20,
+    textAlign: 'center',
   },
   item: {
     flexDirection: 'row',
-    marginBottom: 20,
-    backgroundColor: '#f0f',
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2,
+    backgroundColor: COLORS.item,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    shadowColor: COLORS.shadowCardapio,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
+    width: 80,
+    height: 80,
+    borderRadius: 8,
   },
   info: {
-    flex: 1,
-    marginLeft: 10,
-    justifyContent: 'space-around',
+    marginLeft: 12,
+    justifyContent: 'space-between',
   },
   nome: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   preco: {
     fontSize: 16,
     color: COLORS.preco,
   },
   favButton: {
-    backgroundColor: COLORS.buttonFav,
+    marginTop: 6,
     padding: 6,
-    borderRadius: 6,
-    alignSelf: 'flex-start',
+    borderRadius: 8,
+    backgroundColor: COLORS.favButton,
   },
-  favActive: {
-    backgroundColor: COLORS.buttonFavAtive,
+  favAtivo: {
+    backgroundColor: COLORS.favAtivo,
   },
   favText: {
     fontSize: 14,
+    color: COLORS.txt,
   },
-});
+};

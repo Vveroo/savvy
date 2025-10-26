@@ -69,4 +69,5 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
       fontWeight: 'bold',
     },
-  });
+  }
+);

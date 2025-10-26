@@ -1,42 +1,36 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-
-} from 'react-native';
+import React from 'react';
+import { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/loginStyles';
 import { COLORS } from '../styles/colors';
 import { validarEmail, validarSenha } from '../utils/validators';
 import { useUserContext } from '../contexts/UserContext';
 
-export default function LoginScreen() {
+
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [errors, setErrors] = useState({});
   const { addUser } = useUserContext();
-  const btnCadastro = () => {
 
-  }
-
-  const handleEntrar = () => {
+ const handleEntrar = () => {
     const novosErros = {};
     if (!validarEmail(email)) novosErros.email = 'Login inválido.';
     if (!validarSenha(senha))
-      novosErros.senha =
-        'Mínimo 8 caracteres, 1 maiúscula e 1 caractere especial.';
+      novosErros.senha = 'Mínimo 8 caracteres, 1 maiúscula e 1 caractere especial.';
     setErrors(novosErros);
 
     if (Object.keys(novosErros).length === 0) {
-      console.log('Login válido:', { email, senha });
       addUser({ email });
+      //navigation.navigate('Home'); // voltar para a tela anterior na pilha de navegação
+      navigation.replace('Home');  //Substitui a pilha de navegação para evitar voltar ao login
     }
   };
 
   return (
       <View style={styles.container}>
+        
         <Text style={styles.boasVindas}>Bem-Vindo!</Text>
 
         <View style={styles.campoInputs}>
@@ -83,6 +77,5 @@ export default function LoginScreen() {
           <Text style={styles.txtBtnEntrar}>Entrar</Text>
         </TouchableOpacity>
       </View>
-
   );
 }
