@@ -22,12 +22,21 @@ export default function Login() {
   const { saveToken, saveUser } = useAuth();
   const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [errors, setErrors] = useState({});
+  const { addUser } = useUserContext();
 
-  const submit = (values) => {
-    console.log('Dados enviados:', values);
-    saveToken('fake-token');
-    saveUser({ matricula: values.matricula });
-    navigation.navigate('Home');
+ const handleEntrar = () => {
+    const novosErros = {};
+    if (!validarEmail(email)) novosErros.email = 'Login inválido.';
+    if (!validarSenha(senha))
+      novosErros.senha = 'Mínimo 8 caracteres, 1 maiúscula e 1 caractere especial.';
+    setErrors(novosErros);
+
+    if (Object.keys(novosErros).length === 0) {
+      addUser({ email });
+      //navigation.navigate('Home'); // voltar para a tela anterior na pilha de navegação
+      navigation.replace('Home');  //Substitui a pilha de navegação para evitar voltar ao login
+    }
   };
 
   return (

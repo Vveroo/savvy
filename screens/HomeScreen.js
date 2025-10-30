@@ -5,7 +5,7 @@ import { styles } from '../styles/homeStyles';
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text styles={styles.titulo}>Seja Bem-Vindo(a) ao nosso App.</Text>
+      <Text styles={styles.titulo}>Bem-Vindos ao nosso App.</Text>
 
       <TouchableOpacity style={styles.botao} onPress={() => navigation.navigate('Cardapio')}>
         <Text style={styles.txtBotao}>🍔 Cardápio</Text>
