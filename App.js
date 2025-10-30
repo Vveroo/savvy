@@ -6,7 +6,8 @@ import { AuthProvider } from './auth/authContext';
 
 // Telas
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen'; // 👈 nova tela adicionada
+import HomeScreen from './screens/HomeScreen'; 
+import CardapioScreen from './screens/CardapioScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,8 +24,13 @@ export default function App() {
           <Stack.Screen
             name="Home"
             component={HomeScreen}
-            options={{ headerShown: false }} // ou true, se quiser mostrar o topo
+            options={{ headerShown: false }} 
           />
+          <Stack.Screen 
+            name="Cardapio" 
+            component={CardapioScreen} 
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

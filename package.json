@@ -27,5 +27,8 @@
     "react-native-vector-icons": "*",
     "yup": "*"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
 }
