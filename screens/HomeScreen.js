@@ -7,7 +7,7 @@ import { styles } from '../styles/homeStyles';
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text styles={styles.titulo}>Seja Bem-Vindo(a) ao nosso App.</Text>
+      <Text styles={styles.titulo}>Bem-Vindos ao nosso App.</Text>
 
       {/* Os nomes das rotas devem corresponder aos 'name' no TabNavigator.js */}
       

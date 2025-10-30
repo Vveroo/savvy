@@ -20,8 +20,12 @@
     "react-native-gesture-handler": "~2.28.0",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
+<<<<<<< HEAD
     "react-native-screens": "~4.16.0",
     "react-native-vector-icons": "^10.3.0"
+=======
+    "react-native-screens": "~4.16.0"
+>>>>>>> b232a42ce77e77c8146aa31d088ed1bb67e82ef5
   },
   "private": true
 }
