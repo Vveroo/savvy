@@ -23,7 +23,6 @@ export default function LoginScreen({ navigation }) {
 
     if (Object.keys(novosErros).length === 0) {
       addUser({ email });
-      //navigation.navigate('Home'); // voltar para a tela anterior na pilha de navegação
       navigation.replace('Home');  //Substitui a pilha de navegação para evitar voltar ao login
     }
   };
