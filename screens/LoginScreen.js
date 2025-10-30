@@ -1,81 +1,107 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import { useAuth } from '../auth/authContext';
 import { styles } from '../styles/loginStyles';
-import { COLORS } from '../styles/colors';
-import { validarEmail, validarSenha } from '../utils/validators';
-import { useUserContext } from '../contexts/UserContext';
 
+const loginValidationSchema = yup.object().shape({
+  matricula: yup
+    .string()
+    .matches(/^[a-zA-Z-_]+$/, 'Matrícula inválida!')
+    .required('Obrigatório'),
+  password: yup
+    .string()
+    .min(8, ({ min }) => `A senha deve ter ${min} caracteres`)
+    .required('Obrigatório'),
+});
 
-export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+export default function Login() {
+  const { saveToken, saveUser } = useAuth();
+  const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [errors, setErrors] = useState({});
-  const { addUser } = useUserContext();
 
- const handleEntrar = () => {
-    const novosErros = {};
-    if (!validarEmail(email)) novosErros.email = 'Login inválido.';
-    if (!validarSenha(senha))
-      novosErros.senha = 'Mínimo 8 caracteres, 1 maiúscula e 1 caractere especial.';
-    setErrors(novosErros);
-
-    if (Object.keys(novosErros).length === 0) {
-      addUser({ email });
-      //navigation.navigate('Home'); // voltar para a tela anterior na pilha de navegação
-      navigation.replace('Home');  //Substitui a pilha de navegação para evitar voltar ao login
-    }
+  const submit = (values) => {
+    console.log('Dados enviados:', values);
+    saveToken('fake-token');
+    saveUser({ matricula: values.matricula });
+    navigation.navigate('Home');
   };
 
   return (
-      <View style={styles.container}>
-        
-        <Text style={styles.boasVindas}>Bem-Vindo!</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>É bom te ter aqui!</Text>
+      <Formik
+        validationSchema={loginValidationSchema}
+        initialValues={{ matricula: '', password: '' }}
+        onSubmit={submit}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+          isValid,
+        }) => (
+          <>
+            <View style={styles.inputContainer}>
+              <Icon name="mail-outline" size={25} style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Matrícula"
+                keyboardType="string"
+                onChangeText={handleChange('matricula')}
+                onBlur={handleBlur('matricula')}
+                value={values.matricula}
+              />
+            </View>
+            {errors.matricula && touched.matricula && (
+              <Text style={styles.errorText}>{errors.matricula}</Text>
+            )}
 
-        <View style={styles.campoInputs}>
-          <TextInput
-            style={[styles.input, errors.email && { borderColor: COLORS.error }]}
-            placeholder="Usuário ou CPF"
-            placeholderTextColor="#929292"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-          />
-          {errors.email && <Text style={styles.error}>{errors.email}</Text>}
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="lock-closed-outline" size={25} style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Senha"
+                secureTextEntry={!mostrarSenha}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+              />
+              <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+                <Text style={styles.mostrarEsconderSenha}>
+                  {mostrarSenha ? (
+                    <Icon name="eye-off" size={25} style={styles.icon} />
+                  ) : (
+                    <Icon name="eye" size={25} style={styles.icon} />
+                  )}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {errors.password && touched.password && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
 
-        <View style={styles.campoInputs}>
-          <View style={styles.btnMostrar}>
-            <TextInput
-              style={[
-                styles.input,
-                styles.senhaInput,
-                errors.senha && { borderColor: COLORS.error },
-              ]}
-              placeholder="Senha"
-              placeholderTextColor="#929292"
-              secureTextEntry={!mostrarSenha}
-              value={senha}
-              onChangeText={setSenha}
-            />
-            <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
-              <Text style={styles.mostrarEsconderSenha}>
-                {mostrarSenha ? 'Ocultar' : 'Mostrar'}
-              </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Forget')}>
+              <Text style={styles.forgotPassword}>Recuperar senha</Text>
             </TouchableOpacity>
-          </View>
-          {errors.senha && <Text style={styles.error}>{errors.senha}</Text>}
-        </View>
 
-        <TouchableOpacity>
-          <Text style={styles.esqueciSenha}>Recuperar senha</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btnEntrar} onPress={handleEntrar}>
-          <Text style={styles.txtBtnEntrar}>Entrar</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit}
+              disabled={!isValid}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </Formik>
+    </View>
   );
 }

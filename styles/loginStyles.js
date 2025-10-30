@@ -4,70 +4,127 @@ import { COLORS } from './colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    paddingBottom: 140,
     justifyContent: 'flex-end',
+    backgroundColor:  COLORS.background,
+    paddingHorizontal: 20,
+    paddingBottom: 50,
   },
-    boasVindas: {
-      color: COLORS.textMuted,
-      fontSize: 22,
-      textAlign: 'center',
-      marginBottom: 20,
-    },
-    campoInputs: {
-      marginBottom: 16,
-      alignSelf: 'center',
-      width: 260,
-    },
-    input: {
-      height: 40,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      backgroundColor: COLORS.inputBackground,
-      color: COLORS.inputText,
-    },
-    btnMostrar: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: COLORS.inputBackground,
-      height: 40,
-      borderRadius: 5,
-    },
-    senhaInput: {
-      flex: 1,
-    },
-    mostrarEsconderSenha: {
-      color: COLORS.button,
-      marginRight: 10,
-      fontWeight: 'bold',
-    },
-    error: {
-      color: COLORS.error,
-      marginTop: 4,
-      fontSize: 12,
-      marginLeft: 4,
-    },
-    esqueciSenha: {
-      color: COLORS.button,
-      fontSize: 14,
-      marginBottom: 4,
-      marginLeft: 50,
-      textDecorationLine: 'underline',
-      marginTop: -10,
-    },
-    btnEntrar: {
-      backgroundColor: COLORS.button,
-      borderRadius: 5,
-      marginTop: 10,
-      width: 200,
-      alignSelf: 'center',
-      height: 40,
-      justifyContent: 'center',
-    },
-    txtBtnEntrar: {
-      color: COLORS.background,
-      textAlign: 'center',
-      fontWeight: 'bold',
-    },
-  }
-);
+
+  title: {
+    fontSize: 25,
+    marginBottom: 40,
+    fontWeight: 'bold',
+    color: COLORS.text,
+    alignSelf: 'center',
+  },
+
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: 50,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 25,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    borderWidth: 0.7,
+    borderColor: COLORS.button,
+  },
+
+  icon: {
+    marginRight: 10,
+  },
+
+  input: {
+    flex: 1,
+    height: '100%',
+  },
+
+  mostrarEsconderSenha: {
+    color: COLORS.button,
+    padding: 5,
+   },
+
+  forgotPassword: {
+    marginBottom: 20,
+    color: COLORS.button,
+    textDecorationLine: 'underline',
+  },
+
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: COLORS.button,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+
+  signUp: {
+    color: '#000',
+  },
+
+  signUpLink: {
+    color: COLORS.button,
+    textDecorationLine: 'underline',
+  },
+
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 10,
+    marginLeft: 10,
+    alignSelf: 'flex-start',
+  },
+
+  divider: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  linha: {
+    width: '40%',
+    height: 1,
+    backgroundColor: 'black',
+  },
+
+  txtOu: {
+    color: 'black',
+  },
+
+  cadastro: {
+    marginTop: 14,
+    alignItems: 'center',
+  },
+
+  contComG: {
+    backgroundColor: 'transparent',
+    padding: 10,
+    borderRadius: 25,
+    width: 210,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 0.7,
+    borderColor: 'black',
+  },
+
+  txtBtn: {
+    marginLeft: 10,
+    flex: 1,
+    textAlign: 'center',
+  },
+
+  googleIcon: {
+    width: 24,
+    height: 24,
+  },
+
+});
