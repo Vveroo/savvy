@@ -1,56 +1,79 @@
+import { StyleSheet } from 'react-native';
 import { COLORS } from './colors';
-export const styles ={
+
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.telaCardapio,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 20,
   },
+
   title: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 'bold',
-    color: COLORS.textMuted,
+    color: COLORS.button,
     marginBottom: 20,
     textAlign: 'center',
   },
-  item: {
-    flexDirection: 'row',
+
+  listContent: {
+    paddingBottom: 20,
+  },
+
+  row: {
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+
+  card: {
     backgroundColor: COLORS.item,
     borderRadius: 12,
     padding: 12,
-    marginBottom: 12,
+    alignItems: 'center',
+    width: '48%',
     shadowColor: COLORS.shadowCardapio,
-    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
   },
+
   image: {
     width: 80,
     height: 80,
-    borderRadius: 8,
+    resizeMode: 'contain',
+    marginBottom: 10,
   },
-  info: {
-    marginLeft: 12,
-    justifyContent: 'space-between',
-  },
+
   nome: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  preco: {
     fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.textMuted,
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+
+  preco: {
+    fontSize: 14,
     color: COLORS.preco,
+    marginBottom: 10,
   },
+
   favButton: {
-    marginTop: 6,
-    padding: 6,
-    borderRadius: 8,
     backgroundColor: COLORS.favButton,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
   },
+
   favAtivo: {
     backgroundColor: COLORS.favAtivo,
   },
+
   favText: {
-    fontSize: 14,
-    color: COLORS.txt,
+    fontSize: 12,
+    color: COLORS.button,
+    fontWeight: 'bold',
   },
-};
+});

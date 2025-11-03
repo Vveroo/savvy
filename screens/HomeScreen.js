@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "../styles/homeStyles";
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Icon from "react-native-vector-icons/Ionicons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import QRCode from "react-native-qrcode-svg";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
   const [mostrarSaldo, setMostrarSaldo] = useState(true);
-  const [userId] = useState("simon_riley"); // exemplo fixo, pode vir de contexto
-
-  const handleGenerate = () => {
-    if (userId.trim() !== "") {
-      navigation.navigate("QRCode", { userId });
-    }
-  };
+  const [userId] = useState("simon_riley");
+  const primeiroNome = userId.split("_")[0];
 
   return (
     <View style={styles.container}>
@@ -29,10 +26,10 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.greeting}>Olá Simon Riley!</Text>
+      <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
 
       <View style={styles.saldoBox}>
-        <Text style={styles.saldoLabel}>Saldo em conta</Text>
+        <Text style={styles.saldoLabel}>Saldo</Text>
         <Text style={styles.saldoValor}>
           R$ {mostrarSaldo ? "0,10" : "••••"}
         </Text>
@@ -41,14 +38,12 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.buttonText}>Recarregar</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={handleGenerate}
-          >
-            <Text style={styles.buttonText}>Ticket</Text>
-          </TouchableOpacity>
         </View>
+      </View>
+
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ marginBottom: 20 }}>QR Code para: {primeiroNome}.</Text>
+        <QRCode value={userId} size={200} />
       </View>
     </View>
   );
