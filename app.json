@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "savvy",
-    "slug": "savvy",
+    "name": "ticket",
+    "slug": "ticket",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
