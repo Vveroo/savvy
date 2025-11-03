@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
 
   const saveToken = (newToken) => {
     setToken(newToken);
-    // Você pode salvar no AsyncStorage se quiser persistência
   };
 
   const saveUser = (userData) => {
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setToken(null);
     setUser(null);
-    // Limpar dados persistidos, se houver
   };
 
   return (

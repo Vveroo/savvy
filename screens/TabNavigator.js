@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native'; // Usado para mostrar os emojis
+import { View, Text } from 'react-native'; // ✅ Adicionado View para encapsular o emoji
 import HomeScreen from './HomeScreen';
 import CardapioScreen from './CardapioScreen';
 import FavoritosScreen from './FavoritosScreen';
@@ -17,7 +17,7 @@ export default function TabNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          
+
           if (route.name === 'Home') {
             iconName = focused ? '🏠' : '🏡';
           } else if (route.name === 'Cardapio') {
@@ -27,15 +27,18 @@ export default function TabNavigator() {
           } else if (route.name === 'Historico') {
             iconName = focused ? '⏰' : '⏱️';
           }
-          
-          return <Text style={{fontSize: size, color: color}}>{iconName}</Text>;
+
+          return (
+            <View>
+              <Text style={{ fontSize: size, color }}>{iconName}</Text>
+            </View>
+          );
         },
-        tabBarActiveTintColor: 'tomato', 
-        tabBarInactiveTintColor: 'gray', 
-        headerShown: false, // Ocultar o cabeçalho padrão
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false,
       })}
     >
-      {/* Nomes das rotas de abas */}
       <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
       <Tab.Screen name="Cardapio" component={CardapioScreen} options={{ title: 'Menu' }} />
       <Tab.Screen name="Favoritos" component={FavoritosScreen} options={{ title: 'Favoritos' }} />

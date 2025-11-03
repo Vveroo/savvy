@@ -1,42 +1,36 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { useAuth } from '../auth/authContext';
-import { styles } from '../styles/loginStyles';
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { useAuth } from "../auth/authContext";
+import { styles } from "../styles/loginStyles";
+import { useUserContext } from "../contexts/UserContext";
 
 const loginValidationSchema = yup.object().shape({
   matricula: yup
     .string()
-    .matches(/^[a-zA-Z-_]+$/, 'Matrícula inválida!')
-    .required('Obrigatório'),
+    .matches(/^[a-zA-Z-_]+$/, "Matrícula inválida!")
+    .required("Obrigatório"),
   password: yup
     .string()
     .min(8, ({ min }) => `A senha deve ter ${min} caracteres`)
-    .required('Obrigatório'),
+    .required("Obrigatório"),
 });
 
 export default function Login() {
   const { saveToken, saveUser } = useAuth();
   const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [errors, setErrors] = useState({});
   const { addUser } = useUserContext();
 
- const handleEntrar = () => {
-    const novosErros = {};
-    if (!validarEmail(email)) novosErros.email = 'Login inválido.';
-    if (!validarSenha(senha))
-      novosErros.senha = 'Mínimo 8 caracteres, 1 maiúscula e 1 caractere especial.';
-    setErrors(novosErros);
-
-    if (Object.keys(novosErros).length === 0) {
-      addUser({ email });
-      //navigation.navigate('Home'); // voltar para a tela anterior na pilha de navegação
-      navigation.replace('Home');  //Substitui a pilha de navegação para evitar voltar ao login
-    }
+  const submit = (values) => {
+    const fakeToken = "abc123"; // substitua por token real da API
+    saveToken(fakeToken);
+    saveUser(values.matricula);
+    addUser({ email: values.matricula });
+    navigation.replace("MainTabs");
   };
 
   return (
@@ -44,7 +38,7 @@ export default function Login() {
       <Text style={styles.title}>É bom te ter aqui!</Text>
       <Formik
         validationSchema={loginValidationSchema}
-        initialValues={{ matricula: '', password: '' }}
+        initialValues={{ matricula: "", password: "" }}
         onSubmit={submit}
       >
         {({
@@ -62,9 +56,9 @@ export default function Login() {
               <TextInput
                 style={styles.input}
                 placeholder="Matrícula"
-                keyboardType="string"
-                onChangeText={handleChange('matricula')}
-                onBlur={handleBlur('matricula')}
+                keyboardType="default"
+                onChangeText={handleChange("matricula")}
+                onBlur={handleBlur("matricula")}
                 value={values.matricula}
               />
             </View>
@@ -78,25 +72,23 @@ export default function Login() {
                 style={styles.input}
                 placeholder="Senha"
                 secureTextEntry={!mostrarSenha}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
                 value={values.password}
               />
               <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
-                <Text style={styles.mostrarEsconderSenha}>
-                  {mostrarSenha ? (
-                    <Icon name="eye-off" size={25} style={styles.icon} />
-                  ) : (
-                    <Icon name="eye" size={25} style={styles.icon} />
-                  )}
-                </Text>
+                <Icon
+                  name={mostrarSenha ? "eye-off" : "eye"}
+                  size={25}
+                  style={styles.icon}
+                />
               </TouchableOpacity>
             </View>
             {errors.password && touched.password && (
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
-            <TouchableOpacity onPress={() => navigation.navigate('Forget')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Forget")}>
               <Text style={styles.forgotPassword}>Recuperar senha</Text>
             </TouchableOpacity>
 
