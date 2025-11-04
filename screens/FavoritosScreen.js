@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList} from 'react-native';
+import { styles } from '../styles/favoritoStyles';
 
 export default function FavoritosScreen() {
   return (
-    <View>
-      <Text>Favoritos</Text>
+    <View style={styles.container}>
+    <Text>Favoritos</Text>
     </View>
   );
 }
