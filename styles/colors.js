@@ -13,5 +13,6 @@ export const COLORS = {
     favAtivo: '#55c1ffff',
     telaCardapio: '#e6f2fdff',
     telaHome: '#e6f2fdff',
+    telaFavoritos: '#e6f2fdff',
   };
   

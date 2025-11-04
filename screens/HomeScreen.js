@@ -16,7 +16,7 @@ export default function HomeScreen() {
         <TouchableOpacity style={styles.btnPerfil}>
           <FontAwesome5 name="user-alt" size={24} color="black" />
         </TouchableOpacity>
-
+        
         <TouchableOpacity onPress={() => setMostrarSaldo(!mostrarSaldo)}>
           <Icon
             name={mostrarSaldo ? "eye-off" : "eye"}
