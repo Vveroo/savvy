@@ -1,76 +1,78 @@
-// styles/homeStyles.js
-
 import { StyleSheet } from "react-native";
-import { COLORS } from "./colors"; // ajuste o caminho conforme necessário
+import { COLORS } from "./colors"; 
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.telaHome,
-    padding: 20,
-  },
+export const getHomeStyles = (isDarkMode) => {
+  const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
-  perfil: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.telaHome,
+      padding: 20,
+    },
 
-  btnPerfil: {
-    backgroundColor: COLORS.button,
-    padding: 10,
-    borderRadius: 25,
-  },
+    perfil: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 20,
+    },
 
-  icon: {
-    color: COLORS.background,
-  },
+    btnPerfil: {
+      backgroundColor: theme.button,
+      padding: 10,
+      borderRadius: 25,
+    },
 
-  greeting: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.button,
-    marginBottom: 20,
-  },
+    icon: {
+      color: theme.background,
+    },
 
-  saldoBox: {
-    backgroundColor: COLORS.button,
-    padding: 20,
-    borderRadius: 15,
-    marginBottom: 30,
-  },
+    greeting: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.button,
+      marginBottom: 20,
+    },
 
-  saldoLabel: {
-    fontSize: 16,
-    color: COLORS.background,
-    marginBottom: 5,
-  },
+    saldoBox: {
+      backgroundColor: theme.button,
+      padding: 20,
+      borderRadius: 15,
+      marginBottom: 30,
+    },
 
-  saldoValor: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: COLORS.background,
-    marginBottom: 15,
-  },
+    saldoLabel: {
+      fontSize: 16,
+      color: theme.background,
+      marginBottom: 5,
+    },
 
-  buttonGroup: {
-    flexDirection: "row",
-    gap: 10, 
-  },
+    saldoValor: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: theme.background,
+      marginBottom: 15,
+    },
 
-  actionButton: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    paddingVertical: 5,
-    borderRadius: 25,
-    alignItems: "center",
-  },
+    buttonGroup: {
+      flexDirection: "row",
+      gap: 10,
+    },
 
-  buttonText: {
-    fontSize: 10,
-    color: COLORS.button,
-    fontWeight: "bold",
-    padding: 2,
-  },
-});
+    actionButton: {
+      flex: 1,
+      backgroundColor: theme.background,
+      paddingVertical: 5,
+      borderRadius: 25,
+      alignItems: "center",
+    },
+
+    buttonText: {
+      fontSize: 10,
+      color: theme.button,
+      fontWeight: "bold",
+      padding: 2,
+    },
+  });
+};

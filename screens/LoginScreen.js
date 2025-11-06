@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  useColorScheme,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useAuth } from "../auth/authContext";
-import { styles } from "../styles/loginStyles";
 import { useUserContext } from "../contexts/UserContext";
+import { getLoginStyles } from "../styles/loginStyles";
 
 const loginValidationSchema = yup.object().shape({
   matricula: yup
@@ -20,6 +27,9 @@ const loginValidationSchema = yup.object().shape({
 });
 
 export default function Login() {
+  const isDarkMode = useColorScheme() === "dark";
+  const styles = getLoginStyles(isDarkMode);
+
   const { saveToken, saveUser } = useAuth();
   const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -35,7 +45,13 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("../assets/logo-nova.png")}
+        style={styles.logo}
+      />
+
       <Text style={styles.title}>É bom te ter aqui!</Text>
+
       <Formik
         validationSchema={loginValidationSchema}
         initialValues={{ matricula: "", password: "" }}
@@ -56,6 +72,7 @@ export default function Login() {
               <TextInput
                 style={styles.input}
                 placeholder="Matrícula"
+                placeholderTextColor={isDarkMode ? "#aaa" : "#666"}
                 keyboardType="default"
                 onChangeText={handleChange("matricula")}
                 onBlur={handleBlur("matricula")}
@@ -71,6 +88,7 @@ export default function Login() {
               <TextInput
                 style={styles.input}
                 placeholder="Senha"
+                placeholderTextColor={isDarkMode ? "#aaa" : "#666"}
                 secureTextEntry={!mostrarSenha}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}

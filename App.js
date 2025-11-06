@@ -4,7 +4,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserProvider } from './contexts/UserContext';
-import { AuthProvider } from './auth/authContext'; // ✅ Adicione esta linha
+import { AuthProvider } from './auth/authContext'; 
 import LoginScreen from './screens/LoginScreen';
 import TabNavigator from './screens/TabNavigator';
 
@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <AuthProvider> {/* ✅ Envolva tudo com AuthProvider */}
+    <AuthProvider> 
       <UserProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login">

@@ -1,130 +1,144 @@
-import { StyleSheet } from 'react-native';
-import { COLORS } from './colors';
+import { StyleSheet } from "react-native";
+import { COLORS } from "./colors";
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor:  COLORS.background,
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-  },
+export const getLoginStyles = (isDarkMode) => {
+  const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
-  title: {
-    fontSize: 25,
-    marginBottom: 40,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    alignSelf: 'center',
-  },
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: theme.background,
+      paddingHorizontal: 20,
+      paddingBottom: 50,
+    },
 
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    height: 50,
-    backgroundColor: '#f1f1f1',
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    borderWidth: 0.7,
-    borderColor: COLORS.button,
-  },
+    logo: {
+      width: 270,
+      height: 270,
+      resizeMode: "contain",
+      alignSelf: "center",
+      marginBottom: 20,
+    },
 
-  icon: {
-    marginRight: 10,
-  },
+    title: {
+      fontSize: 25,
+      marginBottom: 40,
+      fontWeight: "bold",
+      color: theme.inputText,
+      alignSelf: "center",
+    },
 
-  input: {
-    flex: 1,
-    height: '100%',
-  },
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      width: "100%",
+      height: 50,
+      backgroundColor: theme.inputBackground,
+      borderRadius: 25,
+      paddingHorizontal: 10,
+      marginBottom: 20,
+      borderWidth: 0.7,
+      borderColor: theme.button,
+    },
 
-  mostrarEsconderSenha: {
-    color: COLORS.button,
-    padding: 5,
-   },
+    icon: {
+      marginRight: 10,
+      color: theme.inputText,
+    },
 
-  forgotPassword: {
-    marginBottom: 20,
-    color: COLORS.button,
-    textDecorationLine: 'underline',
-  },
+    input: {
+      flex: 1,
+      height: "100%",
+      color: theme.inputText,
+    },
 
-  button: {
-    width: '100%',
-    height: 50,
-    backgroundColor: COLORS.button,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
+    mostrarEsconderSenha: {
+      color: theme.button,
+      padding: 5,
+    },
 
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
+    forgotPassword: {
+      marginBottom: 20,
+      color: theme.button,
+      textDecorationLine: "underline",
+    },
 
-  signUp: {
-    color: '#000',
-  },
+    button: {
+      width: "100%",
+      height: 50,
+      backgroundColor: theme.button,
+      borderRadius: 8,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 20,
+    },
 
-  signUpLink: {
-    color: COLORS.button,
-    textDecorationLine: 'underline',
-  },
+    buttonText: {
+      color: "#fff",
+      fontSize: 18,
+    },
 
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginBottom: 10,
-    marginLeft: 10,
-    alignSelf: 'flex-start',
-  },
+    signUp: {
+      color: theme.inputText,
+    },
 
-  divider: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+    signUpLink: {
+      color: theme.button,
+      textDecorationLine: "underline",
+    },
 
-  linha: {
-    width: '40%',
-    height: 1,
-    backgroundColor: 'black',
-  },
+    errorText: {
+      color: theme.error,
+      fontSize: 12,
+      marginBottom: 10,
+      marginLeft: 10,
+      alignSelf: "flex-start",
+    },
 
-  txtOu: {
-    color: 'black',
-  },
+    divider: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
 
-  cadastro: {
-    marginTop: 14,
-    alignItems: 'center',
-  },
+    linha: {
+      width: "40%",
+      height: 1,
+      backgroundColor: theme.inputText,
+    },
 
-  contComG: {
-    backgroundColor: 'transparent',
-    padding: 10,
-    borderRadius: 25,
-    width: 210,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 0.7,
-    borderColor: 'black',
-  },
+    txtOu: {
+      color: theme.inputText,
+    },
 
-  txtBtn: {
-    marginLeft: 10,
-    flex: 1,
-    textAlign: 'center',
-  },
+    cadastro: {
+      marginTop: 14,
+      alignItems: "center",
+    },
 
-  googleIcon: {
-    width: 24,
-    height: 24,
-  },
+    contComG: {
+      backgroundColor: "transparent",
+      padding: 10,
+      borderRadius: 25,
+      width: 210,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderWidth: 0.7,
+      borderColor: theme.inputText,
+    },
 
-});
+    txtBtn: {
+      marginLeft: 10,
+      flex: 1,
+      textAlign: "center",
+      color: theme.inputText,
+    },
+
+    googleIcon: {
+      width: 24,
+      height: 24,
+    },
+  });
+};
