@@ -6,15 +6,27 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.telaCardapio,
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 40,
   },
 
   title: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 'bold',
     color: COLORS.button,
-    marginBottom: 20,
+    marginBottom: 16,
     textAlign: 'center',
+  },
+
+  searchInput: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    color: '#333',
   },
 
   listContent: {
@@ -28,42 +40,42 @@ export const styles = StyleSheet.create({
 
   card: {
     backgroundColor: COLORS.item,
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: 16,
+    padding: 16,
     alignItems: 'center',
     width: '48%',
-    shadowColor: COLORS.shadowCardapio,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 5,
   },
 
   image: {
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 90,
     resizeMode: 'contain',
-    marginBottom: 10,
+    marginBottom: 12,
   },
 
   nome: {
     fontSize: 16,
     fontWeight: '600',
     color: COLORS.textMuted,
-    marginBottom: 4,
+    marginBottom: 6,
     textAlign: 'center',
   },
 
   preco: {
-    fontSize: 14,
+    fontSize: 15,
     color: COLORS.preco,
-    marginBottom: 10,
+    marginBottom: 12,
   },
 
   favButton: {
     backgroundColor: COLORS.favButton,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
     borderRadius: 20,
   },
 
@@ -72,7 +84,7 @@ export const styles = StyleSheet.create({
   },
 
   favText: {
-    fontSize: 12,
+    fontSize: 13,
     color: COLORS.button,
     fontWeight: 'bold',
   },

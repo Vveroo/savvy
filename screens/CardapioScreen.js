@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { styles } from '../styles/cardapioStyles';
 
 const produtos = [
-  { id: '1', nome: 'Hambúrguer', preco: 25.0, imagem: require('../assets/hamburguer.png') },
-  { id: '2', nome: 'Pizza', preco: 40.0, imagem: require('../assets/pizza.png') },
-  { id: '3', nome: 'Refrigerante', preco: 8.0, imagem: require('../assets/refrigerante.png') },
-  { id: '4', nome: 'Pão de queijo', preco: 3.5, imagem: require('../assets/paoDeQueijo.png') },
-  { id: '5', nome: 'Calzone', preco: 5.0, imagem: require('../assets/calzone.png') },
-  { id: '6', nome: 'Fatia de Bolo', preco: 6.0, imagem: require('../assets/bolo.png') },
+  { id: '1', nome: 'Hambúrguer', preco: 25.0 },
+  { id: '2', nome: 'Pizza', preco: 40.0 },
+  { id: '3', nome: 'Refrigerante', preco: 8.0 },
+  { id: '4', nome: 'Pão de queijo', preco: 3.5 },
+  { id: '5', nome: 'Calzone', preco: 5.0 },
+  { id: '6', nome: 'Fatia de Bolo', preco: 6.0 },
 ];
 
 export default function CardapioScreen() {
   const [favoritos, setFavoritos] = useState([]);
+  const [busca, setBusca] = useState('');
 
   const toggleFavorito = (id) => {
     setFavoritos((prev) =>
       prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
     );
   };
+
+  const produtosFiltrados = produtos.filter((item) =>
+    item.nome.toLowerCase().includes(busca.toLowerCase())
+  );
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
@@ -41,9 +46,16 @@ export default function CardapioScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cardápio</Text>
+      <Text style={styles.title}>🍽️ Cardápio</Text>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="🔍 Buscar item..."
+        placeholderTextColor="#999"
+        value={busca}
+        onChangeText={setBusca}
+      />
       <FlatList
-        data={produtos}
+        data={produtosFiltrados}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         numColumns={2}
