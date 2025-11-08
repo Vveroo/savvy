@@ -1,91 +1,155 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from './colors';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.telaCardapio,
+    backgroundColor: '#F9FAFB',
     paddingHorizontal: 16,
     paddingTop: 40,
   },
 
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: COLORS.button,
+    color: '#111827',
     marginBottom: 16,
-    textAlign: 'center',
+  },
+
+  searchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    paddingHorizontal: 12,
+    marginBottom: 8,
+  },
+
+  searchIcon: {
+    marginRight: 8,
   },
 
   searchInput: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    flex: 1,
+    fontSize: 16,
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    color: '#111827',
+  },
+
+  categoriasContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 2,
+    marginBottom: 0,
+  },
+
+  categoriaButton: {
+    height: 32,
+    paddingHorizontal: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+    backgroundColor: '#E5E7EB',
+    marginRight: 8,
+  },
+
+  categoriaAtiva: {
+    backgroundColor: '#007AFF',
+  },
+
+  categoriaText: {
     fontSize: 14,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
     color: '#333',
   },
 
-  listContent: {
-    paddingBottom: 20,
+  categoriaTextAtiva: {
+    color: '#fff',
+    fontWeight: '600',
   },
 
-  row: {
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    paddingTop: 0,
+    paddingBottom: 100,
   },
 
   card: {
-    backgroundColor: COLORS.item,
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 10,
+    width: '30%',
+    height: 130,
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '48%',
+    marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
-  },
-
-  image: {
-    width: 90,
-    height: 90,
-    resizeMode: 'contain',
-    marginBottom: 12,
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 3,
+    elevation: 1,
   },
 
   nome: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
-    color: COLORS.textMuted,
-    marginBottom: 6,
+    color: '#111827',
     textAlign: 'center',
+    marginBottom: 2,
   },
 
   preco: {
-    fontSize: 15,
-    color: COLORS.preco,
-    marginBottom: 12,
+    fontSize: 13,
+    color: '#6B7280',
+    marginBottom: 6,
+  },
+
+  cardButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 4,
   },
 
   favButton: {
-    backgroundColor: COLORS.favButton,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+    backgroundColor: '#E5E7EB',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
     borderRadius: 20,
   },
 
   favAtivo: {
-    backgroundColor: COLORS.favAtivo,
+    backgroundColor: '#FACC15',
   },
 
   favText: {
-    fontSize: 13,
-    color: COLORS.button,
-    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '600',
+  },
+
+  cartButton: {
+    backgroundColor: '#10B981',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 20,
+  },
+
+  cartText: {
+    fontSize: 14,
+    color: '#fff',
+    fontWeight: '600',
+  },
+
+  carrinhoButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF',
+    padding: 14,
+    borderRadius: 50,
+    elevation: 5,
   },
 });

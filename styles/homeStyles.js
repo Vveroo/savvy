@@ -1,13 +1,11 @@
-// styles/homeStyles.js
-
 import { StyleSheet } from "react-native";
-import { COLORS } from "./colors"; // ajuste o caminho conforme necessário
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.telaHome,
-    padding: 20,
+    backgroundColor: "#F9FAFB",
+    paddingHorizontal: 24,
+    paddingTop: 40,
   },
 
   perfil: {
@@ -18,59 +16,114 @@ export const styles = StyleSheet.create({
   },
 
   btnPerfil: {
-    backgroundColor: COLORS.button,
+    backgroundColor: "#E5E7EB",
     padding: 10,
-    borderRadius: 25,
+    borderRadius: 50,
   },
 
   icon: {
-    color: COLORS.background,
+    marginLeft: 10,
   },
 
   greeting: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.button,
+    fontSize: 22,
+    fontWeight: "600",
+    color: "#111827",
     marginBottom: 20,
   },
 
   saldoBox: {
-    backgroundColor: COLORS.button,
+    backgroundColor: "#FFFFFF",
     padding: 20,
-    borderRadius: 15,
-    marginBottom: 30,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+    marginBottom: 20,
+  },
+
+  saldoHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
   },
 
   saldoLabel: {
     fontSize: 16,
-    color: COLORS.background,
-    marginBottom: 5,
+    fontWeight: "500",
+    color: "#6B7280",
   },
 
   saldoValor: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    color: COLORS.background,
-    marginBottom: 15,
+    color: "#111827",
   },
 
   buttonGroup: {
-    flexDirection: "row",
-    gap: 10, 
+    alignItems: "center",
+    marginBottom: 30,
   },
 
   actionButton: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    paddingVertical: 5,
+    marginTop: -10,
+    backgroundColor: "#007AFF",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
     borderRadius: 25,
-    alignItems: "center",
+    alignSelf: "flex-start",
   },
 
   buttonText: {
-    fontSize: 10,
-    color: COLORS.button,
-    fontWeight: "bold",
-    padding: 2,
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "500",
   },
+
+  qrContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  qrLabel: {
+    fontSize: 16,
+    color: "#374151",
+    marginBottom: 20,
+  },
+
+  categoriasContainer: {
+  flexDirection: 'row',
+  gap: 10,
+  paddingVertical: 4,
+  paddingHorizontal: 2,
+},
+
+categoriaButton: {
+  width: 90,
+  height: 36,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 20,
+  backgroundColor: '#E5E7EB',
+  marginRight: 10,
+},
+
+categoriaAtiva: {
+  backgroundColor: '#007AFF',
+},
+
+categoriaText: {
+  fontSize: 14,
+  color: '#333',
+},
+
+categoriaTextAtiva: {
+  color: '#fff',
+  fontWeight: '600',
+},
+
 });

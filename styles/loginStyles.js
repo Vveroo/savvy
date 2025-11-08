@@ -5,9 +5,14 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor:  COLORS.background,
+    backgroundColor: COLORS.background,
     paddingHorizontal: 20,
     paddingBottom: 50,
+  },
+
+  logo: {
+    alignItems: 'center',
+    marginBottom: 20,
   },
 
   title: {
@@ -43,7 +48,7 @@ export const styles = StyleSheet.create({
   mostrarEsconderSenha: {
     color: COLORS.button,
     padding: 5,
-   },
+  },
 
   forgotPassword: {
     marginBottom: 20,
