@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  useColorScheme,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
@@ -45,11 +38,6 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../assets/logo-nova.png")}
-        style={styles.logo}
-      />
-
       <Text style={styles.title}>É bom te ter aqui!</Text>
 
       <Formik

@@ -1,4 +1,5 @@
 export const COLORS = {
+<<<<<<< HEAD
   light: {
     background: '#F1F1F1',
     inputBackground: '#D6D6D6',
@@ -33,4 +34,21 @@ export const COLORS = {
     telaHome: '#1a1a1a',
     telaFavoritos: '#1a1a1a',
   },
+=======
+  background: '#F5F7FA',         
+  inputBackground: '#E0E7EF',    
+  inputText: '#1F2D3D',          
+  error: '#FF5A5F',              
+  button: '#0052CC',             
+  divider: '#C5D1E0',            
+  textMuted: '#0052CC',          
+  item: '#E8F0FE',               
+  shadowCardapio: '#1F2D3D',     
+  preco: '#00B894',              
+  favButton: '#D0E6FF',          
+  favAtivo: '#4DA3FF',           
+  telaCardapio: '#F0F4FA',       
+  telaHome: '#F0F4FA',
+  telaFavoritos: '#F0F4FA',
+>>>>>>> 3e1ad5a884aff8c78dc8ba0b371d3f7f2fea904f
 };
