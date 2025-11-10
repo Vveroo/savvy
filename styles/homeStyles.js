@@ -3,20 +3,15 @@ import { COLORS } from "./colors";
 
 export const getHomeStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
-
-const styles = StyleSheet.create({
+  return theme
+}
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F9FAFB",
     paddingHorizontal: 24,
     paddingTop: 40,
   },
-
-    container: {
-      flex: 1,
-      backgroundColor: theme.telaHome,
-      padding: 20,
-    },
 
     perfil: {
       flexDirection: "row",
@@ -26,24 +21,24 @@ const styles = StyleSheet.create({
     },
 
     btnPerfil: {
-      backgroundColor: theme.button,
+      backgroundColor: getHomeStyles().button,
       padding: 10,
       borderRadius: 25,
     },
 
     icon: {
-      color: theme.background,
+      color: getHomeStyles().background,
     },
 
     greeting: {
       fontSize: 20,
       fontWeight: "bold",
-      color: theme.button,
+      color: getHomeStyles().button,
       marginBottom: 20,
     },
 
     saldoBox: {
-      backgroundColor: theme.button,
+      backgroundColor: getHomeStyles().button,
       padding: 20,
       borderRadius: 15,
       marginBottom: 30,
@@ -51,14 +46,14 @@ const styles = StyleSheet.create({
 
     saldoLabel: {
       fontSize: 16,
-      color: theme.background,
+      color: getHomeStyles().background,
       marginBottom: 5,
     },
 
     saldoValor: {
       fontSize: 24,
       fontWeight: "bold",
-      color: theme.background,
+      color: getHomeStyles().background,
       marginBottom: 15,
     },
 
@@ -69,7 +64,7 @@ const styles = StyleSheet.create({
 
     actionButton: {
       flex: 1,
-      backgroundColor: theme.background,
+      backgroundColor: getHomeStyles().background,
       paddingVertical: 5,
       borderRadius: 25,
       alignItems: "center",
@@ -77,7 +72,7 @@ const styles = StyleSheet.create({
 
     buttonText: {
       fontSize: 10,
-      color: theme.button,
+      color: getHomeStyles().button,
       fontWeight: "bold",
       padding: 2,
     },
@@ -193,4 +188,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-}
+
+
+
+

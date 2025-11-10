@@ -4,6 +4,7 @@ import { styles } from "../styles/homeStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import QRCode from "react-native-qrcode-svg";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen() {
   const [mostrarSaldo, setMostrarSaldo] = useState(true);
