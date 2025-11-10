@@ -19,7 +19,6 @@ const produtos = [
   { id: '4', nome: 'Pão de queijo', preco: 3.5, categoria: 'Lanches' },
   { id: '5', nome: 'Calzone', preco: 5.0, categoria: 'Lanches' },
   { id: '6', nome: 'Fatia de Bolo', preco: 6.0, categoria: 'Doces' },
-
 ];
 
 const categorias = ['Lanches', 'Bebidas', 'Doces', 'Favoritos'];

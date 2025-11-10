@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    paddingTop: 0,
+    paddingTop: 30,
     paddingBottom: 100,
   },
 
