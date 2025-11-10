@@ -7,6 +7,8 @@ import * as yup from "yup";
 import { useAuth } from "../auth/authContext";
 import { useUserContext } from "../contexts/UserContext";
 import { getLoginStyles } from "../styles/loginStyles";
+import { useColorScheme } from "react-native";
+
 
 const loginValidationSchema = yup.object().shape({
   matricula: yup
