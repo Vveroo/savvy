@@ -13,21 +13,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const { width } = Dimensions.get('window');
 
 const produtos = [
-<<<<<<< HEAD
-  { id: '1', nome: 'Hambúrguer', preco: 25.0, },
-  { id: '2', nome: 'Pizza', preco: 40.0, },
-  { id: '3', nome: 'Refrigerante', preco: 8.0,  },
-  { id: '4', nome: 'Pão de queijo', preco: 3.5, },
-  { id: '5', nome: 'Calzone', preco: 5.0, },
-  { id: '6', nome: 'Fatia de Bolo', preco: 6.0, },
-=======
   { id: '1', nome: 'Hambúrguer', preco: 25.0, categoria: 'Lanches' },
   { id: '2', nome: 'Pizza', preco: 40.0, categoria: 'Lanches' },
   { id: '3', nome: 'Refrigerante', preco: 8.0, categoria: 'Bebidas' },
   { id: '4', nome: 'Pão de queijo', preco: 3.5, categoria: 'Lanches' },
   { id: '5', nome: 'Calzone', preco: 5.0, categoria: 'Lanches' },
   { id: '6', nome: 'Fatia de Bolo', preco: 6.0, categoria: 'Doces' },
->>>>>>> 3e1ad5a884aff8c78dc8ba0b371d3f7f2fea904f
+
 ];
 
 const categorias = ['Lanches', 'Bebidas', 'Doces', 'Favoritos'];

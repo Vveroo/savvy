@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLORS } from "./colors";
 
-<<<<<<< HEAD
 export const getLoginStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
@@ -13,15 +12,6 @@ export const getLoginStyles = (isDarkMode) => {
       paddingHorizontal: 20,
       paddingBottom: 50,
     },
-=======
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: COLORS.background,
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-  },
 
   logo: {
     alignItems: 'center',
@@ -35,7 +25,6 @@ export const styles = StyleSheet.create({
     color: COLORS.text,
     alignSelf: 'center',
   },
->>>>>>> 3e1ad5a884aff8c78dc8ba0b371d3f7f2fea904f
 
     logo: {
       width: 270,
@@ -66,17 +55,14 @@ export const styles = StyleSheet.create({
       borderColor: theme.button,
     },
 
-<<<<<<< HEAD
     icon: {
       marginRight: 10,
       color: theme.inputText,
     },
-=======
   mostrarEsconderSenha: {
     color: COLORS.button,
     padding: 5,
   },
->>>>>>> 3e1ad5a884aff8c78dc8ba0b371d3f7f2fea904f
 
     input: {
       flex: 1,

@@ -35,14 +35,14 @@ export default function HomeScreen() {
         <Text style={styles.saldoValor}>
           R$ {mostrarSaldo ? "••••" : "0,10"}
         </Text>
-      </TouchableOpacity>
+      </View>
 
         <View style={styles.buttonGroup}>
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.buttonText}>Recarregar</Text>
           </TouchableOpacity>
         </View>
-      </View>
+     
 
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text style={{ marginBottom: 20 }}>QR Code para: {primeiroNome}.</Text>
