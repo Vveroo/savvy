@@ -5,6 +5,7 @@ import { UserProvider } from './contexts/UserContext';
 import { AuthProvider } from './auth/authContext'; 
 import LoginScreen from './screens/LoginScreen';
 import TabNavigator from './screens/TabNavigator';
+import ForgotPasswordScreen from './screens/ForgotScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
           <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="MainTabs" component={TabNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>

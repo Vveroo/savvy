@@ -96,66 +96,12 @@ export const getLoginStyles = (isDarkMode) => {
       fontSize: 18,
     },
 
-    signUp: {
-      color: theme.inputText,
-    },
-
-    signUpLink: {
-      color: theme.button,
-      textDecorationLine: "underline",
-    },
-
     errorText: {
       color: theme.error,
       fontSize: 12,
       marginBottom: 10,
       marginLeft: 10,
       alignSelf: "flex-start",
-    },
-
-    divider: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-
-    linha: {
-      width: "40%",
-      height: 1,
-      backgroundColor: theme.inputText,
-    },
-
-    txtOu: {
-      color: theme.inputText,
-    },
-
-    cadastro: {
-      marginTop: 14,
-      alignItems: "center",
-    },
-
-    contComG: {
-      backgroundColor: "transparent",
-      padding: 10,
-      borderRadius: 25,
-      width: 210,
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      borderWidth: 0.7,
-      borderColor: theme.inputText,
-    },
-
-    txtBtn: {
-      marginLeft: 10,
-      flex: 1,
-      textAlign: "center",
-      color: theme.inputText,
-    },
-
-    googleIcon: {
-      width: 24,
-      height: 24,
     },
   });
 };

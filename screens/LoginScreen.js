@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from "yup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../auth/authContext";
 import { useUserContext } from "../contexts/UserContext";
 import { getLoginStyles } from "../styles/loginStyles";
 import { useColorScheme } from "react-native";
-
 
 const loginValidationSchema = yup.object().shape({
   matricula: yup
@@ -30,12 +30,34 @@ export default function Login() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const { addUser } = useUserContext();
 
-  const submit = (values) => {
-    const fakeToken = "abc123"; // substitua por token real da API
-    saveToken(fakeToken);
-    saveUser(values.matricula);
-    addUser({ email: values.matricula });
-    navigation.replace("MainTabs");
+  const submit = async (values) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          matricula: values.matricula,
+          password: values.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        await AsyncStorage.setItem("userToken", data.token);
+        await AsyncStorage.setItem("userMatricula", values.matricula);
+
+        saveToken(data.token);
+        saveUser(values.matricula);
+        addUser({ email: values.matricula });
+
+        navigation.replace("MainTabs");
+      } else {
+        Alert.alert("Erro", data.message || "Credenciais inválidas.");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível conectar à API.");
+    }
   };
 
   return (
@@ -96,7 +118,9 @@ export default function Login() {
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
-            <TouchableOpacity onPress={() => navigation.navigate("Forget")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ForgotPassword")}
+            >
               <Text style={styles.forgotPassword}>Recuperar senha</Text>
             </TouchableOpacity>
 
