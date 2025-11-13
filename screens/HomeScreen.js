@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
-import ThemeContext from "../contexts/ThemeContext";
+
 
 export default function HomeScreen() {
   const [mostrarSaldo, setMostrarSaldo] = useState(true);
@@ -44,15 +44,8 @@ export default function HomeScreen() {
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.buttonText}>Recarregar</Text>
           </TouchableOpacity>
-
-         
         </View>
 
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity style={styles.actionButton} onPress={()=> ThemeContext()}>
-            <Text style={styles.buttonText}>Mudar tema</Text>
-          </TouchableOpacity>
-        </View>
        
 
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

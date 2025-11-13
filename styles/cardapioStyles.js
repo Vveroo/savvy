@@ -4,8 +4,8 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9FAFB',
-    paddingHorizontal: 16,
-    paddingTop: 40,
+    paddingHorizontal: 15,
+    paddingTop: 50,
   },
 
   title: {
@@ -69,27 +69,30 @@ export const styles = StyleSheet.create({
   },
 
   grid: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     paddingTop: 30,
     paddingBottom: 100,
+    paddingLeft: 20,
+    columnGap: 25,
   },
 
   card: {
+    
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     padding: 10,
-    width: '30%',
+    width: '40%',
     height: 130,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 15,
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 3,
-    elevation: 1,
+    elevation: 3,
   },
 
   nome: {
@@ -132,7 +135,7 @@ export const styles = StyleSheet.create({
 
   cartButton: {
     backgroundColor: '#10B981',
-    paddingVertical: 4,
+    paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 20,
   },

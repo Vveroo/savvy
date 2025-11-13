@@ -116,7 +116,7 @@ export default function CardapioScreen() {
           return (
             <View key={cat} style={{ width }}>
               <View style={styles.grid}>
-                {Array.from({ length: 6 }).map((_, i) => {
+                {Array.from({ length: 4 }).map((_, i) => {
                   const item = produtosFiltrados[i];
                   return (
                     <TouchableOpacity
