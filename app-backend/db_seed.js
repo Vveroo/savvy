@@ -1,7 +1,7 @@
 // db_seed.js - Generador de Datos Aleatorios e Inicialización
 
 const { Client } = require('pg');
-const bcrypt = require('bcryptjs');
+// NOTA: Se ha removido 'bcryptjs' ya que no se cifrarán las contraseñas.
 const { faker } = require('@faker-js/faker'); 
 
 // =====================================================
@@ -15,10 +15,18 @@ const client = new Client({
     port: 5433, // <--- ¡PUERTO AJUSTADO!
 });
 
-// Cambiado de NUM_ALUMNOS a NUM_ALUNOS para consistencia
 const NUM_ALUNOS = 50; 
 const NUM_PLATOS = 10;
 const SENAI_DOMAINS = ['@senai.br', '@aluno.senai.com'];
+
+// Contraseña de prueba CLAVE para el login del usuario fijo: 'pass'
+const TEST_PASSWORD = 'pass'; 
+
+// Función para generar una contraseña aleatoria de 5 dígitos (del 10000 al 99999)
+function generateShortPassword() {
+    // Genera un número aleatorio entre 10000 y 99999
+    return Math.floor(10000 + Math.random() * 90000).toString(); 
+}
 
 async function generateData() {
     try {
@@ -27,28 +35,26 @@ async function generateData() {
 
         // --- Generar Alunos ---
         console.log('⏳ Generando alunos aleatorios...');
-        // Cambiado de alumnosData a alunosData
         const alunosData = [];
         
-        // Contraseña de prueba CLAVE para el login: '123456'
-        const testPasswordHash = await bcrypt.hash('123456', 10); 
-        
-        // 1. Insertar un aluno de prueba fijo para un login seguro
-        alunosData.push(`('A9999', 'Aluno Teste', 'test@senai.br', '${testPasswordHash}', 'T000')`);
+        // 1. Insertar un aluno de prueba fijo (Contraseña: 'pass' - SIN CIFRAR)
+        // La variable que se inserta es el texto plano de la contraseña.
+        const fixedPassword = TEST_PASSWORD;
+        alunosData.push(`('A9999', 'Aluno Teste', 'test@senai.br', '${fixedPassword}', 'T000')`);
 
 
         for (let i = 0; i < NUM_ALUNOS - 1; i++) {
             const nome = faker.person.fullName();
             const matricula = faker.string.alphanumeric(10).toUpperCase();
             const domain = faker.helpers.arrayElement(SENAI_DOMAINS);
-            // El email se basa en el nombre y el dominio SENAI
             const email_senai = faker.internet.email({ firstName: nome.split(' ')[0], domain }); 
             const turma = faker.helpers.arrayElement(['T101', 'T102', 'T201', 'T202', 'T301', 'T302']);
             
-            // Usamos el hash de '123456' para todos
-            const password_hash = testPasswordHash; 
+            // Generar la contraseña de 5 dígitos (SIN CIFRAR)
+            const randomPassword = generateShortPassword(); 
             
-            alunosData.push(`('${matricula}', '${nome.replace(/'/g, "''")}', '${email_senai}', '${password_hash}', '${turma}')`);
+            // Insertamos la contraseña en texto plano en la columna password_hash
+            alunosData.push(`('${matricula}', '${nome.replace(/'/g, "''")}', '${email_senai}', '${randomPassword}', '${turma}')`);
         }
 
         const insertAlunosQuery = `
@@ -57,8 +63,7 @@ async function generateData() {
             ON CONFLICT (email_senai) DO NOTHING;
         `;
         await client.query(insertAlunosQuery);
-        // Usando NUM_ALUNOS en el mensaje de éxito
-        console.log(`✅ ${NUM_ALUNOS} alunos insertados (incluyendo 'test@senai.br').`);
+        console.log(`✅ ${NUM_ALUNOS} alunos insertados (Aluno Teste con contraseña '${TEST_PASSWORD}' - SIN CIFRAR).`);
 
 
         // --- Generar Menú ---
@@ -68,7 +73,6 @@ async function generateData() {
             const comida = faker.commerce.productName();
             const preco = faker.commerce.price({ min: 5, max: 30, dec: 2 }); 
             
-            // Usando 'preco' (portugués) para ser consistente con la tabla
             menuData.push(`('${comida.replace(/'/g, "''")}', ${preco})`);
         }
 

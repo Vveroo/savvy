@@ -40,7 +40,7 @@ app.post('/api/login', async (req, res) => {
     }
 
     try {
-        // 1. Busca al alumno por email_senai
+        // 1. Busca al alumno por email_senai   
         const result = await client.query('SELECT * FROM alumnos WHERE email_senai = $1', [email]);
         const alumno = result.rows[0];
 
