@@ -15,7 +15,7 @@ export default function App() {
       <UserProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login">
-           
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="MainTabs" component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{headerShown: false }} />
           </Stack.Navigator>
