@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
@@ -29,16 +29,14 @@ export default function Login() {
   const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const { addUser } = useUserContext();
+  const [apiError, setApiError] = useState("");
 
   const submit = async (values) => {
     try {
       const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          matricula: values.matricula,
-          password: values.password,
-        }),
+        body: JSON.stringify(values),
       });
 
       const data = await response.json();
@@ -53,47 +51,55 @@ export default function Login() {
 
         navigation.replace("MainTabs");
       } else {
-        Alert.alert("Erro", data.message || "Credenciais inválidas.");
+        setApiError(data.message || "Credenciais inválidas.");
+        setTimeout(() => setApiError(""), 4000);
       }
-    } catch (error) {
-      Alert.alert("Erro", "Não foi possível conectar à API.");
+    } catch {
+      setApiError("Não foi possível conectar à API.");
+      setTimeout(() => setApiError(""), 4000);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>É bom te ter aqui!</Text>
+    <Formik
+      validationSchema={loginValidationSchema}
+      initialValues={{ matricula: "", password: "" }}
+      onSubmit={submit}
+    >
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        touched,
+        isValid,
+      }) => {
+        const formError =
+          (errors.matricula && touched.matricula && errors.matricula) ||
+          (errors.password && touched.password && errors.password) || (errors.matricula && touched.matricula && errors.matricula &&errors.password && touched.password && errors.password);
 
-      <Formik
-        validationSchema={loginValidationSchema}
-        initialValues={{ matricula: "", password: "" }}
-        onSubmit={submit}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          isValid,
-        }) => (
-          <>
+        return (
+          <View style={styles.container}>
+            {(formError || apiError) && (
+              <View style={styles.errorBar}>
+                <Text style={styles.errorText}>{formError || apiError}</Text>
+              </View>
+            )}
+
+            <Text style={styles.title}>É bom te ter aqui!</Text>
+
             <View style={styles.inputContainer}>
               <Icon name="mail-outline" size={25} style={styles.icon} />
               <TextInput
                 style={styles.input}
                 placeholder="Matrícula"
                 placeholderTextColor={isDarkMode ? "#aaa" : "#666"}
-                keyboardType="default"
                 onChangeText={handleChange("matricula")}
                 onBlur={handleBlur("matricula")}
                 value={values.matricula}
               />
             </View>
-            {errors.matricula && touched.matricula && (
-              <Text style={styles.errorText}>{errors.matricula}</Text>
-            )}
 
             <View style={styles.inputContainer}>
               <Icon name="lock-closed-outline" size={25} style={styles.icon} />
@@ -114,9 +120,6 @@ export default function Login() {
                 />
               </TouchableOpacity>
             </View>
-            {errors.password && touched.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            )}
 
             <TouchableOpacity
               onPress={() => navigation.navigate("ForgotPassword")}
@@ -131,9 +134,9 @@ export default function Login() {
             >
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
-          </>
-        )}
-      </Formik>
-    </View>
+          </View>
+        );
+      }}
+    </Formik>
   );
 }

@@ -4,7 +4,7 @@ import { styles } from "../styles/homeStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
-import ThemeContext from "../contexts/ThemeContext";
+import ThemeContext from "./contexts/ThemeContext";
 
 // IMPORTAR EL HOOK DEL CONTEXTO DE USUARIO
 import { useUserContext } from "../contexts/UserContext"; 
