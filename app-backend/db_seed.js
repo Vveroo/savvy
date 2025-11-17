@@ -48,7 +48,7 @@ async function generateData() {
             const matricula = faker.string.alphanumeric(10).toUpperCase();
             const domain = faker.helpers.arrayElement(SENAI_DOMAINS);
             const email_senai = faker.internet.email({ firstName: nome.split(' ')[0], domain }); 
-            const turma = faker.helpers.arrayElement(['T101', 'T102', 'T201', 'T202', 'T301', 'T302']);
+            const turma = faker.helpers.arrayElement(['M1', 'M2', 'M3', 'M4']);
             
             // Generar la contraseña de 5 dígitos (SIN CIFRAR)
             const randomPassword = generateShortPassword(); 

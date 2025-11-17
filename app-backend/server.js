@@ -1,8 +1,9 @@
-// server.js - Backend Personalizado para Alumnos SENAI
+// server.js
 
 const express = require('express');
 const { Client } = require('pg');
-const bcrypt = require('bcryptjs'); // Para comparación de contraseñas seguras
+// NOTA: Se ha comentado o quitado bcrypt, ya que las contraseñas están en texto plano.
+// const bcrypt = require('bcryptjs'); 
 
 const app = express();
 const port = 3000;
@@ -15,54 +16,57 @@ const client = new Client({
     host: 'localhost',           // Conexión al contenedor Docker
     database: 'senai_db',        
     password: 'ticket_pass',     
-    port: 5433, // <--- PUERTO AJUSTADO: Debe coincidir con tu docker-compose.yml
+    port: 5433, // <--- PUERTO AJUSTADO
 });
 
-// Intentar la conexión al iniciar el servidor
 client.connect()
     .then(() => console.log('✅ Conexión exitosa a PostgreSQL (Docker).'))
     .catch(err => {
         console.error('❌ Error al conectar a PostgreSQL. ¿Docker corriendo en puerto 5433?', err);
     });
 
-// Middleware para procesar solicitudes JSON
 app.use(express.json()); 
 
 // =====================================================
 // 2. ENDPOINT DE LOGIN (POST: /api/login)
 // =====================================================
-// Espera { email, password }
+// Permite iniciar sesión con matricula O email_senai
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+    // El frontend envía 'identifier' (matrícula o email) y 'password'
+    const { identifier, password } = req.body; 
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email e senha são requeridos.' });
+    if (!identifier || !password) {
+        return res.status(400).json({ message: 'Identificador e senha são requeridos.' });
     }
 
     try {
-        // 1. Busca al alumno por email_senai   
-        const result = await client.query('SELECT * FROM alumnos WHERE email_senai = $1', [email]);
-        const alumno = result.rows[0];
+        // Busca al aluno por MATRICULA o por EMAIL_SENAI
+        const result = await client.query(
+            'SELECT * FROM alunos WHERE matricula = $1 OR email_senai = $1', 
+            [identifier] 
+        );
+        const aluno = result.rows[0];
 
-        if (!alumno) {
+        if (!aluno) {
             // Usuario no encontrado
             return res.status(401).json({ message: 'Credenciais inválidas.' });
         }
 
-        // 2. Compara la contraseña (en texto plano) con el hash almacenado
-        const isMatch = await bcrypt.compare(password, alumno.password_hash);
+        // Compara la contraseña (en texto plano)
+        // NOTA: Esta es una comparación de texto plano (password === hash),
+        // adecuada porque el db_seed ya no cifra las contraseñas.
+        const isMatch = (password === aluno.password_hash);
 
         if (!isMatch) {
-            // Contraseña incorrecta
             return res.status(401).json({ message: 'Credenciais inválidas.' });
         }
 
-        // 3. Login exitoso: Devuelve los datos del alumno (sin la contraseña)
-        const { password_hash, ...alumnoInfo } = alumno;
+        // Login exitoso
+        const { password_hash, ...alumnoInfo } = aluno;
         
         res.json({ 
             message: 'Login bem-sucedido!', 
-            user: alumnoInfo, // Devuelve: id, matricula, nome, email_senai, turma, etc.
+            user: alumnoInfo,
         });
 
     } catch (error) {
@@ -76,8 +80,7 @@ app.post('/api/login', async (req, res) => {
 // =====================================================
 app.get('/api/menu', async (req, res) => {
     try {
-        // Selecciona comida y el precio (columna 'preco' en portugués)
-        const result = await client.query('SELECT comida, preco FROM menu ORDER BY comida');
+        const result = await client.query('SELECT comida, preco FROM menu ORDER BY comida'); 
         res.json(result.rows);
     } catch (error) {
         console.error('Erro ao obter o menu:', error);
