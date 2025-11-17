@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { styles } from "../styles/homeStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
-import ThemeContext from "./contexts/ThemeContext";
-
-// IMPORTAR EL HOOK DEL CONTEXTO DE USUARIO
 import { useUserContext } from "../contexts/UserContext"; 
 
 export default function HomeScreen() {
   // OBTENEMOS LOS DATOS REALES DEL CONTEXTO
   const { user, saldo, logout } = useUserContext(); 
+  const { theme, toggleTheme } = useContext(ThemeContext); // usar o contexto corretamente
   
   // Cambiado a 'false' para que el saldo esté oculto por defecto
   const [mostrarSaldo, setMostrarSaldo] = useState(false); 
@@ -27,10 +25,8 @@ export default function HomeScreen() {
   }
 
   // USAR DATOS DEL USUARIO
-  // El objeto 'user' viene de la respuesta exitosa del login
   const primeiroNome = user.nome.split(" ")[0]; 
-  const qrValue = user.matricula; // Usamos la matrícula para el QR Code
-  // Formatear el saldo a R$ X,XX
+  const qrValue = user.matricula; 
   const saldoFormatado = saldo.toFixed(2).replace(".", ","); 
 
   const handleLogout = () => {
@@ -42,8 +38,7 @@ export default function HomeScreen() {
             { 
                 text: "Sair", 
                 onPress: () => {
-                    logout(); // Limpia el estado en el contexto
-                    // Navega a Login y limpia la pila
+                    logout(); 
                     navigation.reset({ 
                         index: 0, 
                         routes: [{ name: 'Login' }], 
@@ -79,7 +74,6 @@ export default function HomeScreen() {
 
       <View style={styles.saldoBox}>
         <Text style={styles.saldoLabel}>Saldo</Text>
-        {/* SALDO REAL DEL CONTEXTO */}
         <Text style={styles.saldoValor}>
           R$ {!mostrarSaldo ? "••••" : saldoFormatado}
         </Text>
@@ -90,13 +84,13 @@ export default function HomeScreen() {
           <Text style={styles.buttonText}>Recarregar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton} onPress={()=> ThemeContext()}>
-          <Text style={styles.buttonText}>Mudar tema</Text>
+        {/* Botão para mudar tema */}
+        <TouchableOpacity style={styles.actionButton} onPress={toggleTheme}>
+          <Text style={styles.buttonText}>Mudar tema ({theme})</Text>
         </TouchableOpacity>
       </View>
       
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        {/* Matrícula y QR CODE con valor real */}
         <Text style={{ marginBottom: 5 }}>Matrícula: {user.matricula}</Text>
         <Text style={{ marginBottom: 20 }}>QR Code para: {primeiroNome}.</Text>
         <QRCode value={qrValue} size={200} />
