@@ -1,53 +1,37 @@
 export const COLORS = {
   light: {
-    background: '#F1F1F1',
-    inputBackground: '#D6D6D6',
-    inputText: '#000000',
-    error: '#ff4d4d',
-    button: '#7A7A7A', // tom neutro para modo claro
+    background: '#F1F1F1',      // fundo claro
+    inputBackground: '#E6E6E6',
+    inputText: '#111111',
+    error: '#E30613',           // vermelho SENAI
+    button: '#003366',          // azul escuro SENAI
     divider: '#CCCCCC',
     textMuted: '#555555',
-    item: '#d1eeff',
+    item: '#D1EEFF',
     shadowCardapio: '#000000',
-    preco: '#00aa47',
-    favButton: '#aedffb',
-    favAtivo: '#55c1ff',
-    telaCardapio: '#e6f2fd',
-    telaHome: '#e6f2fd',
-    telaFavoritos: '#e6f2fd',
+    preco: '#00AA47',
+    favButton: '#AEDFFB',
+    favAtivo: '#55C1FF',
+    telaCardapio: '#FFFFFF',
+    telaHome: '#FFFFFF',
+    telaFavoritos: '#FFFFFF',
   },
+
   dark: {
-    background: '#121212',
+    background: '#121212',      // fundo escuro
     inputBackground: '#1E1E1E',
     inputText: '#FFFFFF',
-    error: '#ff4d4d',
-    button: '#0047B6',
+    error: '#E30613',           // vermelho SENAI
+    button: '#3B82F6',          // azul vibrante para contraste
     divider: '#424242',
     textMuted: '#AAAAAA',
-    item: '#2a2a2a',
+    item: '#2A2A2A',
     shadowCardapio: '#000000',
-    preco: '#00aa47',
+    preco: '#00AA47',
     favButton: '#333333',
-    favAtivo: '#55c1ff',
-    telaCardapio: '#1a1a1a',
-    telaHome: '#1a1a1a',
-    telaFavoritos: '#1a1a1a',
+    favAtivo: '#55C1FF',
+    telaCardapio: '#1A1A1A',
+    telaHome: '#1A1A1A',
+    telaFavoritos: '#1A1A1A',
   },
-
-  background: '#F5F7FA',         
-  inputBackground: '#E0E7EF',    
-  inputText: '#1F2D3D',          
-  error: '#FF5A5F',              
-  button: '#0052CC',             
-  divider: '#C5D1E0',            
-  textMuted: '#0052CC',          
-  item: '#E8F0FE',               
-  shadowCardapio: '#1F2D3D',     
-  preco: '#00B894',              
-  favButton: '#D0E6FF',          
-  favAtivo: '#4DA3FF',           
-  telaCardapio: '#F0F4FA',       
-  telaHome: '#F0F4FA',
-  telaFavoritos: '#F0F4FA',
-
 };

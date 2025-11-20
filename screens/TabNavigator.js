@@ -1,10 +1,10 @@
 // screens/TabNavigator.js
 
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text } from 'react-native'; // ✅ Adicionado View para encapsular o emoji
-import HomeScreen from './HomeScreen';
-import CardapioScreen from './CardapioScreen';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { View, Text } from "react-native";
+import HomeScreen from "./HomeScreen";
+import CardapioScreen from "./CardapioScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,27 +14,35 @@ export default function TabNavigator() {
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconEmoji;
 
-          if (route.name === 'Home') {
-            iconName = focused ? '🏠' : '🏡';
-          } else if (route.name === 'Cardapio') {
-            iconName = focused ? '🍔' : '🍟';
-          } 
+          if (route.name === "Home") {
+            iconEmoji = focused ? "🏠" : "🏡";
+          } else if (route.name === "Cardapio") {
+            iconEmoji = focused ? "🍔" : "🍟";
+          }
 
           return (
-            <View>
-              <Text style={{ fontSize: size, color }}>{iconName}</Text>
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Text style={{ fontSize: size, color }}>{iconEmoji}</Text>
             </View>
           );
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
-      <Tab.Screen name="Cardapio" component={CardapioScreen} options={{ title: 'Menu' }} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: "Início" }}
+      />
+      <Tab.Screen
+        name="Cardapio"
+        component={CardapioScreen}
+        options={{ title: "Menu" }}
+      />
     </Tab.Navigator>
   );
 }

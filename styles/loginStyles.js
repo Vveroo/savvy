@@ -96,7 +96,7 @@ export const getLoginStyles = (isDarkMode) => {
       left: 0,
       right: 0,
       backgroundColor: theme.error,
-      paddingVertical: 14,
+      paddingVertical: 20,
       paddingHorizontal: 20,
       alignItems: "center",
       justifyContent: "center",
@@ -111,6 +111,7 @@ export const getLoginStyles = (isDarkMode) => {
     },
     
     errorText: {
+      top: 10,
       color: "#fff",
       fontSize: 15,
       fontWeight: "600",

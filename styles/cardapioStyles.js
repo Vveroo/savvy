@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#111827',
     marginBottom: 16,
+    textAlign: 'center',
   },
 
   searchWrapper: {
@@ -23,7 +24,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E7EB',
     paddingHorizontal: 12,
-    marginBottom: 8,
+    marginBottom: 12,
   },
 
   searchIcon: {
@@ -41,15 +42,15 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 2,
-    marginBottom: 0,
+    marginBottom: 12,
   },
 
   categoriaButton: {
-    height: 32,
-    paddingHorizontal: 12,
+    height: 36,
+    paddingHorizontal: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 18,
     backgroundColor: '#E5E7EB',
     marginRight: 8,
   },
@@ -70,56 +71,52 @@ export const styles = StyleSheet.create({
 
   grid: {
     flexDirection: 'column',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingTop: 30,
+    alignItems: 'center',   // centraliza os cards
+    paddingTop: 20,
     paddingBottom: 100,
-    paddingLeft: 20,
-    columnGap: 25,
   },
 
   card: {
-    
     backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    padding: 10,
-    width: '40%',
-    height: 130,
+    borderRadius: 12,
+    padding: 16,
+    width: '100%',          // ocupa 100% da horizontal
+    minHeight: 140,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 16,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 3,
-    elevation: 3,
+    shadowOpacity: 0.08,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 4,
   },
 
   nome: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: '#111827',
     textAlign: 'center',
-    marginBottom: 2,
+    marginBottom: 4,
   },
 
   preco: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#6B7280',
-    marginBottom: 6,
+    marginBottom: 10,
   },
 
   cardButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     width: '100%',
-    marginTop: 4,
+    marginTop: 8,
   },
 
   favButton: {
     backgroundColor: '#E5E7EB',
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
     borderRadius: 20,
   },
 
@@ -128,20 +125,20 @@ export const styles = StyleSheet.create({
   },
 
   favText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#111827',
     fontWeight: '600',
   },
 
   cartButton: {
     backgroundColor: '#10B981',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
     borderRadius: 20,
   },
 
   cartText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#fff',
     fontWeight: '600',
   },
@@ -151,8 +148,59 @@ export const styles = StyleSheet.create({
     bottom: 20,
     right: 20,
     backgroundColor: '#007AFF',
-    padding: 14,
+    padding: 16,
     borderRadius: 50,
     elevation: 5,
+  },
+
+  /** estilos para o modal */
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    width: '85%',
+    alignItems: 'center',
+    elevation: 6,
+  },
+
+  modalClose: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+
+  modalNome: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+
+  modalPreco: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginBottom: 10,
+  },
+
+  modalDescricao: {
+    fontSize: 14,
+    color: '#374151',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: 10,
   },
 });

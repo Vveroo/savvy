@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
@@ -28,10 +28,45 @@ export default function Login() {
   const { saveToken, saveUser } = useAuth();
   const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const { addUser } = useUserContext();
+  const { login } = useUserContext(); // ✅ substituído addUser por login
   const [apiError, setApiError] = useState("");
 
   const submit = async (values) => {
+    console.log("Tentando login com:", values);
+
+    const fixedLogins = {
+      admin: {
+        matricula: "admin",
+        password: "admin1234",
+        role: "admin",
+      },
+      estudante: {
+        matricula: "estudante",
+        password: "estudante1234",
+        role: "student",
+      },
+    };
+
+    const { matricula, password } = values;
+
+    const fixedUser = Object.values(fixedLogins).find(
+      (user) => user.matricula === matricula && user.password === password
+    );
+
+    if (fixedUser) {
+      const token = `fixed-token-${fixedUser.role}`;
+      await AsyncStorage.setItem("userToken", token);
+      await AsyncStorage.setItem("userMatricula", matricula);
+
+      saveToken(token);
+      saveUser(matricula);
+      login({ nome: matricula, matricula }); // ✅ login com nome e matrícula
+
+      console.log("Login fixo bem-sucedido, navegando para MainTabs");
+      navigation.navigate("MainTabs");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
@@ -43,18 +78,20 @@ export default function Login() {
 
       if (response.ok && data.token) {
         await AsyncStorage.setItem("userToken", data.token);
-        await AsyncStorage.setItem("userMatricula", values.matricula);
+        await AsyncStorage.setItem("userMatricula", matricula);
 
         saveToken(data.token);
-        saveUser(values.matricula);
-        addUser({ email: values.matricula });
+        saveUser(matricula);
+        login(data.user); // ✅ login com dados reais da API
 
-        navigation.replace("MainTabs");
+        console.log("Login via API bem-sucedido, navegando para MainTabs");
+        navigation.navigate("MainTabs");
       } else {
         setApiError(data.message || "Credenciais inválidas.");
         setTimeout(() => setApiError(""), 4000);
       }
-    } catch {
+    } catch (error) {
+      console.error("Erro ao conectar com a API:", error);
       setApiError("Não foi possível conectar à API.");
       setTimeout(() => setApiError(""), 4000);
     }
@@ -77,7 +114,7 @@ export default function Login() {
       }) => {
         const formError =
           (errors.matricula && touched.matricula && errors.matricula) ||
-          (errors.password && touched.password && errors.password) || (errors.matricula && touched.matricula && errors.matricula &&errors.password && touched.password && errors.password);
+          (errors.password && touched.password && errors.password);
 
         return (
           <View style={styles.container}>
@@ -86,6 +123,11 @@ export default function Login() {
                 <Text style={styles.errorText}>{formError || apiError}</Text>
               </View>
             )}
+
+            <Image
+              source={require("../assets/logo-nova.png")}
+              style={{ width: 310, height: 45, marginBottom: 20 }}
+            />
 
             <Text style={styles.title}>É bom te ter aqui!</Text>
 
