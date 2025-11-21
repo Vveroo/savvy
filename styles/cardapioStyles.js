@@ -1,206 +1,212 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../styles/colors'; // ajuste o caminho conforme sua estrutura
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-    paddingHorizontal: 15,
-    paddingTop: 50,
-  },
+export const getCardapioStyles = (isDarkMode) => {
+  const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#111827',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.telaCardapio,
+      paddingHorizontal: 15,
+      paddingTop: 50,
+    },
 
-  searchWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    paddingHorizontal: 12,
-    marginBottom: 12,
-  },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: theme.inputText,
+      marginBottom: 16,
+      textAlign: 'center',
+    },
 
-  searchIcon: {
-    marginRight: 8,
-  },
+    searchWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.inputBackground,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.divider,
+      paddingHorizontal: 12,
+      marginBottom: 12,
+    },
 
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    paddingVertical: 10,
-    color: '#111827',
-  },
+    searchIcon: {
+      marginRight: 8,
+      color: theme.textMuted,
+    },
 
-  categoriasContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 2,
-    marginBottom: 12,
-  },
+    searchInput: {
+      flex: 1,
+      fontSize: 16,
+      paddingVertical: 10,
+      color: theme.inputText,
+    },
 
-  categoriaButton: {
-    height: 36,
-    paddingHorizontal: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 18,
-    backgroundColor: '#E5E7EB',
-    marginRight: 8,
-  },
+    categoriasContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 2,
+      marginBottom: 12,
+    },
 
-  categoriaAtiva: {
-    backgroundColor: '#007AFF',
-  },
+    categoriaButton: {
+      height: 36,
+      paddingHorizontal: 14,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 18,
+      backgroundColor: theme.favButton,
+      marginRight: 8,
+    },
 
-  categoriaText: {
-    fontSize: 14,
-    color: '#333',
-  },
+    categoriaAtiva: {
+      backgroundColor: theme.favAtivo,
+    },
 
-  categoriaTextAtiva: {
-    color: '#fff',
-    fontWeight: '600',
-  },
+    categoriaText: {
+      fontSize: 14,
+      color: theme.textMuted,
+    },
 
-  grid: {
-    flexDirection: 'column',
-    alignItems: 'center',   // centraliza os cards
-    paddingTop: 20,
-    paddingBottom: 100,
-  },
+    categoriaTextAtiva: {
+      color: '#fff',
+      fontWeight: '600',
+    },
 
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 16,
-    width: '100%',          // ocupa 100% da horizontal
-    minHeight: 140,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 4,
-  },
+    grid: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      paddingTop: 20,
+      paddingBottom: 100,
+    },
 
-  nome: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#111827',
-    textAlign: 'center',
-    marginBottom: 4,
-  },
+    card: {
+      backgroundColor: theme.item,
+      borderRadius: 12,
+      padding: 16,
+      width: '100%',
+      minHeight: 140,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 16,
+      shadowColor: theme.shadowCardapio,
+      shadowOpacity: 0.08,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 4,
+      elevation: 4,
+    },
 
-  preco: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginBottom: 10,
-  },
+    nome: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: theme.inputText,
+      textAlign: 'center',
+      marginBottom: 4,
+    },
 
-  cardButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginTop: 8,
-  },
+    preco: {
+      fontSize: 14,
+      color: theme.preco,
+      marginBottom: 10,
+    },
 
-  favButton: {
-    backgroundColor: '#E5E7EB',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-  },
+    cardButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      width: '100%',
+      marginTop: 8,
+    },
 
-  favAtivo: {
-    backgroundColor: '#FACC15',
-  },
+    favButton: {
+      backgroundColor: theme.favButton,
+      paddingVertical: 6,
+      paddingHorizontal: 14,
+      borderRadius: 20,
+    },
 
-  favText: {
-    fontSize: 16,
-    color: '#111827',
-    fontWeight: '600',
-  },
+    favAtivo: {
+      backgroundColor: theme.favAtivo,
+    },
 
-  cartButton: {
-    backgroundColor: '#10B981',
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 20,
-  },
+    favText: {
+      fontSize: 16,
+      color: theme.inputText,
+      fontWeight: '600',
+    },
 
-  cartText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
-  },
+    cartButton: {
+      backgroundColor: theme.preco,
+      paddingVertical: 6,
+      paddingHorizontal: 14,
+      borderRadius: 20,
+    },
 
-  carrinhoButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 50,
-    elevation: 5,
-  },
+    cartText: {
+      fontSize: 16,
+      color: '#fff',
+      fontWeight: '600',
+    },
 
-  /** estilos para o modal */
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    carrinhoButton: {
+      position: 'absolute',
+      bottom: 20,
+      right: 20,
+      backgroundColor: theme.button,
+      padding: 16,
+      borderRadius: 50,
+      elevation: 5,
+    },
 
-  modalCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    width: '85%',
-    alignItems: 'center',
-    elevation: 6,
-  },
+    /** estilos para o modal */
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
 
-  modalClose: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
+    modalCard: {
+      backgroundColor: theme.telaCardapio,
+      borderRadius: 12,
+      padding: 20,
+      width: '85%',
+      alignItems: 'center',
+      elevation: 6,
+    },
 
-  modalNome: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#111827',
-    marginBottom: 6,
-    textAlign: 'center',
-  },
+    modalClose: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+    },
 
-  modalPreco: {
-    fontSize: 16,
-    color: '#6B7280',
-    marginBottom: 10,
-  },
+    modalNome: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: theme.inputText,
+      marginBottom: 6,
+      textAlign: 'center',
+    },
 
-  modalDescricao: {
-    fontSize: 14,
-    color: '#374151',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
+    modalPreco: {
+      fontSize: 16,
+      color: theme.preco,
+      marginBottom: 10,
+    },
 
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginTop: 10,
-  },
-});
+    modalDescricao: {
+      fontSize: 14,
+      color: theme.textMuted,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+
+    modalButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      width: '100%',
+      marginTop: 10,
+    },
+  });
+};

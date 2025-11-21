@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  useColorScheme,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
@@ -8,7 +15,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../auth/authContext";
 import { useUserContext } from "../contexts/UserContext";
 import { getLoginStyles } from "../styles/loginStyles";
-import { useColorScheme } from "react-native";
 
 const loginValidationSchema = yup.object().shape({
   matricula: yup
@@ -28,12 +34,10 @@ export default function Login() {
   const { saveToken, saveUser } = useAuth();
   const navigation = useNavigation();
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const { login } = useUserContext(); // ✅ substituído addUser por login
+  const { login } = useUserContext();
   const [apiError, setApiError] = useState("");
 
   const submit = async (values) => {
-    console.log("Tentando login com:", values);
-
     const fixedLogins = {
       admin: {
         matricula: "admin",
@@ -48,7 +52,6 @@ export default function Login() {
     };
 
     const { matricula, password } = values;
-
     const fixedUser = Object.values(fixedLogins).find(
       (user) => user.matricula === matricula && user.password === password
     );
@@ -60,9 +63,7 @@ export default function Login() {
 
       saveToken(token);
       saveUser(matricula);
-      login({ nome: matricula, matricula }); // ✅ login com nome e matrícula
-
-      console.log("Login fixo bem-sucedido, navegando para MainTabs");
+      login({ nome: matricula, matricula });
       navigation.navigate("MainTabs");
       return;
     }
@@ -82,16 +83,13 @@ export default function Login() {
 
         saveToken(data.token);
         saveUser(matricula);
-        login(data.user); // ✅ login com dados reais da API
-
-        console.log("Login via API bem-sucedido, navegando para MainTabs");
+        login(data.user);
         navigation.navigate("MainTabs");
       } else {
         setApiError(data.message || "Credenciais inválidas.");
         setTimeout(() => setApiError(""), 4000);
       }
     } catch (error) {
-      console.error("Erro ao conectar com a API:", error);
       setApiError("Não foi possível conectar à API.");
       setTimeout(() => setApiError(""), 4000);
     }
@@ -146,19 +144,24 @@ export default function Login() {
             <View style={styles.inputContainer}>
               <Icon name="lock-closed-outline" size={25} style={styles.icon} />
               <TextInput
-                style={styles.input}
+                style={[styles.input, { paddingRight: 40 }]}
                 placeholder="Senha"
                 placeholderTextColor={isDarkMode ? "#aaa" : "#666"}
                 secureTextEntry={!mostrarSenha}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
+
               />
-              <TouchableOpacity onPress={() => setMostrarSenha(!mostrarSenha)}>
+              <TouchableOpacity
+                onPress={() => setMostrarSenha(!mostrarSenha)}
+                style={styles.eyeIcon}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
                 <Icon
                   name={mostrarSenha ? "eye-off" : "eye"}
                   size={25}
-                  style={styles.icon}
+                  color="#fff"
                 />
               </TouchableOpacity>
             </View>

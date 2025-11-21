@@ -2,27 +2,25 @@
 
 const express = require('express');
 const { Client } = require('pg');
-// NOTA: Se ha comentado o quitado bcrypt, ya que las contraseñas están en texto plano.
-// const bcrypt = require('bcryptjs'); 
 
 const app = express();
 const port = 3000;
 
 // =====================================================
-// 1. CONFIGURACIÓN DE LA CONEXIÓN A LA BASE DE DATOS (Docker)
+// 1. CONFIGURAÇÃO DA CONEXÃO AO BANCO (Docker)
 // =====================================================
 const client = new Client({
     user: 'ticket_user',         
-    host: 'localhost',           // Conexión al contenedor Docker
+    host: 'localhost',           
     database: 'senai_db',        
     password: 'ticket_pass',     
-    port: 5433, // <--- PUERTO AJUSTADO
+    port: 5433, 
 });
 
 client.connect()
-    .then(() => console.log('✅ Conexión exitosa a PostgreSQL (Docker).'))
+    .then(() => console.log('✅ Conexão bem-sucedida ao PostgreSQL (Docker).'))
     .catch(err => {
-        console.error('❌ Error al conectar a PostgreSQL. ¿Docker corriendo en puerto 5433?', err);
+        console.error('❌ Erro ao conectar ao PostgreSQL. Docker está rodando na porta 5433?', err);
     });
 
 app.use(express.json()); 
@@ -30,9 +28,7 @@ app.use(express.json());
 // =====================================================
 // 2. ENDPOINT DE LOGIN (POST: /api/login)
 // =====================================================
-// Permite iniciar sesión con matricula O email_senai
 app.post('/api/login', async (req, res) => {
-    // El frontend envía 'identifier' (matrícula o email) y 'password'
     const { identifier, password } = req.body; 
 
     if (!identifier || !password) {
@@ -40,7 +36,6 @@ app.post('/api/login', async (req, res) => {
     }
 
     try {
-        // Busca al aluno por MATRICULA o por EMAIL_SENAI
         const result = await client.query(
             'SELECT * FROM alunos WHERE matricula = $1 OR email_senai = $1', 
             [identifier] 
@@ -48,25 +43,20 @@ app.post('/api/login', async (req, res) => {
         const aluno = result.rows[0];
 
         if (!aluno) {
-            // Usuario no encontrado
             return res.status(401).json({ message: 'Credenciais inválidas.' });
         }
 
-        // Compara la contraseña (en texto plano)
-        // NOTA: Esta es una comparación de texto plano (password === hash),
-        // adecuada porque el db_seed ya no cifra las contraseñas.
         const isMatch = (password === aluno.password_hash);
 
         if (!isMatch) {
             return res.status(401).json({ message: 'Credenciais inválidas.' });
         }
 
-        // Login exitoso
-        const { password_hash, ...alumnoInfo } = aluno;
+        const { password_hash, ...alunoInfo } = aluno;
         
         res.json({ 
             message: 'Login bem-sucedido!', 
-            user: alumnoInfo,
+            user: alunoInfo,
         });
 
     } catch (error) {
@@ -76,7 +66,43 @@ app.post('/api/login', async (req, res) => {
 });
 
 // =====================================================
-// 3. ENDPOINT DE MENÚ (GET: /api/menu)
+// 3. ENDPOINT DE ESQUECI A SENHA (POST: /api/reset-password)
+// =====================================================
+// Recebe email e senha provisória, atualiza no banco
+app.post('/api/reset-password', async (req, res) => {
+    const { email, tempPassword } = req.body;
+
+    if (!email || !tempPassword) {
+        return res.status(400).json({ message: 'E-mail e senha provisória são requeridos.' });
+    }
+
+    try {
+        // Verifica se existe aluno com esse email
+        const result = await client.query(
+            'SELECT * FROM alunos WHERE email_senai = $1',
+            [email]
+        );
+        const aluno = result.rows[0];
+
+        if (!aluno) {
+            return res.status(404).json({ message: 'Usuário não encontrado.' });
+        }
+
+        // Atualiza a senha para o código provisório
+        await client.query(
+            'UPDATE alunos SET password_hash = $1 WHERE email_senai = $2',
+            [tempPassword, email]
+        );
+
+        res.json({ message: 'Senha provisória definida com sucesso.' });
+    } catch (error) {
+        console.error('Erro ao redefinir senha:', error);
+        res.status(500).json({ message: 'Erro interno do servidor.' });
+    }
+});
+
+// =====================================================
+// 4. ENDPOINT DE MENU (GET: /api/menu)
 // =====================================================
 app.get('/api/menu', async (req, res) => {
     try {
@@ -88,11 +114,10 @@ app.get('/api/menu', async (req, res) => {
     }
 });
 
-
 // =====================================================
-// 4. INICIAR EL SERVIDOR
+// 5. INICIAR SERVIDOR
 // =====================================================
 app.listen(port, () => {
-    console.log(`🚀 Servidor Express escuchando en http://localhost:${port}`);
-    console.log('🔗 Endpoints listos: /api/login (POST) y /api/menu (GET)');
+    console.log(`🚀 Servidor Express rodando em http://localhost:${port}`);
+    console.log('🔗 Endpoints: /api/login (POST), /api/reset-password (POST), /api/menu (GET)');
 });

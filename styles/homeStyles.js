@@ -18,6 +18,7 @@ const baseStyles = StyleSheet.create({
   btnPerfil: {
     padding: 10,
     borderRadius: 50,
+    zIndex: 2,
   },
 
   btnTopo: {
@@ -48,8 +49,7 @@ const baseStyles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
-    elevation: 4,
-    marginBottom: 28,
+    marginBottom: 10,
   },
 
   saldoLabel: {
@@ -64,19 +64,18 @@ const baseStyles = StyleSheet.create({
   },
 
   buttonGroup: {
-    alignItems: "center",
-    marginBottom: 30,
+    alignItems: "flex-start",
   },
 
   actionButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingVertical: 6,
+    paddingHorizontal: 15,
     borderRadius: 30,
-    alignSelf: "center",
+    alignSelf: "flex-start",
   },
 
   buttonText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "600",
   },
 
@@ -90,6 +89,50 @@ const baseStyles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
   },
+
+  /** Drawer lateral */
+  drawerOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    flexDirection: "row",
+    position: "absolute",   // ✅ não cobre o botão topo
+    top: 14,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1,
+  },
+
+  drawer: {
+    width: "50%",
+    height: "100%",
+    padding: 20,
+    zIndex: 1,
+  },
+
+  drawerNome: {
+    fontSize: 18,
+    fontWeight: "700",
+    marginBottom: 4,
+  },
+
+  drawerMatricula: {
+    fontSize: 14,
+    marginBottom: 20,
+  },
+
+  drawerButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderColor: "#ccc"     // ✅ linha separadora// ✅ cor da linha (claro/escuro)
+  },
+
+  drawerText: {
+    fontSize: 16,
+    marginLeft: 10,
+  },
 });
 
 export const getHomeStyles = (isDarkMode) => {
@@ -101,13 +144,9 @@ export const getHomeStyles = (isDarkMode) => {
       ...baseStyles.container,
       backgroundColor: theme.telaHome,
     },
-    btnPerfil: {
-      ...baseStyles.btnPerfil,
-      backgroundColor: theme.button,
-    },
     icon: {
       ...baseStyles.icon,
-      color: theme.inputText, // ícones seguem contraste do texto
+      color: theme.inputText,
     },
     greeting: {
       ...baseStyles.greeting,
@@ -115,7 +154,6 @@ export const getHomeStyles = (isDarkMode) => {
     },
     saldoBox: {
       ...baseStyles.saldoBox,
-      backgroundColor: theme.card || theme.background,
       borderWidth: 1,
       borderColor: theme.divider,
     },
@@ -125,16 +163,15 @@ export const getHomeStyles = (isDarkMode) => {
     },
     saldoValor: {
       ...baseStyles.saldoValor,
-      color: theme.preco, // verde para destacar saldo
+      color: theme.textMuted,
     },
     actionButton: {
       ...baseStyles.actionButton,
-      backgroundColor: theme.error, // vermelho SENAI para ação principal
+      backgroundColor: theme.button,
       shadowColor: "#000",
       shadowOpacity: 0.2,
       shadowOffset: { width: 0, height: 2 },
       shadowRadius: 4,
-      elevation: 4,
     },
     buttonText: {
       ...baseStyles.buttonText,
@@ -143,6 +180,22 @@ export const getHomeStyles = (isDarkMode) => {
     qrLabel: {
       ...baseStyles.qrLabel,
       color: theme.textMuted,
+    },
+    drawer: {
+      ...baseStyles.drawer,
+      backgroundColor: theme.telaHome,
+    },
+    drawerNome: {
+      ...baseStyles.drawerNome,
+      color: theme.inputText,
+    },
+    drawerMatricula: {
+      ...baseStyles.drawerMatricula,
+      color: theme.textMuted,
+    },
+    drawerText: {
+      ...baseStyles.drawerText,
+      color: theme.inputText,
     },
   };
 };

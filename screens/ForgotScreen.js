@@ -5,28 +5,47 @@ import * as Yup from 'yup';
 import { styles } from "../styles/forgotStyles";
 import { useNavigation } from '@react-navigation/native';
 
+// Validação simples do campo de e-mail
 const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
 });
+
+// Função para gerar código aleatório de 8 caracteres (inclui especiais)
+const generateResetCode = () => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?';
+  let code = '';
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+};
 
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
 
   const handleSubmit = async (values) => {
+    // Gera código aleatório
+    const resetCode = generateResetCode();
+
     try {
-      const response = await fetch('https://seuservidor.com/api/send-reset-code', {
+      // Envia para o servidor para atualizar a senha provisória
+      const response = await fetch('http://localhost:3000/api/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: values.email }),
+        body: JSON.stringify({ email: values.email, tempPassword: resetCode }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        Alert.alert('Código enviado', 'Verifique seu e-mail para continuar.');
-        navigation.navigate('ResetPassword', { email: values.email });
+        Alert.alert(
+          'Código gerado',
+          `Use este código provisório para fazer login:\n\n${resetCode}`
+        );
+        // Navega para tela de redefinição passando o código
+        navigation.navigate('ResetPassword', { email: values.email, resetCode });
       } else {
-        Alert.alert('Erro', data.message || 'Não foi possível enviar o código.');
+        Alert.alert('Erro', data.message || 'Não foi possível definir a senha provisória.');
       }
     } catch (error) {
       Alert.alert('Erro', 'Falha na conexão com o servidor.');
@@ -58,10 +77,13 @@ export default function ForgotPasswordScreen() {
             )}
 
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Enviar código</Text>
+              <Text style={styles.buttonText}>Gerar código</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.voltar} onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity
+              style={styles.voltar}
+              onPress={() => navigation.navigate("Login")}
+            >
               <Text style={styles.voltarLogin}>Voltar ao Login</Text>
             </TouchableOpacity>
           </>

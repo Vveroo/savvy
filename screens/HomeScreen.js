@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Alert, useColorScheme } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  useColorScheme,
+} from "react-native";
 import { getHomeStyles } from "../styles/homeStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../contexts/UserContext";
+import { useTheme } from "../contexts/ThemeContext"; // ✅ usando ThemeContext
 
 export default function HomeScreen() {
   const { user, saldo, logout } = useUserContext();
-  const systemScheme = useColorScheme(); // detecta tema do sistema
-  const [theme, setTheme] = useState(systemScheme); // estado controlado
-  const styles = getHomeStyles(theme === "dark");
+  const { isDarkMode, toggleTheme } = useTheme();
+  const styles = getHomeStyles(isDarkMode);
   const [mostrarSaldo, setMostrarSaldo] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   const navigation = useNavigation();
-
-  // se o sistema mudar, atualiza o estado
-  useEffect(() => {
-    setTheme(systemScheme);
-  }, [systemScheme]);
 
   if (!user) {
     return (
@@ -47,29 +50,19 @@ export default function HomeScreen() {
     ]);
   };
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-  };
-
   return (
     <View style={styles.container}>
       {/* Topo */}
       <View style={styles.perfil}>
-        <TouchableOpacity style={styles.btnPerfil} onPress={handleLogout}>
-          <Icon name="log-out-outline" size={24} color={styles.icon.color} />
+        {/* Botão perfil */}
+        <TouchableOpacity
+          style={styles.btnPerfil}
+          onPress={() => setDrawerVisible(!drawerVisible)}
+        >
+          <Icon name="person-circle-outline" size={28} color={styles.icon.color} />
         </TouchableOpacity>
 
         <View style={styles.btnTopo}>
-          {/* Botão alternar tema */}
-          <TouchableOpacity style={styles.btnIcon} onPress={toggleTheme}>
-            <Icon
-              name={theme === "dark" ? "sunny-outline" : "moon-outline"}
-              size={30}
-              color={styles.icon.color}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-
           {/* Mostrar/ocultar saldo */}
           <TouchableOpacity onPress={() => setMostrarSaldo(!mostrarSaldo)}>
             <Icon
@@ -85,7 +78,7 @@ export default function HomeScreen() {
       {/* Saudação */}
       <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
 
-      {/* Saldo como botão */}
+      {/* Saldo */}
       <TouchableOpacity
         style={styles.saldoBox}
         onPress={() => navigation.navigate("HistoricoScreen")}
@@ -109,6 +102,61 @@ export default function HomeScreen() {
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
         <QRCode value={qrValue} size={200} />
       </View>
+
+      {/* Drawer lateral */}
+      <Modal
+        visible={drawerVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setDrawerVisible(false)}
+      >
+        <View style={styles.drawerOverlay}>
+          <View style={styles.drawer}>
+            <Text style={styles.drawerNome}>{user.nome}</Text>
+            <Text style={styles.drawerMatricula}>Matrícula: {user.matricula}</Text>
+
+            <TouchableOpacity style={styles.drawerButton} onPress={toggleTheme}>
+              <Icon
+                name={isDarkMode ? "sunny-outline" : "moon-outline"}
+                size={22}
+                color={styles.icon.color}
+              />
+              <Text style={styles.drawerText}>
+                {isDarkMode ? "Modo Claro" : "Modo Escuro"}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.drawerButton} onPress={handleLogout}>
+              <Icon name="log-out-outline" size={22} color={styles.icon.color} />
+              <Text style={styles.drawerText}>Encerrar Sessão</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.drawerButton}
+              onPress={() => navigation.navigate("ForgotPassword")}
+            >
+              <Icon name="key-outline" size={22} color={styles.icon.color} />
+              <Text style={styles.drawerText}>Mudar Senha</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.drawerButton}
+              onPress={() => navigation.navigate("HorariosScreen")}
+            >
+              <Icon name="time-outline" size={22} color={styles.icon.color} />
+              <Text style={styles.drawerText}>Ver Horários</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.drawerButton}
+              onPress={() => navigation.navigate("HistoricoScreen")}
+            >
+              <Icon name="document-text-outline" size={22} color={styles.icon.color} />
+              <Text style={styles.drawerText}>Histórico</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
