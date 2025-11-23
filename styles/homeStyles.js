@@ -13,12 +13,14 @@ const baseStyles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 24,
+    zIndex: 10,
+    position: 'relative',
   },
 
   btnPerfil: {
     padding: 10,
     borderRadius: 50,
-    zIndex: 2,
+    zIndex: 20,
   },
 
   btnTopo: {
@@ -101,6 +103,7 @@ const baseStyles = StyleSheet.create({
     bottom: 0,
     right: 0,
     zIndex: 1,
+    pointerEvents: 'box-none',
   },
 
   drawer: {
