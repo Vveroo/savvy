@@ -34,21 +34,31 @@ export default function HomeScreen() {
   const qrValue = user.matricula;
   const saldoFormatado = saldo.toFixed(2).replace(".", ",");
 
-  const handleLogout = () => {
-    Alert.alert("Sair", "Tem certeza que deseja encerrar a sessão?", [
       { text: "Cancelar", style: "cancel" },
-      {
-        text: "Sair",
-        onPress: () => {
-          logout();
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Login" }],
-          });
+const handleLogout = () => {
+  console.log("Botão de logout clicado!");
+
+  setTimeout(() => {
+    Alert.alert(
+      "Sair",
+      "Tem certeza que deseja encerrar a sessão?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Sair",
+          onPress: () => {
+            logout();
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Login' }],
+            });
+          },
         },
-      },
-    ]);
-  };
+      ],
+      { cancelable: true }
+    );
+  }, 50);
+};
 
   return (
     <View style={styles.container}>
