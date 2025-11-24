@@ -1,3 +1,4 @@
+
 import { StyleSheet } from "react-native";
 import { COLORS } from "./colors";
 
@@ -8,9 +9,10 @@ const baseStyles = StyleSheet.create({
     paddingTop: 40,
   },
 
-  perfil: {
+  /** Barra superior com ícones */
+  topBar: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between", // perfil à esquerda, saldo à direita
     alignItems: "center",
     marginBottom: 24,
     zIndex: 10,
@@ -27,11 +29,6 @@ const baseStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
-  },
-
-  btnIcon: {
-    padding: 8,
-    borderRadius: 25,
   },
 
   icon: {
@@ -92,27 +89,20 @@ const baseStyles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  /** Drawer lateral */
   drawerOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "flex-start",
     flexDirection: "row",
-    top: 14,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 1,
-    pointerEvents: "box-none",
   },
 
   drawer: {
-    width: "50%",
+    width: "50%", 
     height: "100%",
     padding: 20,
-    zIndex: 1,
+    backgroundColor: "#fff",
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
+    elevation: 5,
   },
 
   drawerNome: {
@@ -131,7 +121,7 @@ const baseStyles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderColor: "#ccc", // ✅ linha separadora// ✅ cor da linha (claro/escuro)
+    borderColor: "#ccc",
   },
 
   drawerText: {
@@ -168,7 +158,7 @@ export const getHomeStyles = (isDarkMode) => {
     },
     saldoValor: {
       ...baseStyles.saldoValor,
-      color: theme.textMuted,
+      color: theme.inputText,
     },
     actionButton: {
       ...baseStyles.actionButton,
