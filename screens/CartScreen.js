@@ -12,6 +12,7 @@ import { getCartStyles } from '../styles/cartStyles';
 
 export default function CartScreen({ navigation }) {
   const { cart, clearCart } = useContext(CartContext);
+
   
   //  Lógica do Tema
   const colorScheme = useColorScheme();
@@ -47,7 +48,9 @@ export default function CartScreen({ navigation }) {
         renderItem={({ item }) => (
           <Text style={styles.item}>
             {item.nome}:{'\n'} R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
-
+          <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() } >
+          <Text style={{ fontSize: 18 }}>✖</Text>
+          </TouchableOpacity>
           </Text>
         )}
       />
@@ -56,13 +59,12 @@ export default function CartScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Pagamento', { total })}
-      >
+        onPress={() => navigation.navigate('Pagamento', { total })}>
+
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.buttonSecondary} onPress={clearCart}>
-        {/* Nota: Se quiser o texto do botão limpar de outra cor, crie um estilo separado */}
         <Text style={[styles.buttonText, { color: isDarkMode ? '#fff' : '#555' }]}>
             Limpar Carrinho
         </Text>

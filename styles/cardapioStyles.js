@@ -47,7 +47,7 @@ export const getCardapioStyles = (isDarkMode) => {
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 2,
-      marginBottom: 12,
+      marginBottom: 1,
     },
 
     categoriaButton: {
