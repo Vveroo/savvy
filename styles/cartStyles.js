@@ -37,7 +37,7 @@ export const getCartStyles = (isDarkMode) => {
         borderBottomWidth: 1,
         borderBottomColor: theme.divider,
       },
-  
+
       total: {
         fontSize: 20,
         fontWeight: 'bold',

@@ -19,6 +19,7 @@ export const getHistoricoStyles = (isDarkMode) =>
     title: {
       fontSize: 20,
       fontWeight: "bold",
+      marginTop: 75,
       color: isDarkMode ? "#fff" : "#000",
     },
     orderItem: {
