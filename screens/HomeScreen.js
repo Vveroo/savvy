@@ -33,32 +33,30 @@ export default function HomeScreen() {
   const primeiroNome = user?.nome?.split(" ")[0] || "Usuário";
   const qrValue = user.matricula;
   const saldoFormatado = saldo.toFixed(2).replace(".", ",");
+  const handleLogout = () => {
+    console.log("Botão de logout clicado!");
 
-      { text: "Cancelar", style: "cancel" },
-const handleLogout = () => {
-  console.log("Botão de logout clicado!");
-
-  setTimeout(() => {
-    Alert.alert(
-      "Sair",
-      "Tem certeza que deseja encerrar a sessão?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Sair",
-          onPress: () => {
-            logout();
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Login' }],
-            });
+    setTimeout(() => {
+      Alert.alert(
+        "Sair",
+        "Tem certeza que deseja encerrar a sessão?",
+        [
+          { text: "Cancelar", style: "cancel" },
+          {
+            text: "Sair",
+            onPress: () => {
+              logout();
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Login" }],
+              });
+            },
           },
-        },
-      ],
-      { cancelable: true }
-    );
-  }, 50);
-};
+        ],
+        { cancelable: true }
+      );
+    }, 50);
+  };
 
   return (
     <View style={styles.container}>
@@ -69,7 +67,11 @@ const handleLogout = () => {
           style={styles.btnPerfil}
           onPress={() => setDrawerVisible(!drawerVisible)}
         >
-          <Icon name="person-circle-outline" size={28} color={styles.icon.color} />
+          <Icon
+            name="person-circle-outline"
+            size={28}
+            color={styles.icon.color}
+          />
         </TouchableOpacity>
 
         <View style={styles.btnTopo}>
@@ -123,7 +125,9 @@ const handleLogout = () => {
         <View style={styles.drawerOverlay}>
           <View style={styles.drawer}>
             <Text style={styles.drawerNome}>{user.nome}</Text>
-            <Text style={styles.drawerMatricula}>Matrícula: {user.matricula}</Text>
+            <Text style={styles.drawerMatricula}>
+              Matrícula: {user.matricula}
+            </Text>
 
             <TouchableOpacity style={styles.drawerButton} onPress={toggleTheme}>
               <Icon
@@ -136,8 +140,15 @@ const handleLogout = () => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.drawerButton} onPress={handleLogout}>
-              <Icon name="log-out-outline" size={22} color={styles.icon.color} />
+            <TouchableOpacity
+              style={styles.drawerButton}
+              onPress={handleLogout}
+            >
+              <Icon
+                name="log-out-outline"
+                size={22}
+                color={styles.icon.color}
+              />
               <Text style={styles.drawerText}>Encerrar Sessão</Text>
             </TouchableOpacity>
 
@@ -161,7 +172,11 @@ const handleLogout = () => {
               style={styles.drawerButton}
               onPress={() => navigation.navigate("HistoricoScreen")}
             >
-              <Icon name="document-text-outline" size={22} color={styles.icon.color} />
+              <Icon
+                name="document-text-outline"
+                size={22}
+                color={styles.icon.color}
+              />
               <Text style={styles.drawerText}>Histórico</Text>
             </TouchableOpacity>
           </View>
