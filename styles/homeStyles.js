@@ -14,7 +14,7 @@ const baseStyles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 24,
     zIndex: 10,
-    position: 'relative',
+    position: "relative",
   },
 
   btnPerfil: {
@@ -96,14 +96,14 @@ const baseStyles = StyleSheet.create({
   drawerOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "flex-start",
     flexDirection: "row",
-    position: "absolute",   // ✅ não cobre o botão topo
     top: 14,
     left: 0,
     bottom: 0,
     right: 0,
     zIndex: 1,
-    pointerEvents: 'box-none',
+    pointerEvents: "box-none",
   },
 
   drawer: {
@@ -111,6 +111,8 @@ const baseStyles = StyleSheet.create({
     height: "100%",
     padding: 20,
     zIndex: 1,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
   },
 
   drawerNome: {
@@ -129,7 +131,7 @@ const baseStyles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderColor: "#ccc"     // ✅ linha separadora// ✅ cor da linha (claro/escuro)
+    borderColor: "#ccc", // ✅ linha separadora// ✅ cor da linha (claro/escuro)
   },
 
   drawerText: {

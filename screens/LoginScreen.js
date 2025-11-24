@@ -90,7 +90,7 @@ export default function Login() {
         setTimeout(() => setApiError(""), 4000);
       }
     } catch (error) {
-      setApiError("Não foi possível conectar à API.");
+      setApiError("Usuario ou senha incorretos.");
       setTimeout(() => setApiError(""), 4000);
     }
   };

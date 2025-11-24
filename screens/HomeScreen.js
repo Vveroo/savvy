@@ -116,14 +116,25 @@ export default function HomeScreen() {
       </View>
 
       {/* Drawer lateral */}
+
       <Modal
         visible={drawerVisible}
         transparent
         animationType="slide"
         onRequestClose={() => setDrawerVisible(false)}
       >
-        <View style={styles.drawerOverlay}>
-          <View style={styles.drawer}>
+        {/* Overlay clicável */}
+        <TouchableOpacity
+          style={styles.drawerOverlay}
+          activeOpacity={1}
+          onPress={() => setDrawerVisible(false)} // Fecha ao clicar fora
+        >
+          {/* Conteúdo do modal (não fecha ao clicar dentro) */}
+          <TouchableOpacity
+            activeOpacity={1}
+            style={styles.drawer}
+            onPress={() => {}} // Evita fechar ao clicar dentro
+          >
             <Text style={styles.drawerNome}>{user.nome}</Text>
             <Text style={styles.drawerMatricula}>
               Matrícula: {user.matricula}
@@ -179,8 +190,8 @@ export default function HomeScreen() {
               />
               <Text style={styles.drawerText}>Histórico</Text>
             </TouchableOpacity>
-          </View>
-        </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </Modal>
     </View>
   );

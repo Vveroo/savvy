@@ -14,7 +14,7 @@ const client = new Client({
     host: 'localhost',           
     database: 'senai_db',        
     password: 'ticket_pass',     
-    port: 5433, 
+    port: 5433:5432, 
 });
 
 client.connect()
