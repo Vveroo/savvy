@@ -33,5 +33,6 @@ export const COLORS = {
     telaCardapio: '#1A1A1A',
     telaHome: '#1A1A1A',
     telaFavoritos: '#1A1A1A',
+    telaCart: '#1A1A1A',
   },
 };
