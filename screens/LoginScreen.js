@@ -161,7 +161,7 @@ export default function Login() {
                 <Icon
                   name={mostrarSenha ? "eye-off" : "eye"}
                   size={25}
-                  color="#fff"
+                  style={styles.eyeIcon}
                 />
               </TouchableOpacity>
             </View>

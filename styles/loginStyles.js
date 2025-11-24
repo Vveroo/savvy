@@ -117,5 +117,9 @@ export const getLoginStyles = (isDarkMode) => {
       fontWeight: "600",
       textAlign: "center",
     },
+
+    eyeIcon: {
+      color: theme.button,
+    }
   });
 };
