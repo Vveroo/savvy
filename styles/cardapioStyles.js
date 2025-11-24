@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from '../styles/colors'; // ajuste o caminho conforme sua estrutura
+import { COLORS } from '../styles/colors'; 
 
 export const getCardapioStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
