@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   Alert,
   Modal,
-  useColorScheme,
+  Animated,
 } from "react-native";
 import { getHomeStyles } from "../styles/homeStyles";
 import Icon from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../contexts/UserContext";
-import { useTheme } from "../contexts/ThemeContext"; // ✅ usando ThemeContext
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function HomeScreen() {
   const { user, saldo, logout } = useUserContext();
@@ -20,6 +20,7 @@ export default function HomeScreen() {
   const styles = getHomeStyles(isDarkMode);
   const [mostrarSaldo, setMostrarSaldo] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [drawerAnim] = useState(new Animated.Value(-300));
   const navigation = useNavigation();
 
   if (!user) {
@@ -33,9 +34,30 @@ export default function HomeScreen() {
   const primeiroNome = user?.nome?.split(" ")[0] || "Usuário";
   const qrValue = user.matricula;
   const saldoFormatado = saldo.toFixed(2).replace(".", ",");
-  const handleLogout = () => {
-    console.log("Botão de logout clicado!");
 
+  const openDrawer = () => {
+    setDrawerVisible(true);
+    Animated.timing(drawerAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeDrawer = () => {
+    Animated.timing(drawerAnim, {
+      toValue: -300,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setDrawerVisible(false));
+  };
+
+  const toggleDrawer = () => {
+    drawerVisible ? closeDrawer() : openDrawer();
+  };
+
+  const handleLogout = () => {
+    closeDrawer();
     setTimeout(() => {
       Alert.alert(
         "Sair",
@@ -44,8 +66,8 @@ export default function HomeScreen() {
           { text: "Cancelar", style: "cancel" },
           {
             text: "Sair",
-            onPress: () => {
-              logout();
+            onPress: async () => {
+              await logout();
               navigation.reset({
                 index: 0,
                 routes: [{ name: "Login" }],
@@ -55,41 +77,30 @@ export default function HomeScreen() {
         ],
         { cancelable: true }
       );
-    }, 50);
+    }, 300);
   };
 
   return (
     <View style={styles.container}>
-      {/* Topo */}
-      <View style={styles.perfil}>
-        {/* Botão perfil */}
-        <TouchableOpacity
-          style={styles.btnPerfil}
-          onPress={() => setDrawerVisible(!drawerVisible)}
-        >
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.btnPerfil} onPress={toggleDrawer}>
           <Icon
             name="person-circle-outline"
-            size={28}
+            size={32}
             color={styles.icon.color}
           />
         </TouchableOpacity>
 
-        <View style={styles.btnTopo}>
-          {/* Mostrar/ocultar saldo */}
-          <TouchableOpacity onPress={() => setMostrarSaldo(!mostrarSaldo)}>
-            <Icon
-              name={mostrarSaldo ? "eye" : "eye-off"}
-              size={30}
-              color={styles.icon.color}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => setMostrarSaldo(!mostrarSaldo)}>
+          <Icon
+            name={mostrarSaldo ? "eye" : "eye-off"}
+            size={30}
+            color={styles.icon.color}
+          />
+        </TouchableOpacity>
       </View>
-
       {/* Saudação */}
       <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
-
       {/* Saldo */}
       <TouchableOpacity
         style={styles.saldoBox}
@@ -101,96 +112,84 @@ export default function HomeScreen() {
           R$ {!mostrarSaldo ? "••••" : saldoFormatado}
         </Text>
       </TouchableOpacity>
-
-      {/* Botão de ação */}
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.buttonText}>Recarregar</Text>
-        </TouchableOpacity>
-      </View>
-
       {/* QR Code */}
       <View style={styles.qrContainer}>
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
-        <QRCode value={qrValue} size={200} />
+        <QRCode value={qrValue} size={300} />
       </View>
-
-      {/* Drawer lateral */}
-
-      <Modal
-        visible={drawerVisible}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setDrawerVisible(false)}
-      >
+      {/* Drawer lateral com animação */}
+      <Modal visible={drawerVisible} transparent animationType="none">
         {/* Overlay clicável */}
         <TouchableOpacity
           style={styles.drawerOverlay}
           activeOpacity={1}
-          onPress={() => setDrawerVisible(false)} // Fecha ao clicar fora
+          onPress={closeDrawer} // Fecha ao clicar fora
         >
-          {/* Conteúdo do modal (não fecha ao clicar dentro) */}
-          <TouchableOpacity
-            activeOpacity={1}
-            style={styles.drawer}
-            onPress={() => {}} // Evita fechar ao clicar dentro
+          {/* Drawer NÃO fecha ao clicar dentro */}
+          <Animated.View
+            style={[styles.drawer, { transform: [{ translateX: drawerAnim }] }]}
           >
-            <Text style={styles.drawerNome}>{user.nome}</Text>
-            <Text style={styles.drawerMatricula}>
-              Matrícula: {user.matricula}
-            </Text>
-
-            <TouchableOpacity style={styles.drawerButton} onPress={toggleTheme}>
-              <Icon
-                name={isDarkMode ? "sunny-outline" : "moon-outline"}
-                size={22}
-                color={styles.icon.color}
-              />
-              <Text style={styles.drawerText}>
-                {isDarkMode ? "Modo Claro" : "Modo Escuro"}
+            <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+              <Text style={styles.drawerNome}>{user.nome}</Text>
+              <Text style={styles.drawerMatricula}>
+                Matrícula: {user.matricula}
               </Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.drawerButton}
-              onPress={handleLogout}
-            >
-              <Icon
-                name="log-out-outline"
-                size={22}
-                color={styles.icon.color}
-              />
-              <Text style={styles.drawerText}>Encerrar Sessão</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={toggleTheme}
+              >
+                <Icon
+                  name={isDarkMode ? "sunny-outline" : "moon-outline"}
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>
+                  {isDarkMode ? "Modo Claro" : "Modo Escuro"}
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.drawerButton}
-              onPress={() => navigation.navigate("ForgotPassword")}
-            >
-              <Icon name="key-outline" size={22} color={styles.icon.color} />
-              <Text style={styles.drawerText}>Mudar Senha</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={handleLogout}
+              >
+                <Icon
+                  name="log-out-outline"
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>Encerrar Sessão</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.drawerButton}
-              onPress={() => navigation.navigate("HorariosScreen")}
-            >
-              <Icon name="time-outline" size={22} color={styles.icon.color} />
-              <Text style={styles.drawerText}>Ver Horários</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={() => navigation.navigate("ForgotPassword")}
+              >
+                <Icon name="key-outline" size={22} color={styles.icon.color} />
+                <Text style={styles.drawerText}>Mudar Senha</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.drawerButton}
-              onPress={() => navigation.navigate("HistoricoScreen")}
-            >
-              <Icon
-                name="document-text-outline"
-                size={22}
-                color={styles.icon.color}
-              />
-              <Text style={styles.drawerText}>Histórico</Text>
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={() => navigation.navigate("HorariosScreen")}
+              >
+                <Icon name="time-outline" size={22} color={styles.icon.color} />
+                <Text style={styles.drawerText}>Ver Horários</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={() => navigation.navigate("HistoricoScreen")}
+              >
+                <Icon
+                  name="document-text-outline"
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>Histórico</Text>
+              </TouchableOpacity>
             </TouchableOpacity>
-          </TouchableOpacity>
+          </Animated.View>
         </TouchableOpacity>
       </Modal>
     </View>
