@@ -1,5 +1,5 @@
-
 import { StyleSheet } from "react-native";
+
 
 export const getHistoricoStyles = (isDarkMode) =>
   StyleSheet.create({
@@ -35,10 +35,12 @@ export const getHistoricoStyles = (isDarkMode) =>
     orderDate: {
       fontSize: 14,
       color: isDarkMode ? "#ccc" : "#555",
+      textAlign: "right",
     },
     orderPrice: {
       fontSize: 14,
-      color: isDarkMode ? "#ccc" : "#555",
+      color: isDarkMode ? "#008000" : "#0F4D0F",
+      textAlign: "right",
     },
     orderStatus: {
       fontSize: 14,
@@ -49,5 +51,29 @@ export const getHistoricoStyles = (isDarkMode) =>
       marginTop: 50,
       fontSize: 16,
       color: isDarkMode ? "#aaa" : "#666",
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    modalContent: {
+      backgroundColor: "#fff",
+      padding: 20,
+      borderRadius: 10,
+      width: "80%",
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      marginBottom: 10,
+    },
+    closeButton: {
+      marginTop: 20,
+      backgroundColor: theme.button,
+      padding: 10,
+      borderRadius: 5,
+      alignItems: "center",
     },
   });
