@@ -128,6 +128,7 @@ const baseStyles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10,
   },
+
 });
 
 export const getHomeStyles = (isDarkMode) => {
@@ -143,6 +144,7 @@ export const getHomeStyles = (isDarkMode) => {
       ...baseStyles.icon,
       color: theme.inputText,
     },
+    
     greeting: {
       ...baseStyles.greeting,
       color: theme.inputText,

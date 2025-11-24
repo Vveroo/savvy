@@ -13,6 +13,7 @@ import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../contexts/UserContext";
 import { useTheme } from "../contexts/ThemeContext";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function HomeScreen() {
   const { user, saldo, logout } = useUserContext();
@@ -108,10 +109,20 @@ export default function HomeScreen() {
         activeOpacity={0.8}
       >
         <Text style={styles.saldoLabel}>Saldo</Text>
-        <Text style={styles.saldoValor}>
-          R$ {!mostrarSaldo ? "••••" : saldoFormatado}
-        </Text>
+
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <Text style={styles.saldoValor}>
+            R$ {!mostrarSaldo ? "••••" : saldoFormatado}
+          </Text>
+
+          <MaterialIcons
+            name="arrow-forward-ios"
+            size={24}
+            color={styles.icon.color}
+          />
+        </View>
       </TouchableOpacity>
+
       {/* QR Code */}
       <View style={styles.qrContainer}>
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
