@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  useColorScheme,
 } from 'react-native';
 import { getCardapioStyles } from '../styles/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -24,6 +25,10 @@ export default function CardapioScreen() {
 
   const navigation = useNavigation();
   const { addToCart } = useContext(CartContext);
+
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+
   const styles = getCardapioStyles(isDarkMode);
 
   const toggleFavorito = (id) => {
