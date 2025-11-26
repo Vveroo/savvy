@@ -5,7 +5,6 @@ import { AuthProvider } from './auth/authContext';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext'; 
-
 import LoginScreen from './screens/LoginScreen';
 import TabNavigator from './screens/TabNavigator';
 import ForgotPasswordScreen from './screens/ForgotScreen';
