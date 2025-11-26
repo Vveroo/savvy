@@ -72,7 +72,7 @@ export const getHistoricoStyles = (isDarkMode) =>
     },
     closeButton: {
       marginTop: 20,
-      backgroundColor: theme.button,
+      backgroundColor: isDarkMode ? "#003366" : "#3B82F6",
       padding: 10,
       borderRadius: 5,
       alignItems: "center",

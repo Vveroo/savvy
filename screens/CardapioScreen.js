@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from '../contexts/CartContext';
 import { produtos } from '../utils/mockData';
+import { useTheme } from '../contexts/ThemeContext';
 
 const categorias = ['Lanches', 'Bebidas', 'Doces', 'Favoritos'];
 
@@ -26,8 +27,7 @@ export default function CardapioScreen() {
   const navigation = useNavigation();
   const { addToCart } = useContext(CartContext);
 
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
+  const { isDarkMode } = useTheme();
 
   const styles = getCardapioStyles(isDarkMode);
 

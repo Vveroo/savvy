@@ -5,18 +5,18 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
-  useColorScheme,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getHistoricoStyles } from "../styles/historicoStyles";
+import { useTheme } from "../contexts/ThemeContext"; // ✅ importa o contexto
 
-export default function OrdersHistoryScreen({ navigation }) {
+export default function HistoricoScreen({ navigation }) { // ✅ nome bate com App.js
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === "dark";
-  const styles = getHistoricoStyles(isDarkMode);
+
+  const { isDarkMode } = useTheme(); // ✅ pega do contexto
+  const styles = getHistoricoStyles(isDarkMode); // ✅ aplica nos estilos
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -37,9 +37,7 @@ export default function OrdersHistoryScreen({ navigation }) {
       style={styles.orderItem}
       onPress={() => setSelectedOrder(item)}
     >
-      <Text style={{ fontWeight: "bold", size: 30, color: "white" }}>
-        Compra Realizada
-      </Text>
+      <Text style={styles.orderTitle}>Compra Realizada</Text> {/* ✅ usa estilo existente */}
       <Text style={styles.orderDate}>{item.data}</Text>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.orderStatus}>Status: {item.status}</Text>
@@ -59,9 +57,9 @@ export default function OrdersHistoryScreen({ navigation }) {
           <Icon
             name="arrow-back"
             size={24}
-            color={isDarkMode ? "#fff" : "#000"}
+            color={isDarkMode ? "#fff" : "#000"} // ✅ usa isDarkMode
           />
-        </TouchableOpacity>
+        </TouchableOpacity> {/* ✅ fechamento correto */}
         <Text style={styles.title}>Histórico de Compras</Text>
       </View>
 

@@ -5,19 +5,16 @@ import {
   Text, 
   FlatList, 
   TouchableOpacity, 
-  useColorScheme 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CartContext } from '../contexts/CartContext';
 import { getCartStyles } from '../styles/cartStyles';
+import { useTheme } from '../contexts/ThemeContext'; // ✅ importa o contexto
 
 export default function CartScreen({ navigation }) {
   const { cart, clearCart } = useContext(CartContext);
-
-  
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
+  const { isDarkMode} = useTheme();
   const styles = getCartStyles(isDarkMode);
 
   // Calcula total
@@ -73,27 +70,19 @@ export default function CartScreen({ navigation }) {
         renderItem={({ item }) => (
           <Text style={styles.item}>
             {item.nome}:{'\n'} R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
-<<<<<<< HEAD
-=======
           <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() } >
           <Text style={{ fontSize: 18 }}>✖</Text>
           </TouchableOpacity>
->>>>>>> 3497c88990a0739742774067ceca5c3db9fbdcec
           </Text>
         )}
       />
 
       <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
 
-<<<<<<< HEAD
-      {/* Botão Finalizar Pedido */}
-      <TouchableOpacity style={styles.button} onPress={handlePayment}>
-=======
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('Pagamento', { total })}>
 
->>>>>>> 3497c88990a0739742774067ceca5c3db9fbdcec
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>
 
