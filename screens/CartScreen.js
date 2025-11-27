@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
-import { 
+import {
   Alert,
-  View, 
-  Text, 
-  FlatList, 
-  TouchableOpacity, 
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CartContext } from '../contexts/CartContext';
 import { getCartStyles } from '../styles/cartStyles';
 import { useTheme } from '../contexts/ThemeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function CartScreen({ navigation }) {
 
@@ -19,14 +20,12 @@ export default function CartScreen({ navigation }) {
   const styles = getCartStyles(isDarkMode);
 
   const total = cart.reduce((sum, item) => {
-    const precoNumerico = typeof item.preco === 'string' 
-      ? parseFloat(item.preco) 
+    const precoNumerico = typeof item.preco === 'string'
+      ? parseFloat(item.preco)
       : item.preco;
     return sum + (precoNumerico || 0);
-  }, 0); 
+  }, 0);
 
-
-  
   const handlePayment = async () => {
     if (cart.length === 0) return;
 
@@ -58,7 +57,11 @@ export default function CartScreen({ navigation }) {
       await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
 
       clearCart();
-      navigation.navigate('OrdersHistoryScreen'); // ou tela de confirmação
+      Alert.alert("Sucesso", "Compra realizada com sucesso!", [
+        {
+          text: "OK",
+        }
+      ]);
     } catch (error) {
       console.error('Erro ao salvar pedido:', error);
     }
@@ -78,20 +81,20 @@ export default function CartScreen({ navigation }) {
       <FlatList
         data={cart}
         keyExtractor={(item, index) => index.toString()}
-        ListEmptyComponent={<Text style={{color: '#999', textAlign: 'center'}}>Seu carrinho está vazio.</Text>}
+        ListEmptyComponent={<Text style={{ color: '#999', textAlign: 'center' }}>Seu carrinho está vazio.</Text>}
         renderItem={({ item, index }) => ( // 'index' é essencial para remover o item certo
           <View style={styles.itemContainer}>
-            
+
             <Text style={styles.itemText}>
-              <Text style={{fontWeight: 'bold'}}>{item.nome}</Text>
-              {'\n'} 
+              <Text style={{ fontWeight: 'bold' }}>{item.nome}</Text>
+              {'\n'}
               R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
             </Text>
 
-            <TouchableOpacity 
-                style={styles.deleteButton} 
-                // Chama a função do Contexto, passando o índice do item
-                onPress={() => removeFromCart(index)}> 
+            <TouchableOpacity
+              style={styles.deleteButton}
+              // Chama a função do Contexto, passando o índice do item
+              onPress={() => removeFromCart(index)}>
               <Ionicons name="trash-bin-outline" size={24} color={isDarkMode ? '#ff6b6b' : '#ff0000'} />
             </TouchableOpacity>
 
@@ -104,17 +107,17 @@ export default function CartScreen({ navigation }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => Alert.alert("Finalizar Pedido",
-                                   "Você tem certeza disto?",
-                                   [
-                                      {text: "Cancelar", style: "cancel"},
-                                      {
-                                        text: "Pagar",
-                                      
-                                        onPress: () => handlePayment(),
-                                      }
-                                   ]
-                                  )
-                }>
+          "Você tem certeza disto?",
+          [
+            { text: "Cancelar", style: "cancel" },
+            {
+              text: "Pagar",
+
+              onPress: () => handlePayment(),
+            }
+          ]
+        )
+        }>
 
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>

@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from '../styles/colors'; 
+import { COLORS } from '../styles/colors';
 
 export const getCardapioStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
   return StyleSheet.create({
+    // Layout base
     container: {
       flex: 1,
       backgroundColor: theme.telaCardapio,
@@ -13,13 +14,14 @@ export const getCardapioStyles = (isDarkMode) => {
     },
 
     title: {
-      fontSize: 24,
+      fontSize: 22,
       fontWeight: 'bold',
       color: theme.inputText,
-      marginBottom: 16,
+      marginBottom: 14,
       textAlign: 'center',
     },
 
+    // Busca
     searchWrapper: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -38,116 +40,83 @@ export const getCardapioStyles = (isDarkMode) => {
 
     searchInput: {
       flex: 1,
-      fontSize: 16,
-      paddingVertical: 10,
+      fontSize: 15,
+      paddingVertical: 8,
       color: theme.inputText,
     },
 
-    categoriasContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 2,
-      marginBottom: 1,
-    },
-
-    categoriaButton: {
-      height: 36,
-      paddingHorizontal: 14,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 18,
-      backgroundColor: theme.favButton,
-      marginRight: 8,
-    },
-
-    categoriaAtiva: {
-      backgroundColor: theme.favAtivo,
-    },
-
-    categoriaText: {
-      fontSize: 14,
-      color: theme.textMuted,
-    },
-
-    categoriaTextAtiva: {
-      color: '#fff',
-      fontWeight: '600',
-    },
-
+    // Grid e card
     grid: {
       flexDirection: 'column',
       alignItems: 'center',
-      paddingTop: 20,
-      paddingBottom: 100,
+      paddingTop: 15,
+      paddingBottom: 80,
+      width: '100%',
     },
 
     card: {
       backgroundColor: theme.item,
-      borderRadius: 12,
-      padding: 16,
+      borderRadius: 10,
+      padding: 12,
       width: '100%',
-      minHeight: 140,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 16,
+      minHeight: 100,
+      marginBottom: 12,
       shadowColor: theme.shadowCardapio,
-      shadowOpacity: 0.08,
+      shadowOpacity: 0.06,
       shadowOffset: { width: 0, height: 2 },
-      shadowRadius: 4,
-      elevation: 4,
+      shadowRadius: 3,
+      elevation: 3,
+      position: 'relative',
     },
 
     nome: {
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: '600',
       color: theme.inputText,
-      textAlign: 'center',
-      marginBottom: 4,
+      marginBottom: 3,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
     },
 
     preco: {
-      fontSize: 14,
+      fontSize: 13,
       color: theme.preco,
-      marginBottom: 10,
+      marginBottom: 8,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
     },
 
-    cardButtons: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
+    // Botões no card
+    deleteButton: {
+      position: 'absolute',
+      top: 8,
+      right: 8,
+      backgroundColor: theme.error,
+      paddingVertical: 6,
+      paddingHorizontal: 8,
+      borderRadius: 18,
+      elevation: 2,
+      zIndex: 10,
+    },
+
+    addButton: {
+      marginTop: 6,
+      backgroundColor: theme.button,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 18,
+      alignSelf: 'center',
       width: '100%',
-      marginTop: 8,
     },
 
-    favButton: {
-      backgroundColor: theme.favButton,
-      paddingVertical: 6,
-      paddingHorizontal: 14,
-      borderRadius: 20,
-    },
-
-    favAtivo: {
-      backgroundColor: theme.favAtivo,
-    },
-
-    favText: {
-      fontSize: 16,
-      color: theme.inputText,
-      fontWeight: '600',
-    },
-
-    cartButton: {
-      backgroundColor: theme.preco,
-      paddingVertical: 6,
-      paddingHorizontal: 14,
-      borderRadius: 20,
-    },
-
-    cartText: {
+    addText: {
       fontSize: 16,
       color: '#fff',
-      fontWeight: '600',
+      fontWeight: '700',
+      textAlign: 'center',
     },
 
+    // Botão global de adicionar
     carrinhoButton: {
       position: 'absolute',
       bottom: 20,
@@ -158,7 +127,7 @@ export const getCardapioStyles = (isDarkMode) => {
       elevation: 5,
     },
 
-    /** estilos para o modal */
+    // Modal
     modalOverlay: {
       flex: 1,
       backgroundColor: 'rgba(0,0,0,0.5)',
@@ -169,44 +138,73 @@ export const getCardapioStyles = (isDarkMode) => {
     modalCard: {
       backgroundColor: theme.telaCardapio,
       borderRadius: 12,
-      padding: 20,
+      padding: 30,
       width: '85%',
       alignItems: 'center',
       elevation: 6,
+      position: 'relative',
     },
 
     modalClose: {
       position: 'absolute',
       top: 10,
       right: 10,
+      zIndex: 20,
     },
 
-    modalNome: {
-      fontSize: 18,
-      fontWeight: '700',
-      color: theme.inputText,
+    // Inputs
+    label: {
+      alignSelf: 'flex-start',
       marginBottom: 6,
-      textAlign: 'center',
-    },
-
-    modalPreco: {
-      fontSize: 16,
-      color: theme.preco,
-      marginBottom: 10,
-    },
-
-    modalDescricao: {
       fontSize: 14,
-      color: theme.textMuted,
-      textAlign: 'center',
-      marginBottom: 16,
+      fontWeight: '600',
+      color: theme.inputText,
     },
 
-    modalButtons: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
+    input: {
       width: '100%',
-      marginTop: 10,
+      borderWidth: 1,
+      borderColor: theme.divider,
+      borderRadius: 8,
+      padding: 10,
+      marginBottom: 12,
+      backgroundColor: theme.inputBackground,
+      color: theme.inputText,
+      fontSize: 14,
+    },
+
+    // Picker de categoria
+    pickerWrapper: {
+      width: '100%',
+      borderWidth: 1,
+      borderColor: theme.divider,
+      borderRadius: 8,
+      marginBottom: 12,
+      backgroundColor: theme.inputBackground,
+      overflow: 'hidden',
+    },
+
+    picker: {
+      width: '100%',
+      color: theme.inputText,
+      fontSize: 14,
+    },
+
+    cartButton: {
+      marginTop: 12,
+      backgroundColor: theme.button,
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 22,
+      alignSelf: 'center',
+      minWidth: '80%',
+    },
+
+    cartText: {
+      fontSize: 16,
+      color: '#fff',
+      fontWeight: '700',
+      textAlign: 'center',
     },
   });
 };

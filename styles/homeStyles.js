@@ -15,20 +15,17 @@ const baseStyles = StyleSheet.create({
     justifyContent: "space-between", // perfil à esquerda, saldo à direita
     alignItems: "center",
     marginBottom: 24,
-    zIndex: 10,
     position: "relative",
   },
 
   btnPerfil: {
     padding: 10,
     borderRadius: 50,
-    zIndex: 20,
   },
 
   btnTopo: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
   },
 
   icon: {
@@ -103,6 +100,9 @@ const baseStyles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     elevation: 5,
+    position: "absolute",
+    left: 0,
+    top: 0,
   },
 
   drawerNome: {

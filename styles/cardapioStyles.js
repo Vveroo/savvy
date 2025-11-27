@@ -24,11 +24,11 @@ export const getCardapioStyles = (isDarkMode) => {
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.inputBackground,
-      borderRadius: 8,
+      borderRadius: 10,
       borderWidth: 1,
       borderColor: theme.divider,
       paddingHorizontal: 12,
-      marginBottom: 12,
+      marginBottom: 16,
     },
 
     searchIcon: {
@@ -47,7 +47,8 @@ export const getCardapioStyles = (isDarkMode) => {
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 2,
-      marginBottom: 1,
+      marginBottom: 12,
+      marginTop: 10,
     },
 
     categoriaButton: {
@@ -86,42 +87,40 @@ export const getCardapioStyles = (isDarkMode) => {
       borderRadius: 12,
       padding: 16,
       width: '100%',
-      minHeight: 140,
-      justifyContent: 'center',
-      alignItems: 'center',
+      minHeight: 90,
       marginBottom: 16,
       shadowColor: theme.shadowCardapio,
       shadowOpacity: 0.08,
       shadowOffset: { width: 0, height: 2 },
       shadowRadius: 4,
       elevation: 4,
+      position: 'relative',
     },
 
     nome: {
       fontSize: 16,
       fontWeight: '600',
       color: theme.inputText,
-      textAlign: 'center',
       marginBottom: 4,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
     },
 
     preco: {
       fontSize: 14,
       color: theme.preco,
       marginBottom: 10,
-    },
-
-    cardButtons: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      width: '100%',
-      marginTop: 8,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
     },
 
     favButton: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
       backgroundColor: theme.favButton,
       paddingVertical: 6,
-      paddingHorizontal: 14,
+      paddingHorizontal: 12,
       borderRadius: 20,
     },
 
@@ -136,26 +135,18 @@ export const getCardapioStyles = (isDarkMode) => {
     },
 
     cartButton: {
-      backgroundColor: theme.preco,
-      paddingVertical: 6,
-      paddingHorizontal: 14,
+      marginTop: 8,
+      backgroundColor: theme.button,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
       borderRadius: 20,
+      alignSelf: 'center',
     },
 
     cartText: {
-      fontSize: 16,
+      fontSize: 15,
       color: '#fff',
       fontWeight: '600',
-    },
-
-    carrinhoButton: {
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-      backgroundColor: theme.button,
-      padding: 16,
-      borderRadius: 50,
-      elevation: 5,
     },
 
     /** estilos para o modal */
@@ -202,9 +193,34 @@ export const getCardapioStyles = (isDarkMode) => {
       marginBottom: 16,
     },
 
+    quantidadeWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+
+    quantidadeBtn: {
+      backgroundColor: theme.inputBackground,
+      padding: 8,
+      borderRadius: 6,
+      marginHorizontal: 10,
+    },
+
+    quantidadeText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: theme.inputText,
+    },
+
+    quantidadeValor: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: theme.inputText,
+    },
+
     modalButtons: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'center',
       width: '100%',
       marginTop: 10,
     },

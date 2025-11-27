@@ -2,7 +2,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AuthProvider } from './contexts/UserContext';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext'; 
@@ -12,6 +11,7 @@ import LoginScreen from './screens/LoginScreen';
 import TabNavigator from './screens/TabNavigator'; // Tabs para estudante
 import ForgotPasswordScreen from './screens/ForgotScreen';
 import CartScreen from './screens/CartScreen';
+import MeusPedidosScreen from './screens/MeusPedidos';
 import HistoricoScreen from './screens/HistoricoScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import QRCodeScreen from './screens/QRCodeScreen';
@@ -23,7 +23,6 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <AuthProvider>
       <UserProvider>
         <CartProvider>
           <ThemeProvider> 
@@ -50,6 +49,5 @@ export default function App() {
           </ThemeProvider>
         </CartProvider>
       </UserProvider>
-    </AuthProvider>
   );
 }

@@ -6,7 +6,6 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  useColorScheme
 } from 'react-native';
 import { getCardapioStyles } from '../styles/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,12 +22,11 @@ export default function CardapioScreen() {
   const [categoriaIndex, setCategoriaIndex] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [quantidade, setQuantidade] = useState(1);
 
   const navigation = useNavigation();
   const { addToCart } = useContext(CartContext);
-
   const { isDarkMode } = useTheme();
-
   const styles = getCardapioStyles(isDarkMode);
 
   const toggleFavorito = (id) => {
@@ -37,18 +35,20 @@ export default function CardapioScreen() {
     );
   };
 
-  const getProdutosPorCategoria = (categoria) => {
+  // 🔧 Busca independente da categoria
+  const getProdutosFiltrados = () => {
     return produtos.filter((item) => {
       const nomeMatch = item.nome.toLowerCase().includes(busca.toLowerCase());
+      if (busca) return nomeMatch; // se tem busca, ignora categoria
       const categoriaMatch =
-        categoria === 'Favoritos'
+        categorias[categoriaIndex] === 'Favoritos'
           ? favoritos.includes(item.id)
-          : item.categoria === categoria;
-      return nomeMatch && categoriaMatch;
+          : item.categoria === categorias[categoriaIndex];
+      return categoriaMatch;
     });
   };
 
-  const produtosFiltrados = getProdutosPorCategoria(categorias[categoriaIndex]);
+  const produtosFiltrados = getProdutosFiltrados();
 
   return (
     <View style={styles.container}>
@@ -105,43 +105,31 @@ export default function CardapioScreen() {
               onPress={() => {
                 setSelectedItem(item);
                 setModalVisible(true);
+                setQuantidade(1);
               }}
               activeOpacity={0.8}
             >
               <Text style={styles.nome}>{item.nome}</Text>
-              <Text style={styles.preco}>R$ {item.preco.toFixed(2)}</Text>
-              <View style={styles.cardButtons}>
-                <TouchableOpacity
-                  style={[
-                    styles.favButton,
-                    favoritos.includes(item.id) && styles.favAtivo,
-                  ]}
-                  onPress={() => toggleFavorito(item.id)}
-                >
-                  <Text style={styles.favText}>
-                    {favoritos.includes(item.id) ? '★' : '☆'}
-                  </Text>
-                </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.cartButton}
-                  onPress={() => addToCart(item)}
-                >
-                  <Text style={styles.cartText}>🛒</Text>
-                </TouchableOpacity>
-              </View>
+              {/* preço embaixo do nome, lado esquerdo */}
+              <Text style={styles.preco}>R$ {item.preco.toFixed(2)}</Text>
+
+              {/* botão favorito canto direito */}
+              <TouchableOpacity
+                style={[
+                  styles.favButton,
+                  favoritos.includes(item.id) && styles.favAtivo,
+                ]}
+                onPress={() => toggleFavorito(item.id)}
+              >
+                <Text style={styles.favText}>
+                  {favoritos.includes(item.id) ? '★' : '☆'}
+                </Text>
+              </TouchableOpacity>
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
-
-      {/* Botão carrinho */}
-      <TouchableOpacity
-        style={styles.carrinhoButton}
-        onPress={() => navigation.navigate('Cart')}
-      >
-        <Icon name="cart-outline" size={28} color="#fff" />
-      </TouchableOpacity>
 
       {/* Modal de detalhes */}
       {selectedItem && (
@@ -157,7 +145,7 @@ export default function CardapioScreen() {
                 style={styles.modalClose}
                 onPress={() => setModalVisible(false)}
               >
-                <Text style={{ fontSize: 18 }}>✖</Text>
+                <Text style={{ fontSize: 18, color: isDarkMode ? 'white' : 'black' }}>✖</Text>
               </TouchableOpacity>
 
               <Text style={styles.modalNome}>{selectedItem.nome}</Text>
@@ -168,26 +156,35 @@ export default function CardapioScreen() {
                 {selectedItem.descricao}
               </Text>
 
-              <View style={styles.modalButtons}>
+              {/* quantidade */}
+              <View style={styles.quantidadeWrapper}>
                 <TouchableOpacity
-                  style={[
-                    styles.favButton,
-                    favoritos.includes(selectedItem.id) && styles.favAtivo,
-                  ]}
-                  onPress={() => toggleFavorito(selectedItem.id)}
+                  style={styles.quantidadeBtn}
+                  onPress={() => setQuantidade(Math.max(1, quantidade - 1))}
                 >
-                  <Text style={styles.favText}>
-                    {favoritos.includes(selectedItem.id) ? '★' : '☆'}
-                  </Text>
+                  <Text style={styles.quantidadeText}>-</Text>
                 </TouchableOpacity>
-
+                <Text style={styles.quantidadeValor}>{quantidade}</Text>
                 <TouchableOpacity
-                  style={styles.cartButton}
-                  onPress={() => addToCart(selectedItem)}
+                  style={styles.quantidadeBtn}
+                  onPress={() => setQuantidade(quantidade + 1)}
                 >
-                  <Text style={styles.cartText}>🛒</Text>
+                  <Text style={styles.quantidadeText}>+</Text>
                 </TouchableOpacity>
               </View>
+
+              {/* adicionar ao carrinho */}
+              <TouchableOpacity
+                style={styles.cartButton}
+                onPress={() => {
+                  for (let i = 0; i < quantidade; i++) {
+                    addToCart(selectedItem);
+                  }
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={styles.cartText}>Adicionar ao carrinho</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>

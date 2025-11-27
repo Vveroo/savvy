@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,49 +9,59 @@ import {
 } from 'react-native';
 import { getCardapioStyles } from '../stylesAdmin/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { CartContext } from '../contexts/CartContext';
-import { produtos } from '../utils/mockData';
 import { useTheme } from '../contexts/ThemeContext';
+import { produtos as initialProdutos } from '../utils/mockData';
+import { Picker } from '@react-native-picker/picker';
 
-const categorias = ['Lanches', 'Bebidas', 'Doces', 'Favoritos'];
-
-export default function CardapioScreen() {
-  const [favoritos, setFavoritos] = useState([]);
+export default function CardapioAdminScreen() {
+  const [produtos, setProdutos] = useState(initialProdutos);
   const [busca, setBusca] = useState('');
-  const [categoriaIndex, setCategoriaIndex] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const navigation = useNavigation();
-  const { addToCart } = useContext(CartContext);
+  const [isEditing, setIsEditing] = useState(false);
+  const [showNovaCategoria, setShowNovaCategoria] = useState(false);
 
   const { isDarkMode } = useTheme();
-
   const styles = getCardapioStyles(isDarkMode);
 
-  const toggleFavorito = (id) => {
-    setFavoritos((prev) =>
-      prev.includes(id) ? prev.filter((favId) => favId !== id) : [...prev, id]
-    );
+  // Adicionar novo item
+  const handleAddItem = () => {
+    setSelectedItem({ id: Date.now(), nome: '', preco: '', descricao: '', categoria: '' });
+    setIsEditing(false);
+    setModalVisible(true);
   };
 
-  const getProdutosPorCategoria = (categoria) => {
-    return produtos.filter((item) => {
-      const nomeMatch = item.nome.toLowerCase().includes(busca.toLowerCase());
-      const categoriaMatch =
-        categoria === 'Favoritos'
-          ? favoritos.includes(item.id)
-          : item.categoria === categoria;
-      return nomeMatch && categoriaMatch;
-    });
+  // Editar item existente
+  const handleEditItem = (item) => {
+    setSelectedItem(item);
+    setIsEditing(true);
+    setModalVisible(true);
   };
 
-  const produtosFiltrados = getProdutosPorCategoria(categorias[categoriaIndex]);
+  // Salvar item (novo ou editado)
+  const handleSaveItem = () => {
+    if (isEditing) {
+      setProdutos((prev) =>
+        prev.map((p) => (p.id === selectedItem.id ? selectedItem : p))
+      );
+    } else {
+      setProdutos((prev) => [...prev, selectedItem]);
+    }
+    setModalVisible(false);
+  };
+
+  // Excluir item
+  const handleDeleteItem = (id) => {
+    setProdutos((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const produtosFiltrados = produtos.filter((item) =>
+    item.nome.toLowerCase().includes(busca.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Cardápio</Text>
+      <Text style={styles.title}>Admin - Cardápio</Text>
 
       {/* Busca */}
       <View style={styles.searchWrapper}>
@@ -65,35 +75,6 @@ export default function CardapioScreen() {
         />
       </View>
 
-      {/* Categorias */}
-      <View style={{ height: 40 }}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoriasContainer}
-        >
-          {categorias.map((cat, index) => (
-            <TouchableOpacity
-              key={cat}
-              style={[
-                styles.categoriaButton,
-                categoriaIndex === index && styles.categoriaAtiva,
-              ]}
-              onPress={() => setCategoriaIndex(index)}
-            >
-              <Text
-                style={[
-                  styles.categoriaText,
-                  categoriaIndex === index && styles.categoriaTextAtiva,
-                ]}
-              >
-                {cat}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
       {/* Lista de produtos */}
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.grid}>
@@ -101,48 +82,41 @@ export default function CardapioScreen() {
             <TouchableOpacity
               key={item.id}
               style={styles.card}
-              onPress={() => {
-                setSelectedItem(item);
-                setModalVisible(true);
-              }}
+              onPress={() => handleEditItem(item)}
               activeOpacity={0.8}
             >
               <Text style={styles.nome}>{item.nome}</Text>
               <Text style={styles.preco}>R$ {item.preco.toFixed(2)}</Text>
-              <View style={styles.cardButtons}>
-                <TouchableOpacity
-                  style={[
-                    styles.favButton,
-                    favoritos.includes(item.id) && styles.favAtivo,
-                  ]}
-                  onPress={() => toggleFavorito(item.id)}
-                >
-                  <Text style={styles.favText}>
-                    {favoritos.includes(item.id) ? '★' : '☆'}
-                  </Text>
-                </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.cartButton}
-                  onPress={() => addToCart(item)}
-                >
-                  <Text style={styles.cartText}>🛒</Text>
-                </TouchableOpacity>
-              </View>
+              {/* Botão de excluir */}
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => handleDeleteItem(item.id)}
+              >
+                <Icon name="trash-outline" size={20} color="#fff" />
+              </TouchableOpacity>
+
+              {/* Botão de editar */}
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => handleEditItem(item)}
+              >
+                <Text style={styles.addText}>Editar</Text>
+              </TouchableOpacity>
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
 
-      {/* Botão carrinho */}
+      {/* Botão global de adicionar novo item */}
       <TouchableOpacity
         style={styles.carrinhoButton}
-        onPress={() => navigation.navigate('Cart')}
+        onPress={handleAddItem}
       >
-        <Icon name="cart-outline" size={28} color="#fff" />
+        <Icon name="add-outline" size={28} color="#fff" />
       </TouchableOpacity>
 
-      {/* Modal de detalhes */}
+      {/* Modal de adicionar/editar */}
       {selectedItem && (
         <Modal
           visible={modalVisible}
@@ -156,37 +130,82 @@ export default function CardapioScreen() {
                 style={styles.modalClose}
                 onPress={() => setModalVisible(false)}
               >
-                <Text style={{ fontSize: 18 }}>✖</Text>
+                <Text style={{ fontSize: 18, color: isDarkMode ? '#fff' : '#000' }}>✖</Text>
               </TouchableOpacity>
 
-              <Text style={styles.modalNome}>{selectedItem.nome}</Text>
-              <Text style={styles.modalPreco}>
-                R$ {selectedItem.preco.toFixed(2)}
-              </Text>
-              <Text style={styles.modalDescricao}>
-                {selectedItem.descricao}
-              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Nome"
+                placeholderTextColor={isDarkMode ? '#aaa' : '#555'}
+                value={selectedItem.nome}
+                onChangeText={(text) =>
+                  setSelectedItem({ ...selectedItem, nome: text })
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Preço"
+                placeholderTextColor={isDarkMode ? '#aaa' : '#555'}
+                keyboardType="numeric"
+                value={String(selectedItem.preco)}
+                onChangeText={(text) =>
+                  setSelectedItem({ ...selectedItem, preco: parseFloat(text) || 0 })
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Descrição"
+                placeholderTextColor={isDarkMode ? '#aaa' : '#555'}
+                value={selectedItem.descricao}
+                onChangeText={(text) =>
+                  setSelectedItem({ ...selectedItem, descricao: text })
+                }
+              />
 
-              <View style={styles.modalButtons}>
-                <TouchableOpacity
-                  style={[
-                    styles.favButton,
-                    favoritos.includes(selectedItem.id) && styles.favAtivo,
-                  ]}
-                  onPress={() => toggleFavorito(selectedItem.id)}
+              {/* Picker de categoria */}
+              <Text style={styles.label}>Categoria</Text>
+              <View style={styles.pickerWrapper}>
+                <Picker
+                  selectedValue={selectedItem.categoria}
+                  style={styles.picker}
+                  onValueChange={(value) => {
+                    if (value === "nova") {
+                      setSelectedItem({ ...selectedItem, categoria: "" });
+                      setShowNovaCategoria(true);
+                    } else {
+                      setSelectedItem({ ...selectedItem, categoria: value });
+                      setShowNovaCategoria(false);
+                    }
+                  }}
                 >
-                  <Text style={styles.favText}>
-                    {favoritos.includes(selectedItem.id) ? '★' : '☆'}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={styles.cartButton}
-                  onPress={() => addToCart(selectedItem)}
-                >
-                  <Text style={styles.cartText}>🛒</Text>
-                </TouchableOpacity>
+                  <Picker.Item label="Selecione uma categoria" value="" />
+                  <Picker.Item label="Lanches" value="Lanches" />
+                  <Picker.Item label="Bebidas" value="Bebidas" />
+                  <Picker.Item label="Doces" value="Doces" />
+                  <Picker.Item label="+ Nova Categoria" value="nova" />
+                </Picker>
               </View>
+
+              {showNovaCategoria && (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Digite nova categoria"
+                  placeholderTextColor={isDarkMode ? '#aaa' : '#555'}
+                  value={selectedItem.categoria}
+                  onChangeText={(text) =>
+                    setSelectedItem({ ...selectedItem, categoria: text })
+                  }
+                />
+              )}
+
+              <TouchableOpacity
+                style={styles.cartButton}
+                onPress={handleSaveItem}
+              >
+                <Text style={styles.cartText}>
+                  {isEditing ? 'Salvar Alterações' : 'Adicionar Item'}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>

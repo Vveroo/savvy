@@ -90,27 +90,3 @@ export default function MeusPedidos() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  header: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
-  card: {
-    backgroundColor: "#f9f9f9",
-    padding: 15,
-    marginBottom: 15,
-    borderRadius: 8,
-  },
-  title: { fontSize: 18, fontWeight: "bold", marginBottom: 5 },
-  status: { fontWeight: "bold", color: "#007bff", marginTop: 5 },
-  cancelButton: {
-    backgroundColor: "#ff4d4d",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  cancelText: {
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-});

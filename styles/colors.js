@@ -1,17 +1,17 @@
 export const COLORS = {
   light: {
-    background: '#F1F1F1',      // fundo claro
-    inputBackground: '#E6E6E6',
-    inputText: '#111111',
+    background: '#F9FAFB',      // fundo claro
+    inputBackground: '#E5E7EB',
+    inputText: '#111827',
     error: '#E30613',           // vermelho SENAI
     button: '#003366',          // azul escuro SENAI
-    divider: '#CCCCCC',
-    textMuted: '#555555',
-    item: '#D1EEFF',
+    divider: '#D1D5DB',
+    textMuted: '#6B7280',
+    item: '#F3F4F6',            // cinza claro para cards (sóbrio)
     shadowCardapio: '#000000',
-    preco: '#00AA47',
-    favButton: '#AEDFFB',
-    favAtivo: '#55C1FF',
+    preco: '#10B981',           // verde moderno
+    favButton: '#E5E7EB',
+    favAtivo: '#2563EB',
     telaCardapio: '#FFFFFF',
     telaHome: '#FFFFFF',
     telaFavoritos: '#FFFFFF',
@@ -20,18 +20,18 @@ export const COLORS = {
   },
 
   dark: {
-    background: '#121212',      // fundo escuro
-    inputBackground: '#1E1E1E',
-    inputText: '#FFFFFF',
-    error: '#E30613',           // vermelho SENAI
-    button: '#3B82F6',          // azul vibrante para contraste
-    divider: '#424242',
-    textMuted: '#AAAAAA',
-    item: '#2A2A2A',
+    background: '#0F0F0F',      // fundo escuro elegante
+    inputBackground: '#1F2937',
+    inputText: '#F9FAFB',
+    error: '#E30613',
+    button: '#3B82F6',
+    divider: '#374151',
+    textMuted: '#9CA3AF',
+    item: '#1F2937',            // cinza escuro para cards (sóbrio)
     shadowCardapio: '#000000',
-    preco: '#00AA47',
-    favButton: '#333333',
-    favAtivo: '#55C1FF',
+    preco: '#34D399',
+    favButton: '#374151',
+    favAtivo: '#60A5FA',
     telaCardapio: '#1A1A1A',
     telaHome: '#1A1A1A',
     telaFavoritos: '#1A1A1A',
