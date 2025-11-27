@@ -12,30 +12,41 @@ export const getCartStyles = (isDarkMode) => {
         paddingHorizontal: 15,
         paddingTop: 50,
       },
-      
+
       header: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
       },
-  
+
       backButton: {
         padding: 8,
         marginRight: 10,
       },
-  
+
       title: {
         fontSize: 24,
         fontWeight: 'bold',
         color: theme.inputText, 
       },
-  
-      item: {
-        fontSize: 16,
-        color: theme.inputText,
-        paddingVertical: 10,
+
+      // --- NOVOS ESTILOS PARA O CARD ---
+      itemContainer: {
+        flexDirection: 'row',          // Alinha itens na horizontal
+        justifyContent: 'space-between', // Texto na ponta esquerda, ícone na direita
+        alignItems: 'center',          // Centraliza verticalmente
+        paddingVertical: 12,
         borderBottomWidth: 1,
         borderBottomColor: theme.divider,
+      },
+      itemText: {
+        flex: 1,                       // Ocupa todo o espaço disponível, empurrando o ícone
+        fontSize: 16,
+        color: theme.inputText,
+      },
+      deleteButton: {
+        padding: 10,                   // Área de toque maior para o dedo
+        marginLeft: 10,
       },
 
       total: {
@@ -46,7 +57,6 @@ export const getCartStyles = (isDarkMode) => {
         textAlign: 'center',
         marginBottom: 20,
       },
-  
       button: {
         backgroundColor: theme.button,
         paddingVertical: 12,
@@ -54,7 +64,6 @@ export const getCartStyles = (isDarkMode) => {
         alignItems: 'center',
         marginBottom: 10,
       },
-  
       buttonSecondary: {
         backgroundColor: 'transparent',
         paddingVertical: 12,
@@ -64,15 +73,13 @@ export const getCartStyles = (isDarkMode) => {
         borderColor: theme.textMuted,
         marginBottom: 80,
       },
-  
       buttonText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: '#fff',
       },
-
       buttonTextSecondary: { 
           color: theme.textMuted
       }
     });
-  };
+};
