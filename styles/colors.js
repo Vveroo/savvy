@@ -15,6 +15,8 @@ export const COLORS = {
     telaCardapio: '#FFFFFF',
     telaHome: '#FFFFFF',
     telaFavoritos: '#FFFFFF',
+    telaCart: '#FFFFFF',
+    telaPay: '#FFFFFF',
   },
 
   dark: {
@@ -34,5 +36,6 @@ export const COLORS = {
     telaHome: '#1A1A1A',
     telaFavoritos: '#1A1A1A',
     telaCart: '#1A1A1A',
+    telaPay: '#1A1A1A',
   },
 };

@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   useColorScheme,
-  StyleSheet,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";

@@ -1,1 +1,0 @@
-//faça a funçao limpar um por vez

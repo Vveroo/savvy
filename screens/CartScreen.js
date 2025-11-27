@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { 
+  Alert,
   View, 
   Text, 
   FlatList, 
@@ -59,7 +60,17 @@ export default function CartScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Pagamento', { total })}>
+        onPress={() => Alert.alert("Finalizar Pedido",
+                                   "Você tem certeza disto?",
+                                   [
+                                      {text: "Cancelar", style: "cancel"},
+                                      {
+                                        text: "Pagar",
+                                        onPress: () => {console.log("ola")},
+                                      }
+                                   ]
+                                  )
+                }>
 
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>
