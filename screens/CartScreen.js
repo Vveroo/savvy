@@ -12,9 +12,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CartContext } from '../contexts/CartContext';
 import { getCartStyles } from '../styles/cartStyles';
 import { useTheme } from '../contexts/ThemeContext';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function CartScreen({ navigation }) {
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart, clearCart, removeFromCart } = useContext(CartContext);
   const { isDarkMode } = useTheme();
   const styles = getCartStyles(isDarkMode);
 
@@ -60,6 +61,13 @@ export default function CartScreen({ navigation }) {
     } catch (error) {
       console.error('Erro ao salvar pedido:', error);
     }
+    const removeFromCart = (indexToRemove) => {
+      setCart((prevCart) => {
+        // Filtra a lista, mantendo todos os itens MENOS aquele que tem o índice igual ao que clicamos
+        return prevCart.filter((index) => index !== indexToRemove);
+      });
+    };
+
   };
 
   return (
@@ -72,26 +80,30 @@ export default function CartScreen({ navigation }) {
         <Text style={styles.title}>Carrinho</Text>
       </View>
 
-      {/* Lista de itens */}
       <FlatList
-        data={cart}
-        keyExtractor={(item, index) => index.toString()}
-        ListEmptyComponent={<Text style={{color: '#999', textAlign: 'center'}}>Seu carrinho está vazio.</Text>}
-        renderItem={({ item }) => (
-          <Text style={styles.item}>
-            {item.nome}:{'\n'} R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
-            <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() }>
-              <Text style={{ fontSize: 18 }}>✖</Text>
-            </TouchableOpacity>
-          </Text>
-        )}
-      />
+  data={cart}
+  keyExtractor={(item, index) => index.toString()}
+  ListEmptyComponent={<Text style={{color: '#999', textAlign: 'center'}}>Seu carrinho está vazio.</Text>}
+  renderItem={({ item, index }) => ( // Adicionei 'index' aqui caso precise remover por índice
+    <View style={styles.itemContainer}>
+      
+     
+      <Text style={styles.itemText}>
+        <Text style={{fontWeight: 'bold'}}>{item.nome}</Text>
+        {'\n'} 
+        R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
+      </Text>
 
-      <View>              
-        <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() } >
-        <Text style={{ fontSize: 18 }}>✖</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity 
+          style={styles.deleteButton} 
+          // Tem que passar o 'index' (índice), senão ele não sabe qual apagar
+          onPress={() => removeFromCart(index)}>
+        <Ionicons name="trash-bin-outline" size={24} color={isDarkMode ? '#ff6b6b' : '#ff0000'} />
+      </TouchableOpacity>
+
+    </View>
+  )}
+/>
 
       <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
 
@@ -103,7 +115,8 @@ export default function CartScreen({ navigation }) {
                                       {text: "Cancelar", style: "cancel"},
                                       {
                                         text: "Pagar",
-                                        onPress: () => {console.log("ola")},
+                                      
+                                        onPress: () => handlePayment(),
                                       }
                                    ]
                                   )
