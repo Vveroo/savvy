@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 
-
 export const getHistoricoStyles = (isDarkMode) =>
   StyleSheet.create({
     container: {

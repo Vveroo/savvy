@@ -1,16 +1,27 @@
-
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, RefreshControl } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getPedidosStyles } from "../styles/meusPedidosStyles";
+import { useTheme } from "../contexts/ThemeContext"; // ✅ importa o contexto
 
 export default function MeusPedidos() {
   const [orders, setOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const loadOrders = async () => {
-    const data = await AsyncStorage.getItem('orders');
+    const data = await AsyncStorage.getItem("orders");
     setOrders(data ? JSON.parse(data) : []);
   };
+
+  const { isDarkMode } = useTheme(); // ✅ pega do contexto
+  const styles = getPedidosStyles(isDarkMode); // ✅ aplica nos estilos
 
   useEffect(() => {
     loadOrders();
@@ -22,13 +33,41 @@ export default function MeusPedidos() {
     setRefreshing(false);
   };
 
+  // ✅ Função para cancelar pedido
+  const cancelOrder = async (id) => {
+    const updatedOrders = orders.map((order) =>
+      order.id === id ? { ...order, status: "cancelado e reembolsado" } : order
+    );
+    setOrders(updatedOrders);
+    await AsyncStorage.setItem("orders", JSON.stringify(updatedOrders));
+  };
+
+  // ✅ Filtra pedidos que não estão concluídos
+  const filteredOrders = orders.filter(
+    (order) =>
+      order.status !== "concluido" && order.status !== "cancelado e reembolsado"
+  );
+
   const renderOrder = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>Pedido #{item.id}</Text>
-      <Text>Data: {item.data} - Hora: {item.hora}</Text>
+      <Text>
+        Data: {item.data} - Hora: {item.hora}
+      </Text>
       <Text>Itens: {item.quantidade}</Text>
       <Text>Valor: R$ {item.valor}</Text>
       <Text style={styles.status}>Status: {item.status}</Text>
+
+      {/* ✅ Botão para cancelar se não estiver concluído ou cancelado */}
+      {item.status !== "concluido" &&
+        item.status !== "cancelado e reembolsado" && (
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => cancelOrder(item.id)}
+          >
+            <Text style={styles.cancelText}>Cancelar Compra</Text>
+          </TouchableOpacity>
+        )}
     </View>
   );
 
@@ -36,20 +75,42 @@ export default function MeusPedidos() {
     <View style={styles.container}>
       <Text style={styles.header}>Meus Pedidos</Text>
       <FlatList
-        data={orders}
+        data={filteredOrders}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderOrder}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhum pedido encontrado.</Text>}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListEmptyComponent={
+          <Text style={{ textAlign: "center", marginTop: 20, color: isDarkMode ? "#ccc" : "#555" }}>
+            Nenhum pedido encontrado.
+          </Text>
+        }
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  header: { fontSize: 22, fontWeight: 'bold', marginBottom: 20 },
-  card: { backgroundColor: '#f9f9f9', padding: 15, marginBottom: 15, borderRadius: 8 },
-  title: { fontSize: 18, fontWeight: 'bold', marginBottom: 5 },
-  status: { fontWeight: 'bold', color: '#007bff', marginTop: 5 }
+  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+  header: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
+  card: {
+    backgroundColor: "#f9f9f9",
+    padding: 15,
+    marginBottom: 15,
+    borderRadius: 8,
+  },
+  title: { fontSize: 18, fontWeight: "bold", marginBottom: 5 },
+  status: { fontWeight: "bold", color: "#007bff", marginTop: 5 },
+  cancelButton: {
+    backgroundColor: "#ff4d4d",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  cancelText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 });
