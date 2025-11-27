@@ -71,12 +71,15 @@ export default function CartScreen({ navigation }) {
         renderItem={({ item }) => (
           <Text style={styles.item}>
             {item.nome}:{'\n'} R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
-          <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() } >
-          <Text style={{ fontSize: 18 }}>✖</Text>
-          </TouchableOpacity>
           </Text>
         )}
       />
+
+      <View>              
+        <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() } >
+        <Text style={{ fontSize: 18 }}>✖</Text>
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
 
