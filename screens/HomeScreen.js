@@ -163,7 +163,7 @@ export default function HomeScreen() {
 
               <TouchableOpacity
                 style={styles.drawerButton}
-                onPress={() => navigation.navigate("TrocaRSenhaScreen")}
+                onPress={() => navigation.navigate("TrocarSenhaScreen")}
               >
                 <Icon name="key-outline" size={22} color={styles.icon.color} />
                 <Text style={styles.drawerText}>Mudar Senha</Text>

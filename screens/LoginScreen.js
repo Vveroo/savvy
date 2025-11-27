@@ -70,7 +70,7 @@ export default function Login() {
       if (fixedUser.role === "admin") {
         navigation.navigate("AdminTabs");
       } else {
-        navigation.navigate("MainTabs");
+        navigation.navigate("StudentTabs");
       }
       return;
     }
@@ -95,7 +95,7 @@ export default function Login() {
         if (data.user.role === "admin") {
           navigation.navigate("AdminTabs");
         } else {
-          navigation.navigate("StudentTabs");
+          navigation.navigate("MainTabs");
         }
       } else {
         setApiError(data.message || "Credenciais inválidas.");
