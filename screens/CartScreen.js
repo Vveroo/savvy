@@ -1,6 +1,7 @@
 
 import React, { useContext } from 'react';
 import { 
+  Alert,
   View, 
   Text, 
   FlatList, 
@@ -86,11 +87,28 @@ export default function CartScreen({ navigation }) {
         )}
       />
 
+      <View>              
+        <TouchableOpacity style={styles.modalCloseCart} onPress={() => clearCart() } >
+        <Text style={{ fontSize: 18 }}>✖</Text>
+        </TouchableOpacity>
+      </View>
+
       <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={handlePayment}>
+        onPress={() => Alert.alert("Finalizar Pedido",
+                                   "Você tem certeza disto?",
+                                   [
+                                      {text: "Cancelar", style: "cancel"},
+                                      {
+                                        text: "Pagar",
+                                        onPress: () => {console.log("ola")},
+                                      }
+                                   ]
+                                  )
+                }>
+
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>
 

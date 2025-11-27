@@ -6,7 +6,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  useColorScheme,
+  useColorScheme
 } from 'react-native';
 import { getCardapioStyles } from '../styles/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
