@@ -4,8 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider } from './auth/authContext';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
-import { ThemeProvider } from './contexts/ThemeContext'; // ✅ Importação do ThemeProvider
-
+import { ThemeProvider } from './contexts/ThemeContext'; 
 import LoginScreen from './screens/LoginScreen';
 import TabNavigator from './screens/TabNavigator';
 import ForgotPasswordScreen from './screens/ForgotScreen';
@@ -21,7 +20,7 @@ export default function App() {
     <AuthProvider>
       <UserProvider>
         <CartProvider>
-          <ThemeProvider> {/* ✅ Envolvendo toda a navegação com ThemeProvider */}
+          <ThemeProvider> 
             <NavigationContainer>
               <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen

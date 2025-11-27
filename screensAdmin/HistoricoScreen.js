@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getHistoricoStyles } from "../styles/historicoStyles";
+import { getHistoricoStyles } from "../stylesAdmin/historicoStyles";
 import { useTheme } from "../contexts/ThemeContext"; // ✅ importa o contexto
 
 export default function HistoricoScreen({ navigation }) { // ✅ nome bate com App.js

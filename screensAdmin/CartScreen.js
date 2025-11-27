@@ -1,7 +1,6 @@
 
 import React, { useContext } from 'react';
 import { 
-  Alert,
   View, 
   Text, 
   FlatList, 
@@ -10,7 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CartContext } from '../contexts/CartContext';
-import { getCartStyles } from '../styles/cartStyles';
+import { getCartStyles } from '../stylesAdmin/cartStyles';
 import { useTheme } from '../contexts/ThemeContext'; // ✅ importa o contexto
 
 export default function CartScreen({ navigation }) {
@@ -82,17 +81,7 @@ export default function CartScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => Alert.alert("Finalizar Pedido",
-                                   "Você tem certeza disto?",
-                                   [
-                                      {text: "Cancelar", style: "cancel"},
-                                      {
-                                        text: "Pagar",
-                                        onPress: () => {console.log("ola")},
-                                      }
-                                   ]
-                                  )
-                }>
+        onPress={() => navigation.navigate('Pagamento', { total })}>
 
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>

@@ -6,9 +6,8 @@ import {
   TextInput,
   ScrollView,
   Modal,
-  useColorScheme
 } from 'react-native';
-import { getCardapioStyles } from '../styles/cardapioStyles';
+import { getCardapioStyles } from '../stylesAdmin/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from '../contexts/CartContext';
