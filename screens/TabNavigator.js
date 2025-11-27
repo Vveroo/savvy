@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text } from "react-native";
 import HomeScreen from "./HomeScreen";
 import CardapioScreen from "./CardapioScreen";
+import Pedidos from './MeusPedidos';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,6 +43,11 @@ export default function TabNavigator() {
         name="Cardapio"
         component={CardapioScreen}
         options={{ title: "Menu" }}
+      />
+      <Tab.Screen
+        name="Pedidos"
+        component={Pedidos}
+        options={{ title: "Meus Pedidos" }}
       />
     </Tab.Navigator>
   );

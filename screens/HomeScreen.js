@@ -160,32 +160,13 @@ export default function HomeScreen() {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.drawerButton}
-                onPress={handleLogout}
-              >
-                <Icon
-                  name="log-out-outline"
-                  size={22}
-                  color={styles.icon.color}
-                />
-                <Text style={styles.drawerText}>Encerrar Sessão</Text>
-              </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.drawerButton}
-                onPress={() => navigation.navigate("ForgotPassword")}
+                onPress={() => navigation.navigate("TrocaRSenhaScreen")}
               >
                 <Icon name="key-outline" size={22} color={styles.icon.color} />
                 <Text style={styles.drawerText}>Mudar Senha</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.drawerButton}
-                onPress={() => navigation.navigate("HorariosScreen")}
-              >
-                <Icon name="time-outline" size={22} color={styles.icon.color} />
-                <Text style={styles.drawerText}>Ver Horários</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -199,6 +180,19 @@ export default function HomeScreen() {
                 />
                 <Text style={styles.drawerText}>Histórico</Text>
               </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={handleLogout}
+              >
+                <Icon
+                  name="log-out-outline"
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>Encerrar Sessão</Text>
+              </TouchableOpacity>
+
             </TouchableOpacity>
           </Animated.View>
         </TouchableOpacity>

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   View,
@@ -64,7 +65,13 @@ export default function Login() {
       saveToken(token);
       saveUser(matricula);
       login({ nome: matricula, matricula });
-      navigation.navigate("MainTabs");
+
+      // ✅ Navegação baseada no role
+      if (fixedUser.role === "admin") {
+        navigation.navigate("AdminTabs");
+      } else {
+        navigation.navigate("MainTabs");
+      }
       return;
     }
 
@@ -84,7 +91,12 @@ export default function Login() {
         saveToken(data.token);
         saveUser(matricula);
         login(data.user);
-        navigation.navigate("MainTabs");
+
+        if (data.user.role === "admin") {
+          navigation.navigate("AdminTabs");
+        } else {
+          navigation.navigate("StudentTabs");
+        }
       } else {
         setApiError(data.message || "Credenciais inválidas.");
         setTimeout(() => setApiError(""), 4000);
@@ -151,7 +163,6 @@ export default function Login() {
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
-
               />
               <TouchableOpacity
                 onPress={() => setMostrarSenha(!mostrarSenha)}

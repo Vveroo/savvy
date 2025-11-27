@@ -160,17 +160,6 @@ export default function HomeScreen() {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.drawerButton}
-                onPress={handleLogout}
-              >
-                <Icon
-                  name="log-out-outline"
-                  size={22}
-                  color={styles.icon.color}
-                />
-                <Text style={styles.drawerText}>Encerrar Sessão</Text>
-              </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.drawerButton}
@@ -197,8 +186,21 @@ export default function HomeScreen() {
                   size={22}
                   color={styles.icon.color}
                 />
-                <Text style={styles.drawerText}>Histórico</Text>
+                <Text style={styles.drawerText}>Histórico de Vendas</Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={handleLogout}
+              >
+                <Icon
+                  name="log-out-outline"
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>Encerrar Sessão</Text>
+              </TouchableOpacity>
+              
             </TouchableOpacity>
           </Animated.View>
         </TouchableOpacity>
