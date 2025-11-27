@@ -17,7 +17,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import QRCodeScreen from './screens/QRCodeScreen';
 
 // Novas telas para Admin
-import AdminTabs from './screens/AdminTabs'; // Tabs para admin
+import AdminTabs from './screensAdmin/AdminTabs'; // Tabs para admin
 
 const Stack = createNativeStackNavigator();
 

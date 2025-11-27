@@ -13,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAuth } from "../auth/authContext";
 import { useUserContext } from "../contexts/UserContext";
 import { getLoginStyles } from "../styles/loginStyles";
 
@@ -32,10 +31,9 @@ export default function Login() {
   const isDarkMode = useColorScheme() === "dark";
   const styles = getLoginStyles(isDarkMode);
 
-  const { saveToken, saveUser } = useAuth();
   const navigation = useNavigation();
-  const [mostrarSenha, setMostrarSenha] = useState(false);
   const { login } = useUserContext();
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [apiError, setApiError] = useState("");
 
   const submit = async (values) => {
@@ -62,15 +60,14 @@ export default function Login() {
       await AsyncStorage.setItem("userToken", token);
       await AsyncStorage.setItem("userMatricula", matricula);
 
-      saveToken(token);
-      saveUser(matricula);
-      login({ nome: matricula, matricula });
+      // ✅ Agora usamos apenas login do UserContext
+      login({ nome: matricula, matricula, role: fixedUser.role });
 
       // ✅ Navegação baseada no role
       if (fixedUser.role === "admin") {
-        navigation.navigate("AdminTabs");
+        navigation.replace("AdminTabs");
       } else {
-        navigation.navigate("StudentTabs");
+        navigation.replace("MainTabs");
       }
       return;
     }
@@ -88,21 +85,19 @@ export default function Login() {
         await AsyncStorage.setItem("userToken", data.token);
         await AsyncStorage.setItem("userMatricula", matricula);
 
-        saveToken(data.token);
-        saveUser(matricula);
-        login(data.user);
+        login({ ...data.user, role: data.user.role });
 
         if (data.user.role === "admin") {
-          navigation.navigate("AdminTabs");
+          navigation.replace("AdminTabs");
         } else {
-          navigation.navigate("MainTabs");
+          navigation.replace("MainTabs");
         }
       } else {
         setApiError(data.message || "Credenciais inválidas.");
         setTimeout(() => setApiError(""), 4000);
       }
     } catch (error) {
-      setApiError("Usuario ou senha incorretos.");
+      setApiError("Usuário ou senha incorretos.");
       setTimeout(() => setApiError(""), 4000);
     }
   };
