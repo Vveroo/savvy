@@ -19,7 +19,7 @@ import { getLoginStyles } from "../styles/loginStyles";
 const loginValidationSchema = yup.object().shape({
   matricula: yup
     .string()
-    .matches(/^[a-zA-Z-_]+$/, "Matrícula inválida!")
+    .matches(/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:,.?\/|\\~]+$/, "Matrícula inválida!")
     .required("Obrigatório"),
   password: yup
     .string()
