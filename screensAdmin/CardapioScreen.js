@@ -12,9 +12,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
 import { produtos as initialProdutos } from '../utils/mockData';
 import { Picker } from '@react-native-picker/picker';
+import { useCardapio } from '../contexts/CardapioContext';
+
 
 export default function CardapioAdminScreen() {
-  const [produtos, setProdutos] = useState(initialProdutos);
+  const { produtos, setProdutos } = useCardapio();
   const [busca, setBusca] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);

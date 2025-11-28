@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
-import { ThemeProvider } from './contexts/ThemeContext'; 
+import { ThemeProvider } from './contexts/ThemeContext';
 
 // Telas
 import LoginScreen from './screens/LoginScreen';
@@ -18,17 +18,19 @@ import QRCodeScreen from './screens/QRCodeScreen';
 
 // Novas telas para Admin
 import AdminTabs from './screensAdmin/AdminTabs'; // Tabs para admin
+import { CardapioProvider } from './contexts/CardapioContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-      <UserProvider>
-        <CartProvider>
-          <ThemeProvider> 
+    <UserProvider>
+      <CartProvider>
+        <ThemeProvider>
+          <CardapioProvider>
             <NavigationContainer>
               <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-                
+
                 {/* Login */}
                 <Stack.Screen name="Login" component={LoginScreen} />
 
@@ -46,8 +48,9 @@ export default function App() {
                 <Stack.Screen name="QRCode" component={QRCodeScreen} />
               </Stack.Navigator>
             </NavigationContainer>
-          </ThemeProvider>
-        </CartProvider>
-      </UserProvider>
+          </CardapioProvider>
+        </ThemeProvider>
+      </CartProvider>
+    </UserProvider>
   );
 }
