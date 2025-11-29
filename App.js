@@ -22,9 +22,8 @@ import QRCodeScreen from './screens/QRCodeScreen';
 import AdminTabs from './screensAdmin/AdminTabs';
 import AdminDashboard from './screensAdmin/AdminDashboard';
 import AdminOrderDetails from './screensAdmin/AdminOrderDetails';
-import AdminUsers from './screensAdmin/AdminUsers';
 import AdminHistorico from './screensAdmin/AdminHistorico';
-import AdminReports from './screensAdmin/AdminReports';
+import AdminScanner from './screensAdmin/AdminScanner';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,9 +70,8 @@ export default function App() {
                 <Stack.Screen name="AdminTabs" component={AdminTabs} />
                 <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
                 <Stack.Screen name="AdminOrderDetails" component={AdminOrderDetails} />
-                <Stack.Screen name="AdminUsers" component={AdminUsers} />
                 <Stack.Screen name="AdminHistorico" component={AdminHistorico} />
-                <Stack.Screen name="AdminReports" component={AdminReports} />
+                <Stack.Screen name="AdminScanner" component={AdminScanner} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
                 <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
                 <Stack.Screen name="Cart" component={CartScreen} />

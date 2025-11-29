@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
-import { getAdminOrderDetailsStyles } from '../styles/adminOrderDetailsStyles';
+import { getAdminOrderDetailsStyles } from '../stylesAdmin/adminOrderDetailsStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AdminOrderDetails({ route, navigation }) {

@@ -1,4 +1,3 @@
-
 import { StyleSheet } from "react-native";
 import { COLORS } from "../styles/colors";
 
@@ -12,7 +11,7 @@ const baseStyles = StyleSheet.create({
   /** Barra superior com ícones */
   topBar: {
     flexDirection: "row",
-    justifyContent: "space-between", // perfil à esquerda, saldo à direita
+    justifyContent: "flex-start", // apenas perfil à esquerda
     alignItems: "center",
     marginBottom: 24,
     zIndex: 10,
@@ -25,12 +24,6 @@ const baseStyles = StyleSheet.create({
     zIndex: 20,
   },
 
-  btnTopo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-  },
-
   icon: {
     marginLeft: 6,
   },
@@ -41,54 +34,51 @@ const baseStyles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  saldoBox: {
-    padding: 22,
-    borderRadius: 16,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
+  /** Tabela de horários */
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 12,
+  },
+
+  tableRow: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 6,
   },
 
-  saldoLabel: {
-    fontSize: 16,
-    fontWeight: "500",
-    marginBottom: 6,
-  },
-
-  saldoValor: {
-    fontSize: 32,
-    fontWeight: "bold",
-  },
-
-  buttonGroup: {
-    alignItems: "flex-start",
-  },
-
-  actionButton: {
-    paddingVertical: 6,
-    paddingHorizontal: 15,
-    borderRadius: 30,
-    alignSelf: "flex-start",
-  },
-
-  buttonText: {
-    fontSize: 15,
-    fontWeight: "600",
-  },
-
-  qrContainer: {
+  tableCell: {
     flex: 1,
-    justifyContent: "center",
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    marginHorizontal: 4,
+    height: 40,
+  },
+
+  deleteBtn: {
+    backgroundColor: "red",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+
+  addBtn: {
+    marginTop: 16,
+    padding: 12,
+    borderRadius: 8,
     alignItems: "center",
   },
 
-  qrLabel: {
-    fontSize: 16,
-    marginBottom: 20,
+  addBtnText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 
+  /** Drawer lateral */
   drawerOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -96,10 +86,9 @@ const baseStyles = StyleSheet.create({
   },
 
   drawer: {
-    width: "50%", 
+    width: "50%",
     height: "100%",
     padding: 20,
-    backgroundColor: "#fff",
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
     elevation: 5,
@@ -128,7 +117,6 @@ const baseStyles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 10,
   },
-
 });
 
 export const getHomeStyles = (isDarkMode) => {
@@ -144,39 +132,29 @@ export const getHomeStyles = (isDarkMode) => {
       ...baseStyles.icon,
       color: theme.inputText,
     },
-    
     greeting: {
       ...baseStyles.greeting,
       color: theme.inputText,
     },
-    saldoBox: {
-      ...baseStyles.saldoBox,
-      borderWidth: 1,
-      borderColor: theme.divider,
-    },
-    saldoLabel: {
-      ...baseStyles.saldoLabel,
-      color: theme.textMuted,
-    },
-    saldoValor: {
-      ...baseStyles.saldoValor,
+    sectionTitle: {
+      ...baseStyles.sectionTitle,
       color: theme.inputText,
     },
-    actionButton: {
-      ...baseStyles.actionButton,
+    tableRow: {
+      ...baseStyles.tableRow,
+      borderColor: theme.divider,
+    },
+    tableCell: {
+      ...baseStyles.tableCell,
+      borderColor: theme.divider,
+      color: theme.inputText,
+    },
+    addBtn: {
+      ...baseStyles.addBtn,
       backgroundColor: theme.button,
-      shadowColor: "#000",
-      shadowOpacity: 0.2,
-      shadowOffset: { width: 0, height: 2 },
-      shadowRadius: 4,
     },
-    buttonText: {
-      ...baseStyles.buttonText,
-      color: "#fff",
-    },
-    qrLabel: {
-      ...baseStyles.qrLabel,
-      color: theme.textMuted,
+    addBtnText: {
+      ...baseStyles.addBtnText,
     },
     drawer: {
       ...baseStyles.drawer,

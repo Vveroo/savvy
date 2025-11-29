@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from './colors';
+import { COLORS } from '../styles/colors';
 
 export const getAdminDashboardStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;

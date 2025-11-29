@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,23 +6,61 @@ import {
   Alert,
   Modal,
   Animated,
+  TextInput,
+  FlatList,
+  StyleSheet,
 } from "react-native";
 import { getHomeStyles } from "../stylesAdmin/homeStyles";
 import Icon from "react-native-vector-icons/Ionicons";
-import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../contexts/UserContext";
 import { useTheme } from "../contexts/ThemeContext";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen() {
-  const { user, saldo, logout } = useUserContext();
+  const { user, logout } = useUserContext();
   const { isDarkMode, toggleTheme } = useTheme();
   const styles = getHomeStyles(isDarkMode);
-  const [mostrarSaldo, setMostrarSaldo] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerAnim] = useState(new Animated.Value(-300));
   const navigation = useNavigation();
+
+  // Estado da tabela
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    const loadTable = async () => {
+      try {
+        const saved = await AsyncStorage.getItem("home_table");
+        if (saved) setRows(JSON.parse(saved));
+      } catch (err) {
+        // ignore
+      }
+    };
+    loadTable();
+  }, []);
+
+  const saveTable = async (newRows) => {
+    setRows(newRows);
+    await AsyncStorage.setItem("home_table", JSON.stringify(newRows));
+  };
+
+  const addRow = () => {
+    const newRows = [...rows, { id: Date.now().toString(), col1: "", col2: "" }];
+    saveTable(newRows);
+  };
+
+  const updateCell = (id, field, value) => {
+    const newRows = rows.map((row) =>
+      row.id === id ? { ...row, [field]: value } : row
+    );
+    saveTable(newRows);
+  };
+
+  const removeRow = (id) => {
+    const newRows = rows.filter((row) => row.id !== id);
+    saveTable(newRows);
+  };
 
   if (!user) {
     return (
@@ -33,8 +71,6 @@ export default function HomeScreen() {
   }
 
   const primeiroNome = user?.nome?.split(" ")[0] || "Usuário";
-  const qrValue = user.matricula;
-  const saldoFormatado = saldo.toFixed(2).replace(".", ",");
 
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -83,6 +119,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      {/* TopBar apenas com perfil */}
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.btnPerfil} onPress={toggleDrawer}>
           <Icon
@@ -91,52 +128,51 @@ export default function HomeScreen() {
             color={styles.icon.color}
           />
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => setMostrarSaldo(!mostrarSaldo)}>
-          <Icon
-            name={mostrarSaldo ? "eye" : "eye-off"}
-            size={30}
-            color={styles.icon.color}
-          />
-        </TouchableOpacity>
       </View>
+
       {/* Saudação */}
       <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
-      {/* Saldo */}
-      <TouchableOpacity
-        style={styles.saldoBox}
-        onPress={() => navigation.navigate("HistoricoScreen")}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.saldoLabel}>Saldo</Text>
 
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-          <Text style={styles.saldoValor}>
-            R$ {!mostrarSaldo ? "••••" : saldoFormatado}
-          </Text>
+      {/* Tabela Horários */}
+      <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Horários</Text>
+      <FlatList
+        data={rows}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={localStyles.row}>
+            <TextInput
+              style={localStyles.cell}
+              placeholder="Coluna 1"
+              value={item.col1}
+              onChangeText={(text) => updateCell(item.id, "col1", text)}
+            />
+            <TextInput
+              style={localStyles.cell}
+              placeholder="Coluna 2"
+              value={item.col2}
+              onChangeText={(text) => updateCell(item.id, "col2", text)}
+            />
+            <TouchableOpacity
+              onPress={() => removeRow(item.id)}
+              style={localStyles.deleteBtn}
+            >
+              <Text style={{ color: "#fff" }}>X</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
 
-          <MaterialIcons
-            name="arrow-forward-ios"
-            size={24}
-            color={styles.icon.color}
-          />
-        </View>
+      <TouchableOpacity onPress={addRow} style={localStyles.addBtn}>
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>+ Adicionar Linha</Text>
       </TouchableOpacity>
 
-      {/* QR Code */}
-      <View style={styles.qrContainer}>
-        <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
-        <QRCode value={qrValue} size={300} />
-      </View>
-      {/* Drawer lateral com animação */}
+      {/* Drawer lateral */}
       <Modal visible={drawerVisible} transparent animationType="none">
-        {/* Overlay clicável */}
         <TouchableOpacity
           style={styles.drawerOverlay}
           activeOpacity={1}
-          onPress={closeDrawer} // Fecha ao clicar fora
+          onPress={closeDrawer}
         >
-          {/* Drawer NÃO fecha ao clicar dentro */}
           <Animated.View
             style={[styles.drawer, { transform: [{ translateX: drawerAnim }] }]}
           >
@@ -160,33 +196,28 @@ export default function HomeScreen() {
                 </Text>
               </TouchableOpacity>
 
-
               <TouchableOpacity
                 style={styles.drawerButton}
-                onPress={() => navigation.navigate("ForgotPassword")}
-              >
-                <Icon name="key-outline" size={22} color={styles.icon.color} />
-                <Text style={styles.drawerText}>Mudar Senha</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.drawerButton}
-                onPress={() => navigation.navigate("HorariosScreen")}
-              >
-                <Icon name="time-outline" size={22} color={styles.icon.color} />
-                <Text style={styles.drawerText}>Ver Horários</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.drawerButton}
-                onPress={() => navigation.navigate("HistoricoScreen")}
+                onPress={() => navigation.navigate("AdminScanner")}
               >
                 <Icon
-                  name="document-text-outline"
+                  name="qr-code-outline"
                   size={22}
                   color={styles.icon.color}
                 />
-                <Text style={styles.drawerText}>Histórico de Vendas</Text>
+                <Text style={styles.drawerText}>Scanner Alunos</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={() => navigation.navigate("AdminDashboard")}
+              >
+                <Icon
+                  name="speedometer-outline"
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>Dashboard</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -200,7 +231,6 @@ export default function HomeScreen() {
                 />
                 <Text style={styles.drawerText}>Encerrar Sessão</Text>
               </TouchableOpacity>
-              
             </TouchableOpacity>
           </Animated.View>
         </TouchableOpacity>
@@ -208,3 +238,4 @@ export default function HomeScreen() {
     </View>
   );
 }
+
