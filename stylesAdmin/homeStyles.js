@@ -40,7 +40,6 @@ const baseStyles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 12,
   },
-
   tableRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -49,7 +48,6 @@ const baseStyles = StyleSheet.create({
     borderRadius: 8,
     padding: 6,
   },
-
   tableCell: {
     flex: 1,
     borderWidth: 1,
@@ -58,21 +56,18 @@ const baseStyles = StyleSheet.create({
     marginHorizontal: 4,
     height: 40,
   },
-
   deleteBtn: {
     backgroundColor: "red",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 6,
   },
-
   addBtn: {
     marginTop: 16,
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
   },
-
   addBtnText: {
     color: "#fff",
     fontWeight: "bold",
@@ -84,7 +79,6 @@ const baseStyles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     flexDirection: "row",
   },
-
   drawer: {
     width: "50%",
     height: "100%",
@@ -93,18 +87,15 @@ const baseStyles = StyleSheet.create({
     borderBottomRightRadius: 20,
     elevation: 5,
   },
-
   drawerNome: {
     fontSize: 18,
     fontWeight: "700",
     marginBottom: 4,
   },
-
   drawerMatricula: {
     fontSize: 14,
     marginBottom: 20,
   },
-
   drawerButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -112,7 +103,6 @@ const baseStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ccc",
   },
-
   drawerText: {
     fontSize: 16,
     marginLeft: 10,

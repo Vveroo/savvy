@@ -139,22 +139,22 @@ export default function HomeScreen() {
         data={rows}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={localStyles.row}>
+          <View style={styles.tableRow}>
             <TextInput
-              style={localStyles.cell}
+              style={styles.tableCell}
               placeholder="Coluna 1"
               value={item.col1}
               onChangeText={(text) => updateCell(item.id, "col1", text)}
             />
             <TextInput
-              style={localStyles.cell}
+              style={styles.tableCell}
               placeholder="Coluna 2"
               value={item.col2}
               onChangeText={(text) => updateCell(item.id, "col2", text)}
             />
             <TouchableOpacity
               onPress={() => removeRow(item.id)}
-              style={localStyles.deleteBtn}
+              style={styles.deleteBtn}
             >
               <Text style={{ color: "#fff" }}>X</Text>
             </TouchableOpacity>
@@ -162,8 +162,8 @@ export default function HomeScreen() {
         )}
       />
 
-      <TouchableOpacity onPress={addRow} style={localStyles.addBtn}>
-        <Text style={{ color: "#fff", fontWeight: "bold" }}>+ Adicionar Linha</Text>
+      <TouchableOpacity onPress={addRow} style={styles.addBtn}>
+        <Text style={styles.addBtnText}>+ Adicionar Linha</Text>
       </TouchableOpacity>
 
       {/* Drawer lateral */}
@@ -176,7 +176,7 @@ export default function HomeScreen() {
           <Animated.View
             style={[styles.drawer, { transform: [{ translateX: drawerAnim }] }]}
           >
-            <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+            <TouchableOpacity activeOpacity={1} onPress={() => { }}>
               <Text style={styles.drawerNome}>{user.nome}</Text>
               <Text style={styles.drawerMatricula}>
                 Matrícula: {user.matricula}
