@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { COLORS } from '../styles/colors'; 
+import { COLORS } from '../styles/colors';
 
 export const getCardapioStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
@@ -134,20 +134,41 @@ export const getCardapioStyles = (isDarkMode) => {
       fontWeight: '600',
     },
 
-    cartButton: {
-      marginTop: 8,
-      backgroundColor: theme.button,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 20,
-      alignSelf: 'center',
-    },
-
     cartText: {
       fontSize: 15,
-      color: '#fff',
+      color: theme.textMuted,
       fontWeight: '600',
     },
+    cartFloatingButton: {
+      position: 'absolute',
+      bottom: 20,
+      right: 20,
+      backgroundColor: theme.button,
+      borderRadius: 30,
+      padding: 15,
+      elevation: 5,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 3,
+    },
+
+    cartBadge: {
+      position: 'absolute',
+      top: 5,
+      right: 5,
+      backgroundColor: 'red',
+      borderRadius: 10,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+    },
+
+    cartBadgeText: {
+      color: 'white',
+      fontSize: 12,
+      fontWeight: 'bold',
+    },
+
 
     /** estilos para o modal */
     modalOverlay: {

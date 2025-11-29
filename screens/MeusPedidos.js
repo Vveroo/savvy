@@ -51,11 +51,11 @@ export default function MeusPedidos() {
   const renderOrder = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>Pedido #{item.id}</Text>
-      <Text>
+      <Text style={styles.elise}>
         Data: {item.data} - Hora: {item.hora}
       </Text>
-      <Text>Itens: {item.quantidade}</Text>
-      <Text>Valor: R$ {item.valor}</Text>
+      <Text style={styles.elise}>Itens: {item.quantidade}</Text>
+      <Text style={styles.elise}>Valor: R$ {item.valor}</Text>
       <Text style={styles.status}>Status: {item.status}</Text>
 
       {/* ✅ Botão para cancelar se não estiver concluído ou cancelado */}

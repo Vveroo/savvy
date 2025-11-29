@@ -1,42 +1,54 @@
 // contexts/CardapioContext.js
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { produtos as initialProdutos } from '../utils/mockData';
 
 const CardapioContext = createContext();
 
 export function CardapioProvider({ children }) {
-  const [produtos, setProdutos] = useState(initialProdutos);
+  const [produtos, setProdutos] = useState([]);
 
-  // Carregar dados salvos ao iniciar
+  // Carregar produtos salvos ao iniciar
   useEffect(() => {
-    const loadData = async () => {
+    const carregarProdutos = async () => {
       try {
-        const saved = await AsyncStorage.getItem('@cardapio');
-        if (saved) {
-          setProdutos(JSON.parse(saved));
+        const data = await AsyncStorage.getItem('@cardapio');
+        if (data) {
+          setProdutos(JSON.parse(data));
+        } else {
+          setProdutos([]);
         }
-      } catch (e) {
-        console.log('Erro ao carregar cardápio', e);
+      } catch (error) {
+        console.log('Erro ao carregar produtos:', error);
       }
     };
-    loadData();
+    carregarProdutos();
   }, []);
 
-  // Salvar sempre que produtos mudar
+  // Salvar produtos sempre que mudar
   useEffect(() => {
-    const saveData = async () => {
+    const salvarProdutos = async () => {
       try {
         await AsyncStorage.setItem('@cardapio', JSON.stringify(produtos));
-      } catch (e) {
-        console.log('Erro ao salvar cardápio', e);
+      } catch (error) {
+        console.log('Erro ao salvar produtos:', error);
       }
     };
-    saveData();
+    salvarProdutos();
   }, [produtos]);
 
+  // Função para adicionar item
+  const addProduto = (novoProduto) => {
+    setProdutos((prev) => [...prev, novoProduto]);
+  };
+
+  // Função para limpar cardápio
+  const resetCardapio = async () => {
+    await AsyncStorage.removeItem('@cardapio');
+    setProdutos([]);
+  };
+
   return (
-    <CardapioContext.Provider value={{ produtos, setProdutos }}>
+    <CardapioContext.Provider value={{ produtos, setProdutos, addProduto, resetCardapio }}>
       {children}
     </CardapioContext.Provider>
   );

@@ -1,28 +1,64 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserProvider } from './contexts/UserContext';
 import { CartProvider } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { CardapioProvider } from './contexts/CardapioContext';
 
 // Telas
 import LoginScreen from './screens/LoginScreen';
-import TabNavigator from './screens/TabNavigator'; // Tabs para estudante
+import TabNavigator from './screens/TabNavigator'; 
 import ForgotPasswordScreen from './screens/ForgotScreen';
+import ChangePasswordScreen from './screens/ChangePasswordScreen';
 import CartScreen from './screens/CartScreen';
 import MeusPedidosScreen from './screens/MeusPedidos';
 import HistoricoScreen from './screens/HistoricoScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import QRCodeScreen from './screens/QRCodeScreen';
 
-// Novas telas para Admin
-import AdminTabs from './screensAdmin/AdminTabs'; // Tabs para admin
-import { CardapioProvider } from './contexts/CardapioContext';
+// Admin
+import AdminTabs from './screensAdmin/AdminTabs';
+import AdminDashboard from './screensAdmin/AdminDashboard';
+import AdminOrderDetails from './screensAdmin/AdminOrderDetails';
+import AdminUsers from './screensAdmin/AdminUsers';
+import AdminHistorico from './screensAdmin/AdminHistorico';
+import AdminReports from './screensAdmin/AdminReports';
 
 const Stack = createNativeStackNavigator();
 
+// Inicializar usuários no AsyncStorage
+const initializeUsers = async () => {
+  try {
+    const existingUsers = await AsyncStorage.getItem('usuarios');
+    if (!existingUsers) {
+      const defaultUsers = [
+        {
+          matricula: 'admin',
+          senha: 'admin1234',
+          role: 'admin',
+          saldo: 0,
+        },
+        {
+          matricula: 'estudante',
+          senha: 'estudante1234',
+          role: 'student',
+          saldo: 100.0,
+        },
+      ];
+      await AsyncStorage.setItem('usuarios', JSON.stringify(defaultUsers));
+    }
+  } catch (error) {
+    console.log('Erro ao inicializar usuários:', error);
+  }
+};
+
 export default function App() {
+  useEffect(() => {
+    initializeUsers();
+  }, []);
+
   return (
     <UserProvider>
       <CartProvider>
@@ -30,18 +66,16 @@ export default function App() {
           <CardapioProvider>
             <NavigationContainer>
               <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-
-                {/* Login */}
                 <Stack.Screen name="Login" component={LoginScreen} />
-
-                {/* Tabs do Estudante */}
                 <Stack.Screen name="MainTabs" component={TabNavigator} />
-
-                {/* Tabs do Admin */}
                 <Stack.Screen name="AdminTabs" component={AdminTabs} />
-
-                {/* Outras telas */}
+                <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
+                <Stack.Screen name="AdminOrderDetails" component={AdminOrderDetails} />
+                <Stack.Screen name="AdminUsers" component={AdminUsers} />
+                <Stack.Screen name="AdminHistorico" component={AdminHistorico} />
+                <Stack.Screen name="AdminReports" component={AdminReports} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+                <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
                 <Stack.Screen name="Cart" component={CartScreen} />
                 <Stack.Screen name="Pagamento" component={PaymentScreen} />
                 <Stack.Screen name="HistoricoScreen" component={HistoricoScreen} />

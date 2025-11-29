@@ -12,22 +12,31 @@ import { getCartStyles } from '../styles/cartStyles';
 import { useTheme } from '../contexts/ThemeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useUserContext } from '../contexts/UserContext'; // 🔹 Importa o contexto do usuário
 
 export default function CartScreen({ navigation }) {
-
-  const { cart, clearCart, removeFromCart } = useContext(CartContext);
+  const { cart, clearCart, removeFromCart, updateQuantity } = useContext(CartContext);
   const { isDarkMode } = useTheme();
   const styles = getCartStyles(isDarkMode);
+
+  const { saldo, setSaldo } = useUserContext(); // 🔹 pega saldo e função para atualizar
 
   const total = cart.reduce((sum, item) => {
     const precoNumerico = typeof item.preco === 'string'
       ? parseFloat(item.preco)
       : item.preco;
-    return sum + (precoNumerico || 0);
+    const quantidade = item.quantidade || 1;
+    return sum + (precoNumerico * quantidade || 0);
   }, 0);
 
   const handlePayment = async () => {
     if (cart.length === 0) return;
+
+    // 🔹 Verifica se o usuário tem saldo suficiente
+    if (saldo < total) {
+      Alert.alert("Saldo insuficiente", "Você não possui saldo suficiente para esta compra.");
+      return;
+    }
 
     const now = new Date();
     const nomeUsuario = await AsyncStorage.getItem('userMatricula'); // quem pediu
@@ -56,16 +65,16 @@ export default function CartScreen({ navigation }) {
       pendingOrders.push(order);
       await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
 
+      // 🔹 Subtrai o valor da compra do saldo
+      setSaldo((prevSaldo) => prevSaldo - total);
+
       clearCart();
       Alert.alert("Sucesso", "Compra realizada com sucesso!", [
-        {
-          text: "OK",
-        }
+        { text: "OK" }
       ]);
     } catch (error) {
       console.error('Erro ao salvar pedido:', error);
     }
-    // A DEFINIÇÃO DA FUNÇÃO removeFromCart FOI REMOVIDA DAQUI
   };
 
   return (
@@ -80,45 +89,61 @@ export default function CartScreen({ navigation }) {
 
       <FlatList
         data={cart}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => item.id + index.toString()}
         ListEmptyComponent={<Text style={{ color: '#999', textAlign: 'center' }}>Seu carrinho está vazio.</Text>}
-        renderItem={({ item, index }) => ( // 'index' é essencial para remover o item certo
-          <View style={styles.itemContainer}>
+        renderItem={({ item, index }) => {
+          const precoNumerico = typeof item.preco === 'string'
+            ? parseFloat(item.preco)
+            : item.preco;
+          const quantidade = item.quantidade || 1;
+          const precoTotal = precoNumerico * quantidade;
 
-            <Text style={styles.itemText}>
-              <Text style={{ fontWeight: 'bold' }}>{item.nome}</Text>
-              {'\n'}
-              R$ {item.preco ? item.preco.toFixed(2) : '0.00'}
-            </Text>
+          return (
+            <View style={styles.itemContainer}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.itemText}>
+                  <Text style={{ fontWeight: 'bold' }}>{item.nome}</Text>
+                  {'\n'}
+                  R$ {precoNumerico.toFixed(2)} x {quantidade}
+                  {'\n'}
+                  <Text style={{ fontWeight: '600' }}>Total: R$ {precoTotal.toFixed(2)}</Text>
+                </Text>
+              </View>
 
-            <TouchableOpacity
-              style={styles.deleteButton}
-              // Chama a função do Contexto, passando o índice do item
-              onPress={() => removeFromCart(index)}>
-              <Ionicons name="trash-bin-outline" size={24} color={isDarkMode ? '#ff6b6b' : '#ff0000'} />
-            </TouchableOpacity>
+              {/* Controles de quantidade */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <TouchableOpacity onPress={() => updateQuantity(item.id, Math.max(1, quantidade - 1))}>
+                  <Text style={{ fontSize: 18, color: isDarkMode ? '#fff' : '#000', paddingHorizontal: 8 }}>−</Text>
+                </TouchableOpacity>
+                <Text style={{ color: isDarkMode ? '#fff' : '#000', minWidth: 20, textAlign: 'center' }}>{quantidade}</Text>
+                <TouchableOpacity onPress={() => updateQuantity(item.id, quantidade + 1)}>
+                  <Text style={{ fontSize: 18, color: isDarkMode ? '#fff' : '#000', paddingHorizontal: 8 }}>+</Text>
+                </TouchableOpacity>
+              </View>
 
-          </View>
-        )}
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => removeFromCart(item.id)}>
+                <Ionicons name="trash-bin-outline" size={24} color={isDarkMode ? '#ff6b6b' : '#ff0000'} />
+              </TouchableOpacity>
+            </View>
+          );
+        }}
       />
 
       <Text style={styles.total}>Total: R$ {total.toFixed(2)}</Text>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => Alert.alert("Finalizar Pedido",
+        onPress={() => Alert.alert(
+          "Finalizar Pedido",
           "Você tem certeza disto?",
           [
             { text: "Cancelar", style: "cancel" },
-            {
-              text: "Pagar",
-
-              onPress: () => handlePayment(),
-            }
+            { text: "Pagar", onPress: () => handlePayment() }
           ]
-        )
-        }>
-
+        )}
+      >
         <Text style={styles.buttonText}>Finalizar Pedido</Text>
       </TouchableOpacity>
 

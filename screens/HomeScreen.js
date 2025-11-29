@@ -34,7 +34,7 @@ export default function HomeScreen() {
 
   const primeiroNome = user?.nome?.split(" ")[0] || "Usuário";
   const qrValue = user.matricula;
-  const saldoFormatado = saldo.toFixed(2).replace(".", ",");
+  const saldoFormatado = (saldo).toFixed(2).replace(".", ",");
 
   const openDrawer = () => {
     setDrawerVisible(true);
@@ -163,7 +163,7 @@ export default function HomeScreen() {
 
               <TouchableOpacity
                 style={styles.drawerButton}
-                onPress={() => navigation.navigate("TrocarSenhaScreen")}
+                onPress={() => navigation.navigate("ChangePassword")}
               >
                 <Icon name="key-outline" size={22} color={styles.icon.color} />
                 <Text style={styles.drawerText}>Mudar Senha</Text>

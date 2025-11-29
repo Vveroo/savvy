@@ -1,94 +1,155 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { styles } from "../styles/forgotStyles";
+import { getForgotPasswordStyles } from "../styles/forgotPasswordStyles";
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from "../contexts/ThemeContext";
 
-// Validação simples do campo de e-mail
+// Validação da matrícula
 const ForgotPasswordSchema = Yup.object().shape({
-  email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
+  matricula: Yup.string().required('Matrícula obrigatória'),
 });
 
-// Função para gerar código aleatório de 8 caracteres (inclui especiais)
+// Função para gerar código aleatório de 8 caracteres (simples e fácil de digitar)
 const generateResetCode = () => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?';
-  let code = '';
-  for (let i = 0; i < 8; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
+  return Math.random().toString(36).substring(2, 10).toUpperCase();
 };
 
 export default function ForgotPasswordScreen() {
   const navigation = useNavigation();
+  const { isDarkMode, theme } = useTheme();
+  const styles = getForgotPasswordStyles(isDarkMode);
+  const [resetCode, setResetCode] = useState(null);
+  const [userMatricula, setUserMatricula] = useState(null);
+  const [showCodeModal, setShowCodeModal] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
+
+  const handleCopyCode = async () => {
+    try {
+      await Clipboard.setString(resetCode);
+      setCodeCopied(true);
+      setTimeout(() => setCodeCopied(false), 2000);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível copiar o código.');
+    }
+  };
 
   const handleSubmit = async (values) => {
-    // Gera código aleatório
-    const resetCode = generateResetCode();
-
     try {
-      // Envia para o servidor para atualizar a senha provisória
-      const response = await fetch('http://localhost:3000/api/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: values.email, tempPassword: resetCode }),
-      });
+      // Verifica se a matrícula existe no AsyncStorage
+      const usuariosJSON = await AsyncStorage.getItem('usuarios');
+      const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
+      
+      const usuarioEncontrado = usuarios.find(u => u.matricula === values.matricula);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert(
-          'Código gerado',
-          `Use este código provisório para fazer login:\n\n${resetCode}`
-        );
-        // Navega para tela de redefinição passando o código
-        navigation.navigate('ResetPassword', { email: values.email, resetCode });
-      } else {
-        Alert.alert('Erro', data.message || 'Não foi possível definir a senha provisória.');
+      if (!usuarioEncontrado) {
+        Alert.alert('Erro', 'Matrícula não encontrada.');
+        return;
       }
+
+      // Gera código aleatório
+      const code = generateResetCode();
+      setResetCode(code);
+      setUserMatricula(values.matricula);
+
+      // Atualiza a senha provisória do usuário
+      const usuarioIndex = usuarios.findIndex(u => u.matricula === values.matricula);
+      usuarios[usuarioIndex].senha = code;
+      await AsyncStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+      // Mostra o modal com o código
+      setShowCodeModal(true);
     } catch (error) {
-      Alert.alert('Erro', 'Falha na conexão com o servidor.');
+      Alert.alert('Erro', 'Falha ao procurar matrícula: ' + error.message);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowCodeModal(false);
+    setResetCode(null);
+    setUserMatricula(null);
+    navigation.navigate('Login');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Esqueceu sua senha?</Text>
 
-      <Formik
-        initialValues={{ email: '' }}
-        validationSchema={ForgotPasswordSchema}
-        onSubmit={handleSubmit}
+      {!resetCode ? (
+        <Formik
+          initialValues={{ matricula: '' }}
+          validationSchema={ForgotPasswordSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <>
+              <Text style={styles.subtitle}>
+                Digite sua matrícula de estudante
+              </Text>
+
+              <View style={styles.inputContainer}>
+                <Icon name="person" size={20} color={theme.inputText} style={styles.icon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Matrícula"
+                  placeholderTextColor={theme.textMuted}
+                  autoCapitalize="none"
+                  onChangeText={handleChange('matricula')}
+                  onBlur={handleBlur('matricula')}
+                  value={values.matricula}
+                />
+              </View>
+              {errors.matricula && touched.matricula && (
+                <Text style={styles.error}>{errors.matricula}</Text>
+              )}
+
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>Gerar código</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <Text style={styles.cancelButtonText}>Voltar ao Login</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </Formik>
+      ) : null}
+
+      {/* Modal com código para copiar */}
+      <Modal
+        visible={showCodeModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowCodeModal(false)}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <>
-            <TextInput
-              style={styles.input}
-              placeholder="E-mail"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              value={values.email}
-            />
-            {errors.email && touched.email && (
-              <Text style={styles.error}>{errors.email}</Text>
-            )}
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>✓ Código Gerado!</Text>
 
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Gerar código</Text>
+            <View style={styles.codeBox}>
+              <Text style={styles.codeText}>{resetCode}</Text>
+            </View>
+
+            <Text style={styles.modalText}>Use este código para redefinir sua senha</Text>
+
+            <TouchableOpacity style={styles.copyButton} onPress={handleCopyCode}>
+              <Icon name="copy" size={20} color="#fff" />
+              <Text style={styles.copyButtonText}>{codeCopied ? 'Copiado!' : 'Copiar Código'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.voltar}
-              onPress={() => navigation.navigate("Login")}
-            >
-              <Text style={styles.voltarLogin}>Voltar ao Login</Text>
+            <TouchableOpacity style={styles.continueButton} onPress={handleCloseModal}>
+              <Text style={styles.continueButtonText}>Ir para Login</Text>
             </TouchableOpacity>
-          </>
-        )}
-      </Formik>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

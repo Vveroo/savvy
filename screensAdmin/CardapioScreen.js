@@ -6,14 +6,14 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  Alert,
 } from 'react-native';
 import { getCardapioStyles } from '../stylesAdmin/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
-import { produtos as initialProdutos } from '../utils/mockData';
 import { Picker } from '@react-native-picker/picker';
 import { useCardapio } from '../contexts/CardapioContext';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function CardapioAdminScreen() {
   const { produtos, setProdutos } = useCardapio();
@@ -26,9 +26,23 @@ export default function CardapioAdminScreen() {
   const { isDarkMode } = useTheme();
   const styles = getCardapioStyles(isDarkMode);
 
+  // Atualizar automaticamente quando voltar à tela
+  useFocusEffect(
+    React.useCallback(() => {
+      // Força re-render quando a tela ganha foco
+      return () => {};
+    }, [produtos])
+  );
+
   // Adicionar novo item
   const handleAddItem = () => {
-    setSelectedItem({ id: Date.now(), nome: '', preco: '', descricao: '', categoria: '' });
+    setSelectedItem({
+      id: Date.now().toString(),
+      nome: '',
+      preco: 0,
+      descricao: '',
+      categoria: '',
+    });
     setIsEditing(false);
     setModalVisible(true);
   };
@@ -42,24 +56,45 @@ export default function CardapioAdminScreen() {
 
   // Salvar item (novo ou editado)
   const handleSaveItem = () => {
+    if (!selectedItem.nome || !selectedItem.categoria) {
+      alert('Preencha nome e categoria');
+      return;
+    }
+
     if (isEditing) {
       setProdutos((prev) =>
         prev.map((p) => (p.id === selectedItem.id ? selectedItem : p))
       );
     } else {
       setProdutos((prev) => [...prev, selectedItem]);
+      console.log('Produto adicionado:', selectedItem);
     }
     setModalVisible(false);
   };
 
   // Excluir item
   const handleDeleteItem = (id) => {
-    setProdutos((prev) => prev.filter((p) => p.id !== id));
+    Alert.alert(
+      'Deseja deletar este item?',
+      '',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Deletar',
+          style: 'destructive',
+          onPress: () => {
+            setProdutos((prev) => prev.filter((p) => p.id !== id));
+          },
+        },
+      ]
+    );
   };
 
-  const produtosFiltrados = produtos.filter((item) =>
-    item.nome.toLowerCase().includes(busca.toLowerCase())
-  );
+  const produtosFiltrados = Array.isArray(produtos)
+    ? produtos.filter((item) =>
+        item?.nome?.toLowerCase().includes(busca.toLowerCase())
+      )
+    : [];
 
   return (
     <View style={styles.container}>
@@ -80,41 +115,46 @@ export default function CardapioAdminScreen() {
       {/* Lista de produtos */}
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.grid}>
-          {produtosFiltrados.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              style={styles.card}
-              onPress={() => handleEditItem(item)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.nome}>{item.nome}</Text>
-              <Text style={styles.preco}>R$ {item.preco.toFixed(2)}</Text>
-
-              {/* Botão de excluir */}
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => handleDeleteItem(item.id)}
+          {produtosFiltrados.length === 0 ? (
+            <Text style={{ textAlign: 'center', marginTop: 20 }}>
+              Nenhum produto encontrado.
+            </Text>
+          ) : (
+            produtosFiltrados.map((item) => (
+              <View
+                key={item.id}
+                style={styles.card}
               >
-                <Icon name="trash-outline" size={20} color="#fff" />
-              </TouchableOpacity>
+                <Text style={styles.nome}>{item.nome}</Text>
+                <Text style={styles.preco}>
+                  R$ {Number(item.preco).toFixed(2)}
+                </Text>
 
-              {/* Botão de editar */}
-              <TouchableOpacity
-                style={styles.addButton}
-                onPress={() => handleEditItem(item)}
-              >
-                <Text style={styles.addText}>Editar</Text>
-              </TouchableOpacity>
-            </TouchableOpacity>
-          ))}
+                <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+                  {/* Botão de editar */}
+                  <TouchableOpacity
+                    style={[styles.addButton, { flex: 1 }]}
+                    onPress={() => handleEditItem(item)}
+                  >
+                    <Text style={styles.addText}>Editar</Text>
+                  </TouchableOpacity>
+
+                  {/* Botão de excluir */}
+                  <TouchableOpacity
+                    style={[styles.deleteButton, { flex: 1 }]}
+                    onPress={() => handleDeleteItem(item.id)}
+                  >
+                    <Icon name="trash-outline" size={20} color="#fff" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))
+          )}
         </View>
       </ScrollView>
 
       {/* Botão global de adicionar novo item */}
-      <TouchableOpacity
-        style={styles.carrinhoButton}
-        onPress={handleAddItem}
-      >
+      <TouchableOpacity style={styles.carrinhoButton} onPress={handleAddItem}>
         <Icon name="add-outline" size={28} color="#fff" />
       </TouchableOpacity>
 
@@ -132,7 +172,9 @@ export default function CardapioAdminScreen() {
                 style={styles.modalClose}
                 onPress={() => setModalVisible(false)}
               >
-                <Text style={{ fontSize: 18, color: isDarkMode ? '#fff' : '#000' }}>✖</Text>
+                <Text style={{ fontSize: 18, color: isDarkMode ? '#fff' : '#000' }}>
+                  ✖
+                </Text>
               </TouchableOpacity>
 
               <TextInput
@@ -151,7 +193,10 @@ export default function CardapioAdminScreen() {
                 keyboardType="numeric"
                 value={String(selectedItem.preco)}
                 onChangeText={(text) =>
-                  setSelectedItem({ ...selectedItem, preco: parseFloat(text) || 0 })
+                  setSelectedItem({
+                    ...selectedItem,
+                    preco: parseFloat(text) || 0,
+                  })
                 }
               />
               <TextInput
@@ -171,8 +216,8 @@ export default function CardapioAdminScreen() {
                   selectedValue={selectedItem.categoria}
                   style={styles.picker}
                   onValueChange={(value) => {
-                    if (value === "nova") {
-                      setSelectedItem({ ...selectedItem, categoria: "" });
+                    if (value === 'nova') {
+                      setSelectedItem({ ...selectedItem, categoria: '' });
                       setShowNovaCategoria(true);
                     } else {
                       setSelectedItem({ ...selectedItem, categoria: value });

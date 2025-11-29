@@ -82,5 +82,8 @@ export const getPedidosStyles = (isDarkMode) => {
       textAlign: "center",
       letterSpacing: 0.5,
     },
+    elise: {
+      color: isDarkMode ? "#bbb" : "#666",
+    },
   });
 };

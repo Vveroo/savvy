@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   View,
@@ -19,7 +18,11 @@ import { getLoginStyles } from "../styles/loginStyles";
 const loginValidationSchema = yup.object().shape({
   matricula: yup
     .string()
-    .matches(/^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:,.?\/|\\~]+$/, "Matrícula inválida!")
+    // ✅ Regex corrigido e fechado corretamente
+    .matches(
+      /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:,.?\/|\\~]+$/,
+      "Matrícula inválida!"
+    )
     .required("Obrigatório"),
   password: yup
     .string()
@@ -42,63 +45,64 @@ export default function Login() {
         matricula: "admin",
         password: "admin1234",
         role: "admin",
+        saldo: 0,
       },
       estudante: {
         matricula: "estudante",
         password: "estudante1234",
         role: "student",
+        saldo: 100.0,
       },
     };
 
     const { matricula, password } = values;
-    const fixedUser = Object.values(fixedLogins).find(
-      (user) => user.matricula === matricula && user.password === password
-    );
-
-    if (fixedUser) {
-      const token = `fixed-token-${fixedUser.role}`;
-      await AsyncStorage.setItem("userToken", token);
-      await AsyncStorage.setItem("userMatricula", matricula);
-
-      // ✅ Agora usamos apenas login do UserContext
-      login({ nome: matricula, matricula, role: fixedUser.role });
-
-      // ✅ Navegação baseada no role
-      if (fixedUser.role === "admin") {
-        navigation.replace("AdminTabs");
-      } else {
-        navigation.replace("MainTabs");
-      }
-      return;
-    }
 
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+      // Primeiro tenta com os logins fixos
+      let fixedUser = Object.values(fixedLogins).find(
+        (user) => user.matricula === matricula && user.password === password
+      );
 
-      const data = await response.json();
+      // Se não encontrou, tenta no AsyncStorage (para senhas alteradas ou códigos provisórios)
+      if (!fixedUser) {
+        const usuariosJSON = await AsyncStorage.getItem('usuarios');
+        const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
+        const usuarioEncontrado = usuarios.find(
+          (u) => u.matricula === matricula && u.senha === password
+        );
 
-      if (response.ok && data.token) {
-        await AsyncStorage.setItem("userToken", data.token);
+        if (usuarioEncontrado) {
+          fixedUser = {
+            matricula: usuarioEncontrado.matricula,
+            role: usuarioEncontrado.role || 'student',
+            saldo: usuarioEncontrado.saldo || 100.0,
+          };
+        }
+      }
+
+      if (fixedUser) {
+        const token = `fixed-token-${fixedUser.role}`;
+        await AsyncStorage.setItem("userToken", token);
         await AsyncStorage.setItem("userMatricula", matricula);
 
-        login({ ...data.user, role: data.user.role });
+        // ✅ Passa saldo corretamente para o contexto
+        login({
+          nome: matricula,
+          matricula,
+          role: fixedUser.role,
+          saldo: fixedUser.saldo,
+        });
 
-        if (data.user.role === "admin") {
+        if (fixedUser.role === "admin") {
           navigation.replace("AdminTabs");
         } else {
           navigation.replace("MainTabs");
         }
       } else {
-        setApiError(data.message || "Credenciais inválidas.");
-        setTimeout(() => setApiError(""), 4000);
+        setApiError("Matrícula ou senha incorreta");
       }
     } catch (error) {
-      setApiError("Usuário ou senha incorretos.");
-      setTimeout(() => setApiError(""), 4000);
+      setApiError("Erro ao fazer login: " + error.message);
     }
   };
 

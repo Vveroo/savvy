@@ -182,12 +182,16 @@ export const getCardapioStyles = (isDarkMode) => {
       marginBottom: 12,
       backgroundColor: theme.inputBackground,
       overflow: 'hidden',
+      minHeight: 60,
+      justifyContent: 'center',
     },
 
     picker: {
       width: '100%',
       color: theme.inputText,
-      fontSize: 14,
+      fontSize: 18,
+      height: 60,
+      backgroundColor: theme.inputBackground,
     },
 
     cartButton: {
