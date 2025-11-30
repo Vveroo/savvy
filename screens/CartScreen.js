@@ -53,13 +53,13 @@ export default function CartScreen({ navigation }) {
     };
 
     try {
-      // Salva no histórico do usuário
+      // Salva no histórico do usuário (Meus Pedidos)
       const existingOrders = await AsyncStorage.getItem('orders');
       const orders = existingOrders ? JSON.parse(existingOrders) : [];
       orders.push(order);
       await AsyncStorage.setItem('orders', JSON.stringify(orders));
 
-      // Salva também para o Admin ver
+      // Salva também para o Admin ver (Pedidos Admin)
       const existingPending = await AsyncStorage.getItem('pendingOrders');
       const pendingOrders = existingPending ? JSON.parse(existingPending) : [];
       pendingOrders.push(order);
@@ -69,8 +69,17 @@ export default function CartScreen({ navigation }) {
       setSaldo((prevSaldo) => prevSaldo - total);
 
       clearCart();
+
       Alert.alert("Sucesso", "Compra realizada com sucesso!", [
-        { text: "OK" }
+        { 
+          text: "OK", 
+          onPress: () => {
+            // 🔹 Navega para a tela de MeusPedidos
+            navigation.navigate("MeusPedidos");
+            // Se quiser também abrir a tela de Admin:
+            // navigation.navigate("PedidosAdmin");
+          } 
+        }
       ]);
     } catch (error) {
       console.error('Erro ao salvar pedido:', error);
