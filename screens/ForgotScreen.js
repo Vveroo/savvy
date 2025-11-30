@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { getForgotPasswordStyles } from "../styles/forgotPasswordStyles";
@@ -30,7 +30,7 @@ export default function ForgotPasswordScreen() {
 
   const handleCopyCode = async () => {
     try {
-      await Clipboard.setString(resetCode);
+      await Clipboard.setStringAsync(resetCode);
       setCodeCopied(true);
       setTimeout(() => setCodeCopied(false), 2000);
     } catch (error) {

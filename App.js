@@ -13,10 +13,8 @@ import TabNavigator from './screens/TabNavigator';
 import ForgotPasswordScreen from './screens/ForgotScreen';
 import ChangePasswordScreen from './screens/ChangePasswordScreen';
 import CartScreen from './screens/CartScreen';
-import MeusPedidosScreen from './screens/MeusPedidos';
 import HistoricoScreen from './screens/HistoricoScreen';
 import PaymentScreen from './screens/PaymentScreen';
-import QRCodeScreen from './screens/QRCodeScreen';
 
 // Admin
 import AdminTabs from './screensAdmin/AdminTabs';
@@ -77,7 +75,6 @@ export default function App() {
                 <Stack.Screen name="Cart" component={CartScreen} />
                 <Stack.Screen name="Pagamento" component={PaymentScreen} />
                 <Stack.Screen name="HistoricoScreen" component={HistoricoScreen} />
-                <Stack.Screen name="QRCode" component={QRCodeScreen} />
               </Stack.Navigator>
             </NavigationContainer>
           </CardapioProvider>

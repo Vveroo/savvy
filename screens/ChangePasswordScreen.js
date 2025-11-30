@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserContext } from '../contexts/UserContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -122,7 +122,7 @@ export default function ChangePasswordScreen({ navigation }) {
 
   const handleCopyCode = async () => {
     try {
-      await Clipboard.setString(tempCode);
+      await Clipboard.setStringAsync(tempCode);
       Alert.alert('Copiado!', 'Código copiado para a área de transferência');
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível copiar');

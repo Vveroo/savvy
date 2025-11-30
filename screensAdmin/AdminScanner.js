@@ -13,7 +13,7 @@ export default function AdminScanner({ navigation }) {
   const [scanned, setScanned] = useState(false);
   const [count, setCount] = useState(0);
 
-  // Carregar contador inicial
+  // Solicitar permissão e carregar contador inicial
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -28,6 +28,7 @@ export default function AdminScanner({ navigation }) {
   const handleBarCodeScanned = async ({ data }) => {
     if (scanned) return;
     setScanned(true);
+
     const matricula = String(data).trim();
     const today = new Date().toISOString().slice(0, 10);
 
@@ -38,7 +39,6 @@ export default function AdminScanner({ navigation }) {
       // Se já foi lido hoje, alerta e não incrementa contador
       if (reads[matricula] === today) {
         Alert.alert('Já lido hoje', 'Este QR code já foi validado hoje.');
-        setTimeout(() => setScanned(false), 800);
         return;
       }
 
@@ -61,8 +61,6 @@ export default function AdminScanner({ navigation }) {
       Alert.alert('Sucesso', `QR code de ${matricula} validado.`);
     } catch (err) {
       Alert.alert('Erro', 'Falha ao processar QR: ' + (err.message || err));
-    } finally {
-      setTimeout(() => setScanned(false), 700);
     }
   };
 
@@ -103,7 +101,22 @@ export default function AdminScanner({ navigation }) {
       </View>
 
       {/* Scanner */}
-      <BarCodeScanner onBarCodeScanned={handleBarCodeScanned} style={{ flex: 1 }} />
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={{ flex: 1 }}
+      />
+
+      {/* Botão para escanear novamente */}
+      {scanned && (
+        <View style={{ alignItems: 'center', padding: 12 }}>
+          <TouchableOpacity
+            onPress={() => setScanned(false)}
+            style={{ backgroundColor: theme.button, padding: 10, borderRadius: 6 }}
+          >
+            <Text style={{ color: '#fff', fontWeight: '600' }}>Escanear novamente</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
