@@ -14,7 +14,7 @@ import ForgotPasswordScreen from './screens/ForgotScreen';
 import ChangePasswordScreen from './screens/ChangePasswordScreen';
 import CartScreen from './screens/CartScreen';
 import HistoricoScreen from './screens/HistoricoScreen';
-import PaymentScreen from './screens/PaymentScreen';
+import RechargeScreen from './screens/RechargeScreen';
 
 // Admin
 import AdminTabs from './screensAdmin/AdminTabs';
@@ -73,7 +73,9 @@ export default function App() {
                 <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
                 <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
                 <Stack.Screen name="Cart" component={CartScreen} />
-                <Stack.Screen name="Pagamento" component={PaymentScreen} />
+                <Stack.Screen name="Pagamento" component={RechargeScreen} />
+                <Stack.Screen name="PixPayment" component={require('./screens/PixPaymentScreen').default} />
+                <Stack.Screen name="CreditCardPayment" component={require('./screens/CreditCardPaymentScreen').default} />
                 <Stack.Screen name="HistoricoScreen" component={HistoricoScreen} />
               </Stack.Navigator>
             </NavigationContainer>

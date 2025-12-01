@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
 import { COLORS } from '../styles/colors';
 import HomeScreen from "./HomeScreen";
-import PedidosScreen from "./AdminOrderDetails";
+import PedidosScreen from "./AdminPedidos";
 import CardapioScreen from "./CardapioScreen";
 // Other admin screens are reachable via the drawer
 

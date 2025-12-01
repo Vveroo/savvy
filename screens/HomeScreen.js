@@ -8,6 +8,7 @@ import {
   Animated,
 } from "react-native";
 import { getHomeStyles } from "../styles/homeStyles";
+import { getCommonStyles } from '../styles/commonStyles';
 import Icon from "react-native-vector-icons/Ionicons";
 import QRCode from "react-native-qrcode-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -19,6 +20,7 @@ export default function HomeScreen() {
   const { user, saldo, logout } = useUserContext();
   const { isDarkMode, toggleTheme } = useTheme();
   const styles = getHomeStyles(isDarkMode);
+  const common = getCommonStyles(isDarkMode);
   const [mostrarSaldo, setMostrarSaldo] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [drawerAnim] = useState(new Animated.Value(-300));
@@ -82,7 +84,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={common.container}>
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.btnPerfil} onPress={toggleDrawer}>
           <Icon
@@ -101,7 +103,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
       {/* Saudação */}
-      <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
+      <Text style={[styles.greeting, { marginBottom: 8 }]}>Olá {primeiroNome}!</Text>
       {/* Saldo */}
       <TouchableOpacity
         style={styles.saldoBox}
@@ -124,9 +126,9 @@ export default function HomeScreen() {
       </TouchableOpacity>
 
       {/*Btn Recarregar*/}
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("Pagamento")}>
-          <Text style={styles.buttonText}>Recarregar</Text>
+      <View style={{ marginTop: 8, marginBottom: 12 }}>
+        <TouchableOpacity style={common.btn} onPress={() => navigation.navigate("Pagamento") }>
+          <Text style={common.btnText}>Recarregar</Text>
         </TouchableOpacity>
       </View>
 

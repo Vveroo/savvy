@@ -8,9 +8,11 @@ import {
   Animated,
   TextInput,
   FlatList,
-  StyleSheet,
+  ScrollView,
 } from "react-native";
 import { getHomeStyles } from "../stylesAdmin/homeStyles";
+import { getCommonStyles } from "../styles/commonStyles";
+import { schedulesMock } from "../utils/mockData";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../contexts/UserContext";
@@ -25,41 +27,59 @@ export default function HomeScreen() {
   const [drawerAnim] = useState(new Animated.Value(-300));
   const navigation = useNavigation();
 
-  // Estado da tabela
-  const [rows, setRows] = useState([]);
+  // Shared styles
+  const common = getCommonStyles(isDarkMode);
+
+  // Schedules state per turno (Manha, Tarde, Noite)
+  const [schedules, setSchedules] = useState({ Manha: [], Tarde: [], Noite: [] });
+  const [editingTurno, setEditingTurno] = useState(null);
+  const [editModalVisible, setEditModalVisible] = useState(false);
 
   useEffect(() => {
-    const loadTable = async () => {
+    const loadSchedules = async () => {
       try {
-        const saved = await AsyncStorage.getItem("home_table");
-        if (saved) setRows(JSON.parse(saved));
+        const saved = await AsyncStorage.getItem("schedules");
+        if (saved) {
+          setSchedules(JSON.parse(saved));
+        } else {
+          setSchedules(schedulesMock);
+        }
       } catch (err) {
-        // ignore
+        setSchedules(schedulesMock);
       }
     };
-    loadTable();
+    loadSchedules();
   }, []);
 
-  const saveTable = async (newRows) => {
-    setRows(newRows);
-    await AsyncStorage.setItem("home_table", JSON.stringify(newRows));
+  const saveSchedules = async (newSchedules) => {
+    setSchedules(newSchedules);
+    await AsyncStorage.setItem("schedules", JSON.stringify(newSchedules));
   };
 
-  const addRow = () => {
-    const newRows = [...rows, { id: Date.now().toString(), col1: "", col2: "" }];
-    saveTable(newRows);
+  const openEdit = (turno) => {
+    setEditingTurno(turno);
+    setEditModalVisible(true);
   };
 
-  const updateCell = (id, field, value) => {
-    const newRows = rows.map((row) =>
-      row.id === id ? { ...row, [field]: value } : row
-    );
-    saveTable(newRows);
+  const addScheduleRow = (turno) => {
+    const list = schedules[turno] || [];
+    const newList = [...list, { id: Date.now().toString(), turma: "", horario: "" }];
+    const newSchedules = { ...schedules, [turno]: newList };
+    saveSchedules(newSchedules);
   };
 
-  const removeRow = (id) => {
-    const newRows = rows.filter((row) => row.id !== id);
-    saveTable(newRows);
+  const updateScheduleCell = (turno, id, field, value) => {
+    const list = schedules[turno] || [];
+    const newList = list.map((r) => (r.id === id ? { ...r, [field]: value } : r));
+    const newSchedules = { ...schedules, [turno]: newList };
+    saveSchedules(newSchedules);
+  };
+
+  const removeScheduleRow = (turno, id) => {
+    const list = schedules[turno] || [];
+    const newList = list.filter((r) => r.id !== id);
+    const newSchedules = { ...schedules, [turno]: newList };
+    saveSchedules(newSchedules);
   };
 
   if (!user) {
@@ -122,49 +142,94 @@ export default function HomeScreen() {
       {/* TopBar apenas com perfil */}
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.btnPerfil} onPress={toggleDrawer}>
-          <Icon
-            name="person-circle-outline"
-            size={32}
-            color={styles.icon.color}
-          />
+          <Icon name="person-circle-outline" size={32} color={styles.icon.color} />
         </TouchableOpacity>
       </View>
 
       {/* Saudação */}
       <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
 
-      {/* Tabela Horários */}
+      {/* Tabelas lado a lado com scroll horizontal */}
       <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Horários</Text>
-      <FlatList
-        data={rows}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.tableRow}>
-            <TextInput
-              style={styles.tableCell}
-              placeholder="Coluna 1"
-              value={item.col1}
-              onChangeText={(text) => updateCell(item.id, "col1", text)}
-            />
-            <TextInput
-              style={styles.tableCell}
-              placeholder="Coluna 2"
-              value={item.col2}
-              onChangeText={(text) => updateCell(item.id, "col2", text)}
-            />
-            <TouchableOpacity
-              onPress={() => removeRow(item.id)}
-              style={styles.deleteBtn}
-            >
-              <Text style={{ color: "#fff" }}>X</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
 
-      <TouchableOpacity onPress={addRow} style={styles.addBtn}>
-        <Text style={styles.addBtnText}>+ Adicionar Linha</Text>
-      </TouchableOpacity>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+        {["Manha", "Tarde", "Noite"].map((turno) => (
+          <View key={turno} style={[common.card, { width: 300, marginRight: 16 }]}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+              <Text style={common.title}>{turno}</Text>
+              <View style={{ flexDirection: "row", gap: 8 }}>
+                <TouchableOpacity onPress={() => addScheduleRow(turno)} style={common.editButton}>
+                  <Text style={{ color: "#fff" }}>+ Linha</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => openEdit(turno)} style={common.editButton}>
+                  <Text style={{ color: "#fff" }}>Editar Tabela</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={common.tableHeader}>
+              <Text style={[common.cellText, common.colTurma]}>Turma</Text>
+              <Text style={[common.cellText, common.colHorario]}>Horário</Text>
+            </View>
+
+            {(schedules[turno] || []).map((r) => (
+              <View key={r.id} style={common.tableRow}>
+                <Text style={[common.cellText, common.colTurma]}>{r.turma || "—"}</Text>
+                <Text style={[common.cellText, common.colHorario]}>{r.horario || "—"}</Text>
+              </View>
+            ))}
+          </View>
+        ))}
+      </ScrollView>
+
+      {/* Edit modal for turno */}
+      <Modal visible={editModalVisible} transparent animationType="slide">
+        <View style={{ flex: 1, justifyContent: "center", padding: 20 }}>
+          <View style={common.modalCard}>
+            <Text style={common.title}>Editando: {editingTurno}</Text>
+            <FlatList
+              data={schedules[editingTurno] || []}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
+                  <TextInput
+                    placeholder="Turma"
+                    placeholderTextColor={isDarkMode ? "#9CA3AF" : "#6B7280"}
+                    style={[common.input, { flex: 1, marginRight: 8 }]}
+                    value={item.turma}
+                    onChangeText={(text) => updateScheduleCell(editingTurno, item.id, "turma", text)}
+                  />
+                  <TextInput
+                    placeholder="Horário"
+                    placeholderTextColor={isDarkMode ? "#9CA3AF" : "#6B7280"}
+                    style={[common.input, { flex: 1, marginRight: 8 }]}
+                    value={item.horario}
+                    onChangeText={(text) => updateScheduleCell(editingTurno, item.id, "horario", text)}
+                  />
+                  <TouchableOpacity
+                    onPress={() => removeScheduleRow(editingTurno, item.id)}
+                    style={{ backgroundColor: "#ef4444", padding: 8, borderRadius: 6 }}
+                  >
+                    <Text style={{ color: "#fff" }}>Remover</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 12 }}>
+              <TouchableOpacity onPress={() => addScheduleRow(editingTurno)} style={common.btn}>
+                <Text style={common.btnText}>Adicionar Linha</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setEditModalVisible(false)}
+                style={[common.btn, { backgroundColor: "#6B7280" }]}
+              >
+                <Text style={common.btnText}>Fechar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Drawer lateral */}
       <Modal visible={drawerVisible} transparent animationType="none">
@@ -238,4 +303,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-

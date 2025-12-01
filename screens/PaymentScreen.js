@@ -1,138 +1,121 @@
-
-import React, { useState } from "react";
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Alert,
+  FlatList,
   TouchableOpacity,
-  Modal
-} from "react-native";
-import styles from "../styles/paymentStyles";
-import Clipboard from "@react-native-clipboard/clipboard";
+  Modal,
+  Button,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CartContext } from '../contexts/CartContext';
+import { getCartStyles } from '../styles/cartStyles';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function RecargaScreen() {
-  const [valor, setValor] = useState("");
-  const [saldo, setSaldo] = useState(0);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [resumoVisible, setResumoVisible] = useState(false);
-  const [pixVisible, setPixVisible] = useState(false);
+const CartScreen = () => {
+  const { cartItems, removeFromCart } = useContext(CartContext);
+  const navigation = useNavigation();
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
 
-  const confirmarRecarga = () => {
-    const valorNumerico = Number(valor);
-
-    if (!valor || isNaN(valorNumerico) || valorNumerico <= 0) {
-      Alert.alert("Erro", "Por favor, insira um valor válido.");
-      return;
-    }
-
-    // Remove Alert para abrir modal diretamente
-    setModalVisible(true);
+  const handleRemoveFromCart = (itemId) => {
+    removeFromCart(itemId);
   };
 
-  const escolherPix = () => {
-    setModalVisible(false);
-    setResumoVisible(true);
+  const handlePayment = () => {
+    setPaymentModalVisible(true);
   };
 
-  const confirmarResumo = () => {
-    setResumoVisible(false);
-    setPixVisible(true);
-    setSaldo(saldo + Number(valor)); // atualiza saldo
-    setValor(""); // limpa campo
+  const handlePaymentMethod = (method) => {
+    setPaymentMethod(method);
+    setPaymentModalVisible(false);
   };
 
-  const codigoPix =
-    "00020126580014BR.GOV.BCB.PIX0136+5547999999995204000053039865406100.005802BR5920Recarga Simulada6009Palhoca62070503***6304ABCD";
+  const handlePixPayment = () => {
+    // Simulado de pagamento via PIX
+    const randomCode = generateRandomCode();
+    // Lógica para abrir o aplicativo de transferência PIX
+    console.log('Código PIX:', randomCode);
+  };
+
+  const handleCreditCardPayment = () => {
+    // Simulado de pagamento via cartão de crédito
+    // Lógica para abrir a tela de adicionar cartão de crédito
+    console.log('Pagar com cartão de crédito');
+  };
+
+  const generateRandomCode = () => {
+    // Lógica para gerar um código aleatório de PIX
+    return '1234567890';
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Recarregar</Text>
-      <Text style={styles.label}>Insira o valor que deseja recarregar:</Text>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.saldoAtual}>Saldo atual: R$ {saldo}</Text>
-
-        <View style={styles.adicionar}>
-          <Text style={styles.valor}>Valor da recarga:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Digite o valor"
-            keyboardType="numeric"
-            value={valor}
-            onChangeText={setValor}
+    <View style={getCartStyles.container}>
+      <Text style={getCartStyles.title}>Meu carrinho</Text>
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item) => item.itemId}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={getCartStyles.itemContainer}
+            onPress={() => handleRemoveFromCart(item.itemId)}
+          >
+            <Text style={getCartStyles.itemText}>{item.name}</Text>
+            <Text style={getCartStyles.itemText}>{item.price}</Text>
+            <Icon name="trash-outline" size={24} color="red" />
+          </TouchableOpacity>
+        )}
+      />
+      <TouchableOpacity style={getCartStyles.button} onPress={handlePayment}>
+        <Text style={getCartStyles.buttonText}>Finalizar pedido</Text>
+      </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={paymentModalVisible}
+      >
+        <View style={getCartStyles.paymentModal}>
+          <Text style={getCartStyles.paymentModalTitle}>Escolha a forma de pagamento</Text>
+          <Button
+            title="PIX"
+            onPress={() => handlePaymentMethod('PIX')}
+          />
+          <Button
+            title="Cartão de Crédito"
+            onPress={() => handlePaymentMethod('Cartão de Crédito')}
+          />
+          <Button
+            title="Cancelar"
+            onPress={() => setPaymentModalVisible(false)}
           />
         </View>
-      </View>
-
-      <TouchableOpacity onPress={confirmarRecarga}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Confirmar Recarga</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Modal de forma de pagamento */}
-      <Modal visible={modalVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.title}>Escolha a forma de pagamento</Text>
-            <TouchableOpacity onPress={escolherPix} style={styles.button}>
-              <Text style={styles.buttonText}>PIX</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Adicionar novo cartão</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Fechar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </Modal>
-
-      {/* Resumo do pedido */}
-      <Modal visible={resumoVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.title}>Resumo do Pedido</Text>
-            <Text>Valor: R$ {valor}</Text>
-            <Text>Forma de pagamento: PIX</Text>
-            <TouchableOpacity onPress={confirmarResumo} style={styles.button}>
-              <Text style={styles.buttonText}>Confirmar</Text>
-            </TouchableOpacity>
-          </View>
+      {paymentMethod === 'PIX' && (
+        <View style={getCartStyles.paymentModal}>
+          <Text style={getCartStyles.paymentModalTitle}>Pagamento via PIX</Text>
+          <Text style={getCartStyles.paymentModalText}>Código PIX:</Text>
+          <Text style={getCartStyles.paymentModalText}>{generateRandomCode()}</Text>
+          <Button
+            title="Pagar"
+            onPress={handlePixPayment}
+          />
         </View>
-      </Modal>
-
-      {/* Tela com código PIX */}
-      <Modal visible={pixVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.title}>Código PIX</Text>
-            <Text selectable>{codigoPix}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                Clipboard.setString(codigoPix);
-                Alert.alert(
-                  "Copiado!",
-                  "Código PIX copiado para área de transferência."
-                );
-              }}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Copiar Código</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setPixVisible(false)}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Fechar</Text>
-            </TouchableOpacity>
-          </View>
+      )}
+      {paymentMethod === 'Cartão de Crédito' && (
+        <View style={getCartStyles.paymentModal}>
+          <Text style={getCartStyles.paymentModalTitle}>Pagamento via Cartão de Crédito</Text>
+          <Text style={getCartStyles.paymentModalText}>
+            Adicione um novo cartão de crédito ou selecione um existente
+          </Text>
+          <Button
+            title="Adicionar cartão de crédito"
+            onPress={handleCreditCardPayment}
+          />
         </View>
-      </Modal>
+      )}
     </View>
   );
-}
+};
+
+export default CartScreen;
