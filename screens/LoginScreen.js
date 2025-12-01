@@ -18,7 +18,6 @@ import { getLoginStyles } from "../styles/loginStyles";
 const loginValidationSchema = yup.object().shape({
   matricula: yup
     .string()
-    // ✅ Regex corrigido e fechado corretamente
     .matches(
       /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:,.?\/|\\~]+$/,
       "Matrícula inválida!"
@@ -58,12 +57,10 @@ export default function Login() {
     const { matricula, password } = values;
 
     try {
-      // Primeiro tenta com os logins fixos
       let fixedUser = Object.values(fixedLogins).find(
         (user) => user.matricula === matricula && user.password === password
       );
 
-      // Se não encontrou, tenta no AsyncStorage (para senhas alteradas ou códigos provisórios)
       if (!fixedUser) {
         const usuariosJSON = await AsyncStorage.getItem('usuarios');
         const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
@@ -85,7 +82,6 @@ export default function Login() {
         await AsyncStorage.setItem("userToken", token);
         await AsyncStorage.setItem("userMatricula", matricula);
 
-        // ✅ Passa saldo corretamente para o contexto
         login({
           nome: matricula,
           matricula,

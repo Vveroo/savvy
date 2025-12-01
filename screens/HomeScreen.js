@@ -123,6 +123,13 @@ export default function HomeScreen() {
         </View>
       </TouchableOpacity>
 
+      {/*Btn Recarregar*/}
+      <View style={styles.buttonGroup}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("RecarregarScreen")}>
+          <Text style={styles.buttonText}>Recarregar</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* QR Code */}
       <View style={styles.qrContainer}>
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>

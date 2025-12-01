@@ -33,7 +33,6 @@ export default function MeusPedidos() {
     setRefreshing(false);
   };
 
-  // ✅ Função para cancelar pedido
   const cancelOrder = async (id) => {
     const updatedOrders = orders.map((order) =>
       order.id === id ? { ...order, status: "cancelado e reembolsado" } : order
@@ -42,7 +41,6 @@ export default function MeusPedidos() {
     await AsyncStorage.setItem("orders", JSON.stringify(updatedOrders));
   };
 
-  // ✅ Filtra pedidos que não estão concluídos
   const filteredOrders = orders.filter(
     (order) =>
       order.status !== "concluido" && order.status !== "cancelado e reembolsado"
