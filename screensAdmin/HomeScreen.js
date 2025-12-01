@@ -287,6 +287,18 @@ export default function HomeScreen() {
 
               <TouchableOpacity
                 style={styles.drawerButton}
+                onPress={() => navigation.navigate("AdminProdutoEditor")}
+              >
+                <Icon
+                  name="create-outline"
+                  size={22}
+                  color={styles.icon.color}
+                />
+                <Text style={styles.drawerText}>Editar Produtos</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.drawerButton}
                 onPress={handleLogout}
               >
                 <Icon

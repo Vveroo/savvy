@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
-import { Camera } from 'expo-camera';
+import * as ExpoCamera from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { COLORS } from '../styles/colors';
@@ -16,7 +16,7 @@ export default function AdminScanner({ navigation }) {
   // Solicitar permissão e carregar contador inicial
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      const { status } = await ExpoCamera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
 
       const cntStr = await AsyncStorage.getItem('qrcode_scan_count');
@@ -44,19 +44,19 @@ export default function AdminScanner({ navigation }) {
   if (hasPermission === false) {
     return <Text>Permissão para acessar a câmera foi negada.</Text>;
   }
+  // Resolve the Camera component safely (some bundlers/platforms export differently)
+  const CameraComp = ExpoCamera.Camera ?? ExpoCamera.default ?? ExpoCamera;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Camera
+    <View style={[styles.container, { backgroundColor: theme.background }]}> 
+      <CameraComp
         style={styles.camera}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
       >
         <View style={styles.overlay}>
-          <Text style={[styles.text, { color: theme.text }]}>
-            Escaneie um código QR
-          </Text>
+          <Text style={[styles.text, { color: theme.text }]}>Escaneie um código QR</Text>
         </View>
-      </Camera>
+      </CameraComp>
       {scanned && (
         <TouchableOpacity
           style={styles.button}

@@ -12,11 +12,11 @@ import { getCardapioStyles } from '../stylesAdmin/cardapioStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
 import { Picker } from '@react-native-picker/picker';
-import { useCardapio } from '../contexts/CardapioContext';
+import { useCardapioContext } from '../contexts/CardapioContext';
 import { useFocusEffect } from '@react-navigation/native';
 
-export default function CardapioAdminScreen() {
-  const { produtos, setProdutos } = useCardapio();
+export default function CardapioAdminScreen({ navigation }) {
+  const { produtos, addProduto, editProduto, deleteProduto, setProdutos } = useCardapioContext();
   const [busca, setBusca] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -62,12 +62,11 @@ export default function CardapioAdminScreen() {
     }
 
     if (isEditing) {
-      setProdutos((prev) =>
-        prev.map((p) => (p.id === selectedItem.id ? selectedItem : p))
-      );
+      // usa a função do contexto para editar
+      editProduto(selectedItem.id, selectedItem);
     } else {
-      setProdutos((prev) => [...prev, selectedItem]);
-      console.log('Produto adicionado:', selectedItem);
+      // usa a função do contexto para adicionar
+      addProduto(selectedItem);
     }
     setModalVisible(false);
   };
@@ -79,13 +78,14 @@ export default function CardapioAdminScreen() {
       '',
       [
         { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Deletar',
-          style: 'destructive',
-          onPress: () => {
-            setProdutos((prev) => prev.filter((p) => p.id !== id));
+          {
+            text: 'Deletar',
+            style: 'destructive',
+            onPress: () => {
+              // usa a função do contexto para deletar
+              deleteProduto(id);
+            },
           },
-        },
       ]
     );
   };
@@ -152,12 +152,6 @@ export default function CardapioAdminScreen() {
           )}
         </View>
       </ScrollView>
-
-      {/* Botão global de adicionar novo item */}
-      <TouchableOpacity style={styles.carrinhoButton} onPress={handleAddItem}>
-        <Icon name="add-outline" size={28} color="#fff" />
-      </TouchableOpacity>
-
       {/* Modal de adicionar/editar */}
       {selectedItem && (
         <Modal
@@ -257,6 +251,29 @@ export default function CardapioAdminScreen() {
           </View>
         </Modal>
       )}
+
+      {/* FAB - Floating Action Button para abrir editor completo */}
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 20,
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          backgroundColor: '#2196F3',
+          justifyContent: 'center',
+          alignItems: 'center',
+          elevation: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 3,
+        }}
+        onPress={() => navigation.navigate('AdminProdutoEditor')}
+      >
+        <Icon name="create" size={28} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }

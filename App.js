@@ -22,6 +22,7 @@ import AdminDashboard from './screensAdmin/AdminDashboard';
 import AdminOrderDetails from './screensAdmin/AdminOrderDetails';
 import AdminHistorico from './screensAdmin/AdminHistorico';
 import AdminScanner from './screensAdmin/AdminScanner';
+import AdminProdutoEditor from './screensAdmin/AdminProdutoEditor';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,7 @@ export default function App() {
                 <Stack.Screen name="AdminOrderDetails" component={AdminOrderDetails} />
                 <Stack.Screen name="AdminHistorico" component={AdminHistorico} />
                 <Stack.Screen name="AdminScanner" component={AdminScanner} />
+                <Stack.Screen name="AdminProdutoEditor" component={AdminProdutoEditor} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
                 <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
                 <Stack.Screen name="Cart" component={CartScreen} />
