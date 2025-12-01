@@ -116,7 +116,7 @@ export default function CardapioAdminScreen() {
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.grid}>
           {produtosFiltrados.length === 0 ? (
-            <Text style={{ textAlign: 'center', marginTop: 20 }}>
+            <Text style={{ textAlign: 'center', marginTop: 20, color: isDarkMode ? '#fff' : '#000' }}>
               Nenhum produto encontrado.
             </Text>
           ) : (

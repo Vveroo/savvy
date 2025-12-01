@@ -26,10 +26,9 @@ export default function AdminDashboard({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 6 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 6, marginTop: 10 }}>
           <Icon name="arrow-back-outline" size={22} color={theme.inputText} />
         </TouchableOpacity>
-        <Text style={{ color: theme.inputText, marginLeft: 8, fontWeight: '600' }}>Voltar</Text>
       </View>
       <Text style={styles.title}>Painel do Admin</Text>
 

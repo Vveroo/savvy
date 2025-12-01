@@ -128,7 +128,7 @@ export default function CardapioScreen() {
       <ScrollView style={{ flex: 1 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={styles.grid}>
           {produtosFiltrados.length === 0 ? (
-            <Text style={{ textAlign: 'center', marginTop: 20 }}>
+            <Text style={{ textAlign: 'center', marginTop: 20, color: isDarkMode ? 'white' : 'black' }}>
               Nenhum produto encontrado.
             </Text>
           ) : (

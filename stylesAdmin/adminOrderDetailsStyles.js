@@ -10,6 +10,7 @@ export const getAdminOrderDetailsStyles = (isDarkMode) => {
       backgroundColor: theme.background 
     },
     title: { 
+      marginTop: 30,
       fontSize: 20, 
       fontWeight: '700', 
       color: theme.inputText, 
