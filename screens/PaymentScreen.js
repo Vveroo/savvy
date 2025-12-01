@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   View,
@@ -25,15 +26,8 @@ export default function RecargaScreen() {
       return;
     }
 
-    Alert.alert("Confirmação", `Deseja confirmar a recarga de R$ ${valor}?`, [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Confirmar",
-        onPress: () => {
-          setModalVisible(true); // abre modal de pagamento
-        },
-      },
-    ]);
+    // Remove Alert para abrir modal diretamente
+    setModalVisible(true);
   };
 
   const escolherPix = () => {
@@ -48,7 +42,8 @@ export default function RecargaScreen() {
     setValor(""); // limpa campo
   };
 
-  const codigoPix = "00020126580014BR.GOV.BCB.PIX0136+5547999999995204000053039865406100.005802BR5920Recarga Simulada6009Palhoca62070503***6304ABCD";
+  const codigoPix =
+    "00020126580014BR.GOV.BCB.PIX0136+5547999999995204000053039865406100.005802BR5920Recarga Simulada6009Palhoca62070503***6304ABCD";
 
   return (
     <View style={styles.container}>
@@ -120,7 +115,10 @@ export default function RecargaScreen() {
             <TouchableOpacity
               onPress={() => {
                 Clipboard.setString(codigoPix);
-                Alert.alert("Copiado!", "Código PIX copiado para área de transferência.");
+                Alert.alert(
+                  "Copiado!",
+                  "Código PIX copiado para área de transferência."
+                );
               }}
               style={styles.button}
             >
