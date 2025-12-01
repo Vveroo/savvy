@@ -125,7 +125,7 @@ export default function HomeScreen() {
 
       {/*Btn Recarregar*/}
       <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("RecarregarScreen")}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("Pagamento")}>
           <Text style={styles.buttonText}>Recarregar</Text>
         </TouchableOpacity>
       </View>
