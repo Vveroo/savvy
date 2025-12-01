@@ -183,9 +183,9 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Edit modal for turno */}
-      <Modal visible={editModalVisible} transparent animationType="slide">
-        <View style={{ flex: 1, justifyContent: "center", padding: 20 }}>
-          <View style={common.modalCard}>
+        <Modal visible={editModalVisible} transparent animationType="slide" onRequestClose={() => setEditModalVisible(false)}>
+          <View style={{ flex: 1, justifyContent: "center", padding: 20, backgroundColor: isDarkMode ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.4)' }}>
+            <View style={common.modalCard}>
             <Text style={common.title}>Editando: {editingTurno}</Text>
             <FlatList
               data={schedules[editingTurno] || []}
