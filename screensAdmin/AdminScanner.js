@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import {QRcodeScanner} from 'react-native-qrcode-scanner'
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { COLORS } from '../styles/colors';
@@ -16,7 +16,7 @@ export default function AdminScanner({ navigation }) {
   // Solicitar permissão e carregar contador inicial
   useEffect(() => {
     (async () => {
-      const { status } = await QRcodeScanner.requestPermissionsAsync();
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
 
       const cntStr = await AsyncStorage.getItem('qrcode_scan_count');
@@ -101,7 +101,7 @@ export default function AdminScanner({ navigation }) {
       </View>
 
       {/* Scanner */}
-      <QRcodeScanner
+      <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={{ flex: 1 }}
       />

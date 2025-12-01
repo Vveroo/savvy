@@ -7,7 +7,7 @@ export const getAdminOrderDetailsStyles = (isDarkMode) => {
     container: { 
       flex: 1, 
       padding: 20, 
-      backgroundColor: theme.background,
+      backgroundColor: theme.background 
     },
     title: { 
       fontSize: 20, 
