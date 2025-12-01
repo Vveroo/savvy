@@ -27,7 +27,7 @@
     },
     "plugins": [
       "expo-asset",
-      "expo-barcode-scanner"
+      "react-native-qrcode-scanner"
     ]
   }
 }

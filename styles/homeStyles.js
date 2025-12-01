@@ -59,18 +59,18 @@ const baseStyles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  buttonGroup: {
+  recarregarBox: {
     alignItems: "flex-start",
   },
 
   actionButton: {
-    paddingVertical: 6,
+    paddingVertical: 4,
     paddingHorizontal: 15,
     borderRadius: 30,
     alignSelf: "flex-start",
   },
 
-  buttonText: {
+  recarregar: {
     fontSize: 15,
     fontWeight: "600",
   },
