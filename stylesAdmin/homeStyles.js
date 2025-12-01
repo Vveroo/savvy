@@ -59,12 +59,11 @@ const baseStyles = StyleSheet.create({
   deleteBtn: {
     backgroundColor: "red",
     paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 50,
+    paddingVertical: 6,
+    borderRadius: 6,
   },
   addBtn: {
     marginTop: 16,
-    marginBottom: 30,
     padding: 12,
     borderRadius: 8,
     alignItems: "center",

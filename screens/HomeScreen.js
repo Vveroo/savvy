@@ -123,13 +123,6 @@ export default function HomeScreen() {
         </View>
       </TouchableOpacity>
 
-      {/* Botão Recarregar Saldo */}
-      <View style={styles.recarregarBox}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("Pagamento")}>
-          <Text style={styles.recarregar}>Recarregar Saldo</Text>
-        </TouchableOpacity>
-      </View>
-
       {/* QR Code */}
       <View style={styles.qrContainer}>
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
@@ -141,8 +134,9 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={styles.drawerOverlay}
           activeOpacity={1}
-          onPress={closeDrawer} 
+          onPress={closeDrawer} // Fecha ao clicar fora
         >
+          {/* Drawer NÃO fecha ao clicar dentro */}
           <Animated.View
             style={[styles.drawer, { transform: [{ translateX: drawerAnim }] }]}
           >
