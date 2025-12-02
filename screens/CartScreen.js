@@ -70,7 +70,7 @@ export default function CartScreen({ navigation }) {
         { 
           text: "OK", 
           onPress: () => {
-            navigation.navigate("MeusPedidos");
+            navigation.navigate("Pedidos");
           } 
         }
       ]);
