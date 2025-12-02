@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
@@ -29,8 +30,18 @@ export default function AdminOrderDetails({ route, navigation }) {
         pedidos[idx].status = newStatus;
         await AsyncStorage.setItem('pedidos', JSON.stringify(pedidos));
         setPedido(pedidos[idx]);
-        Alert.alert('Sucesso', 'Status atualizado.');
       }
+
+      const existingUserOrders = await AsyncStorage.getItem('orders');
+      if (existingUserOrders) {
+        const userOrders = JSON.parse(existingUserOrders);
+        const updatedUserOrders = userOrders.map(order =>
+          order.id === pedidoId ? { ...order, status: newStatus } : order
+        );
+        await AsyncStorage.setItem('orders', JSON.stringify(updatedUserOrders));
+      }
+
+      Alert.alert('Sucesso', 'Status atualizado.');
     } catch (err) {
       Alert.alert('Erro', err.message);
     }
@@ -64,13 +75,20 @@ export default function AdminOrderDetails({ route, navigation }) {
       <Text style={styles.total}>Total: R$ {pedido.total?.toFixed(2) || '0.00'}</Text>
 
       <View style={styles.actionsRow}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus('em preparo')}>
-          <Text style={styles.actionText}>Em preparo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus('pronto')}>
-          <Text style={styles.actionText}>Marcar Pronto</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#ff6b6b' }]} onPress={() => updateStatus('cancelado')}>
+        {pedido.status === 'Aguardando preparo' && (
+          <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus('Preparando')}>
+            <Text style={styles.actionText}>Preparar</Text>
+          </TouchableOpacity>
+        )}
+        {pedido.status === 'Preparando' && (
+          <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus('Concluído')}>
+            <Text style={styles.actionText}>Concluir</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[styles.actionButton, { backgroundColor: '#ff6b6b' }]}
+          onPress={() => updateStatus('Cancelado')}
+        >
           <Text style={styles.actionText}>Cancelar</Text>
         </TouchableOpacity>
       </View>

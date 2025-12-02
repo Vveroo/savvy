@@ -1,12 +1,11 @@
-// AdminTabs.js
+
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
 import { COLORS } from '../styles/colors';
 import HomeScreen from "./HomeScreen";
-import PedidosScreen from "./AdminPedidos";
+import AdminOrderDetails from "./AdminOrderDetails"; // ✅ Alterado aqui
 import CardapioScreen from "./CardapioScreen";
 
 const Tab = createBottomTabNavigator();
@@ -38,7 +37,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ title: "Início" }} />
       <Tab.Screen name="Cardapio" component={CardapioScreen} options={{ title: "Menu" }} />
-      <Tab.Screen name="Pedidos" component={PedidosScreen} options={{ title: "Pedidos" }} />
+      <Tab.Screen name="Pedidos" component={AdminOrderDetails} options={{ title: "Pedidos" }} /> {/* ✅ Alterado aqui */}
     </Tab.Navigator>
   );
 }

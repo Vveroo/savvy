@@ -39,16 +39,17 @@ export default function CartScreen({ navigation }) {
     const now = new Date();
     const nomeUsuario = await AsyncStorage.getItem('userMatricula'); 
 
+
     const order = {
       id: Date.now(),
       usuario: nomeUsuario || 'Usuário',
-      itens: cart,
-      quantidade: cart.length,
-      valor: total.toFixed(2),
+      items: cart, 
+      total: total, 
       data: now.toLocaleDateString(),
       hora: now.toLocaleTimeString(),
       status: 'Aguardando preparo'
     };
+    
 
     try {
       const existingOrders = await AsyncStorage.getItem('orders');
