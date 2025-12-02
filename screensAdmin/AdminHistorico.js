@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
 import { getAdminHistoricoStyles } from '../stylesAdmin/adminHistoricoStyles';
@@ -17,7 +17,6 @@ export default function AdminHistorico({ navigation }) {
   useEffect(() => {
     const load = async () => {
       try {
-        // Tenta carregar do Supabase
         const { data, error } = await supabase
           .from('pedidos')
           .select(`
@@ -31,24 +30,21 @@ export default function AdminHistorico({ navigation }) {
           .order('created_at', { ascending: false });
 
         if (error) {
-          console.log('Erro ao carregar pedidos do Supabase:', error.message);
-          // Fallback para AsyncStorage
+          console.log('Erro Supabase:', error.message);
           const pJSON = await AsyncStorage.getItem('orders');
           setOrders(pJSON ? JSON.parse(pJSON) : []);
         } else {
-          // Transforma dados do Supabase para formato compatível
           const formatted = (data || []).map(p => ({
             id: p.id,
             usuario: p.usuarios?.matricula || 'Desconhecido',
-            total: p.total,
+            total: typeof p.total === 'number' ? p.total : Number(p.total) || 0,
             status: p.status,
             data: p.created_at
           }));
           setOrders(formatted);
         }
-      } catch (error) {
-        console.log('Erro ao carregar pedidos:', error);
-        // Fallback para AsyncStorage
+      } catch (err) {
+        console.log('Erro ao carregar pedidos:', err);
         const pJSON = await AsyncStorage.getItem('orders');
         setOrders(pJSON ? JSON.parse(pJSON) : []);
       } finally {
@@ -66,18 +62,30 @@ export default function AdminHistorico({ navigation }) {
         </TouchableOpacity>
         <Text style={{ color: theme.inputText, marginLeft: 8, fontWeight: '600' }}>Voltar</Text>
       </View>
+
       <Text style={styles.title}>Histórico de Pedidos</Text>
-      <FlatList
-        data={orders}
-        keyExtractor={(p) => p.id?.toString() || Math.random().toString()}
-        renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text style={styles.rowTitle}>Pedido #{item.id} - {item.status}</Text>
-            <Text style={styles.rowSub}>R$ {typeof item.total === 'number' ? item.total.toFixed(2) : '0.00'}</Text>
-          </View>
-        )}
-        ListEmptyComponent={<Text style={{ color: theme.textMuted, textAlign: 'center', marginTop: 20 }}>Nenhum pedido encontrado.</Text>}
-      />
+
+      {loading ? (
+        <ActivityIndicator size="small" color={theme.button} style={{ marginTop: 20 }} />
+      ) : (
+        <FlatList
+          data={orders}
+          keyExtractor={(p) => String(p.id)}
+          renderItem={({ item }) => (
+            <View style={styles.row}>
+              <Text style={styles.rowTitle}>Pedido #{item.id} - {item.status}</Text>
+              <Text style={styles.rowSub}>
+                R$ {(Number(item.total) || 0).toFixed(2)}
+              </Text>
+            </View>
+          )}
+          ListEmptyComponent={
+            <Text style={{ color: theme.textMuted, textAlign: 'center', marginTop: 20 }}>
+              Nenhum pedido encontrado.
+            </Text>
+          }
+        />
+      )}
     </View>
   );
 }
