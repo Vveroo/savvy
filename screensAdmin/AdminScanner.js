@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Alert, TouchableOpacity, StyleSheet } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
 import { CameraView, useCameraPermissions } from "expo-camera";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addScanEvent } from '../utils/scanUtils';
 
 export default function AdminScanner({ navigation }) {
   const [permission, requestPermission] = useCameraPermissions();
@@ -20,16 +23,36 @@ export default function AdminScanner({ navigation }) {
     return <Text>Sem permissão para usar a câmera</Text>;
   }
 
-  const handleBarCodeScanned = ({ data }) => {
+  const handleBarCodeScanned = async ({ data }) => {
     if (scanned) return;
     setScanned(true);
     Alert.alert("Código QR Escaneado", `Dados: ${data}`);
-    setCount((prev) => prev + 1);
+
+    try {
+      // increment local counter and persist
+      const newCount = (Number(count) || 0) + 1;
+      setCount(newCount);
+      await AsyncStorage.setItem('qrcode_scan_count', String(newCount));
+
+      // add a scan event for dashboard aggregation
+      await addScanEvent(data);
+    } catch (e) {
+      console.warn('Erro ao gravar scan:', e);
+    }
+
     setTimeout(() => setScanned(false), 2000);
   };
 
   return (
     <View style={{ flex: 1 }}>
+      {/* Back button to previous screen */}
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <CameraView
         style={{ flex: 1 }}
         onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -67,5 +90,14 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    zIndex: 20,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 8,
+    borderRadius: 24,
   },
 });

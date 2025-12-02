@@ -7,11 +7,13 @@ import { COLORS } from '../styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../utils/supabaseClient';
 import { useFocusEffect } from '@react-navigation/native';
+import { getScanEvents, aggregateByWeekAndShift } from '../utils/scanUtils';
 
 export default function AdminDashboard({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getAdminDashboardStyles(isDarkMode);
   const [orders, setOrders] = useState([]);
+  const [scanStats, setScanStats] = useState([]);
   const [loading, setLoading] = useState(false);
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
@@ -68,6 +70,15 @@ export default function AdminDashboard({ navigation }) {
       });
 
       setOrders(merged);
+      // load scan events and aggregate by week/shift
+      try {
+        const events = await getScanEvents();
+        const agg = aggregateByWeekAndShift(events);
+        setScanStats(agg);
+      } catch (e) {
+        console.warn('Erro ao carregar estatísticas de scans:', e);
+        setScanStats([]);
+      }
     } catch (err) {
       console.warn('Erro ao carregar pedidos no dashboard:', err);
       const pJSON = await AsyncStorage.getItem('orders');
@@ -106,6 +117,41 @@ export default function AdminDashboard({ navigation }) {
           <Text style={styles.cardTitle}>Total Pedidos</Text>
           <Text style={styles.cardValue}>{totalCount}</Text>
         </View>
+      </View>
+
+      {/* Scan stats (week Monday-Thursday, by shift) - table view */}
+      <View style={{ marginTop: 16 }}>
+        <Text style={styles.sectionTitle}>Scans (Semana Seg-Qui por Turno)</Text>
+        {scanStats && scanStats.length > 0 ? (
+          <View style={{ marginTop: 8 }}>
+            {/* Table header */}
+            <View style={{ flexDirection: 'row', paddingVertical: 8, paddingHorizontal: 6, backgroundColor: '#f2f2f2', borderRadius: 6 }}>
+              <Text style={{ flex: 2, fontWeight: '700' }}>Semana</Text>
+              <Text style={{ flex: 1, textAlign: 'center', fontWeight: '700' }}>Mat</Text>
+              <Text style={{ flex: 1, textAlign: 'center', fontWeight: '700' }}>Ves</Text>
+              <Text style={{ flex: 1, textAlign: 'center', fontWeight: '700' }}>Not</Text>
+              <Text style={{ flex: 1, textAlign: 'center', fontWeight: '700' }}>Total</Text>
+            </View>
+
+            {/* Table rows */}
+            <FlatList
+              data={scanStats}
+              keyExtractor={(item) => item.week}
+              style={{ marginTop: 8 }}
+              renderItem={({ item }) => (
+                <View style={{ flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 6, borderBottomWidth: 1, borderBottomColor: '#eee' }}>
+                  <Text style={{ flex: 2 }}>{item.week}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.Matutino}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.Vespertino}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.Noturno}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.total}</Text>
+                </View>
+              )}
+            />
+          </View>
+        ) : (
+          <Text style={{ color: theme.textMuted, marginTop: 8 }}>Sem registros de scan.</Text>
+        )}
       </View>
 
       <TouchableOpacity

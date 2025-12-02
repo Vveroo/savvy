@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
-// Importação do Icon para o botão de lixeira
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import { getAdminOrderDetailsStyles } from '../stylesAdmin/adminOrderDetailsStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,9 +9,6 @@ export default function AdminOrderDetails() {
   const { isDarkMode } = useTheme();
   const styles = getAdminOrderDetailsStyles(isDarkMode);
   const [orders, setOrders] = useState([]);
-
-  // --- Funções de Carregamento e Atualização ---
-
   const loadOrders = async () => {
     const data = await AsyncStorage.getItem('orders');
     setOrders(data ? JSON.parse(data) : []);
@@ -24,7 +20,6 @@ export default function AdminOrderDetails() {
 
   const updateStatus = async (id, newStatus) => {
     try {
-      // 1. Atualiza a lista completa de pedidos (que inclui Cancelados/Concluídos)
       const updatedOrders = orders.map(order =>
         order.id === id ? { ...order, status: newStatus } : order
       );
@@ -32,7 +27,6 @@ export default function AdminOrderDetails() {
       setOrders(updatedOrders);
       await AsyncStorage.setItem('orders', JSON.stringify(updatedOrders));
       
-      // 2. Feedback condicional
       if (newStatus === 'Cancelado') {
         Alert.alert('Cancelado', 'Pedido cancelado e removido da tela.');
       } else if (newStatus === 'Concluído') {
@@ -46,15 +40,12 @@ export default function AdminOrderDetails() {
     }
   };
 
-  // --- Renderização e Filtro ---
-
-  // 1. Filtra pedidos para mostrar apenas os ativos (Aguardando Preparo e Preparando)
   const activeOrders = orders.filter(
     order => order.status !== 'Concluído' && order.status !== 'Cancelado'
   );
 
   const renderOrder = ({ item }) => (
-    <View style={styles.card}> {/* Usando styles.card para melhor formatação */}
+    <View style={styles.card}> 
       <Text style={styles.title}>Pedido #{item.id}</Text>
       <Text style={styles.subtitle}>Status: {String(item.status)}</Text>
 
@@ -111,7 +102,6 @@ export default function AdminOrderDetails() {
     <View style={styles.container}>
       <Text style={styles.header}>Pedidos Ativos</Text>
       <FlatList
-        // 2. Usando a lista filtrada
         data={activeOrders} 
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderOrder}

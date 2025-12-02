@@ -77,7 +77,7 @@ export const getPedidosStyles = (isDarkMode) => {
     },
     itemName: {
         flex: 3,
-        color: theme.text, 
+        color: theme.inputText, 
         fontSize: 14,
     },
     itemQty: {
@@ -96,7 +96,7 @@ export const getPedidosStyles = (isDarkMode) => {
     total: {
       fontSize: 18,
       fontWeight: "700",
-      color: theme.primary,
+      color: theme.inputText,
       marginTop: 15,
       paddingTop: 8,
       borderTopWidth: 1,
