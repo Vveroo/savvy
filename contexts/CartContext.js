@@ -5,13 +5,10 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  // Adicionar item com quantidade
   const addToCart = (item, quantidade = 1) => {
-    // Verificar se item já existe no carrinho
     const existingItem = cart.find((c) => c.id === item.id);
     
     if (existingItem) {
-      // Se existe, aumenta a quantidade
       setCart(
         cart.map((c) =>
           c.id === item.id
@@ -20,7 +17,6 @@ export const CartProvider = ({ children }) => {
         )
       );
     } else {
-      // Se não existe, adiciona com a quantidade
       setCart([...cart, { ...item, quantidade }]);
     }
   };
@@ -39,7 +35,6 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => setCart([]);
 
-  // Calcular total de itens
   const cartItems = cart;
   const totalAmount = cart.reduce(
     (sum, item) => sum + item.preco * (item.quantidade || 1),

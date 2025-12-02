@@ -29,7 +29,6 @@ export default function AdminProdutoEditor({ navigation }) {
 
   const categorias = ['Lanches', 'Bebidas', 'Doces', 'Salgados', 'Acompanhamentos'];
 
-  // Abrir modal para criar novo produto
   const handleNewProduct = () => {
     setEditingId(null);
     setNome('');
@@ -38,7 +37,6 @@ export default function AdminProdutoEditor({ navigation }) {
     setModalVisible(true);
   };
 
-  // Abrir modal para editar produto
   const handleEditProduct = (produto) => {
     setEditingId(produto.id);
     setNome(produto.nome);
@@ -47,7 +45,6 @@ export default function AdminProdutoEditor({ navigation }) {
     setModalVisible(true);
   };
 
-  // Salvar produto (criar ou editar)
   const handleSaveProduct = () => {
     if (!nome.trim()) {
       Alert.alert('Erro', 'Digite o nome do produto');
@@ -78,7 +75,6 @@ export default function AdminProdutoEditor({ navigation }) {
     setModalVisible(false);
   };
 
-  // Deletar produto
   const handleDeleteProduct = (id) => {
     Alert.alert('Confirmar', 'Deseja deletar este produto?', [
       { text: 'Cancelar', onPress: () => {} },
@@ -92,14 +88,12 @@ export default function AdminProdutoEditor({ navigation }) {
     ]);
   };
 
-  // Filtrar produtos por busca
   const produtosFiltrados = produtos.filter(
     (p) =>
       p.nome.toLowerCase().includes(searchText.toLowerCase()) ||
       p.categoria.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // Renderizar item do produto
   const renderProduto = ({ item }) => (
     <View
       style={[

@@ -33,20 +33,15 @@ const CartScreen = () => {
   };
 
   const handlePixPayment = () => {
-    // Simulado de pagamento via PIX
     const randomCode = generateRandomCode();
-    // Lógica para abrir o aplicativo de transferência PIX
     console.log('Código PIX:', randomCode);
   };
 
   const handleCreditCardPayment = () => {
-    // Simulado de pagamento via cartão de crédito
-    // Lógica para abrir a tela de adicionar cartão de crédito
     console.log('Pagar com cartão de crédito');
   };
 
   const generateRandomCode = () => {
-    // Lógica para gerar um código aleatório de PIX
     return '1234567890';
   };
 

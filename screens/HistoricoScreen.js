@@ -9,14 +9,14 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getHistoricoStyles } from "../styles/historicoStyles";
-import { useTheme } from "../contexts/ThemeContext"; // ✅ importa o contexto
+import { useTheme } from "../contexts/ThemeContext";
 
-export default function HistoricoScreen({ navigation }) { // ✅ nome bate com App.js
+export default function HistoricoScreen({ navigation }) { 
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const { isDarkMode } = useTheme(); // ✅ pega do contexto
-  const styles = getHistoricoStyles(isDarkMode); // ✅ aplica nos estilos
+  const { isDarkMode } = useTheme(); 
+  const styles = getHistoricoStyles(isDarkMode); 
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -37,7 +37,7 @@ export default function HistoricoScreen({ navigation }) { // ✅ nome bate com A
       style={styles.orderItem}
       onPress={() => setSelectedOrder(item)}
     >
-      <Text style={styles.orderTitle}>Compra Realizada</Text> {/* ✅ usa estilo existente */}
+      <Text style={styles.orderTitle}>Compra Realizada</Text> 
       <Text style={styles.orderDate}>{item.data}</Text>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.orderStatus}>Status: {item.status}</Text>
@@ -57,9 +57,9 @@ export default function HistoricoScreen({ navigation }) { // ✅ nome bate com A
           <Icon
             name="arrow-back"
             size={24}
-            color={isDarkMode ? "#fff" : "#000"} // ✅ usa isDarkMode
+            color={isDarkMode ? "#fff" : "#000"} 
           />
-        </TouchableOpacity> {/* ✅ fechamento correto */}
+        </TouchableOpacity> 
         <Text style={styles.title}>Histórico de Compras</Text>
       </View>
 

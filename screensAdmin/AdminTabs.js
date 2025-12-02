@@ -8,7 +8,6 @@ import { COLORS } from '../styles/colors';
 import HomeScreen from "./HomeScreen";
 import PedidosScreen from "./AdminPedidos";
 import CardapioScreen from "./CardapioScreen";
-// Other admin screens are reachable via the drawer
 
 const Tab = createBottomTabNavigator();
 

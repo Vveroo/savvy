@@ -27,10 +27,8 @@ export default function HomeScreen() {
   const [drawerAnim] = useState(new Animated.Value(-300));
   const navigation = useNavigation();
 
-  // Shared styles
   const common = getCommonStyles(isDarkMode);
 
-  // Schedules state per turno (Manha, Tarde, Noite)
   const [schedules, setSchedules] = useState({ Manha: [], Tarde: [], Noite: [] });
   const [editingTurno, setEditingTurno] = useState(null);
   const [editModalVisible, setEditModalVisible] = useState(false);

@@ -9,12 +9,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from "../contexts/ThemeContext";
 
-// Validação da matrícula
 const ForgotPasswordSchema = Yup.object().shape({
   matricula: Yup.string().required('Matrícula obrigatória'),
 });
 
-// Função para gerar código aleatório de 8 caracteres (simples e fácil de digitar)
 const generateResetCode = () => {
   return Math.random().toString(36).substring(2, 10).toUpperCase();
 };
@@ -40,7 +38,6 @@ export default function ForgotPasswordScreen() {
 
   const handleSubmit = async (values) => {
     try {
-      // Verifica se a matrícula existe no AsyncStorage
       const usuariosJSON = await AsyncStorage.getItem('usuarios');
       const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
       
@@ -51,17 +48,14 @@ export default function ForgotPasswordScreen() {
         return;
       }
 
-      // Gera código aleatório
       const code = generateResetCode();
       setResetCode(code);
       setUserMatricula(values.matricula);
 
-      // Atualiza a senha provisória do usuário
       const usuarioIndex = usuarios.findIndex(u => u.matricula === values.matricula);
       usuarios[usuarioIndex].senha = code;
       await AsyncStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-      // Mostra o modal com o código
       setShowCodeModal(true);
     } catch (error) {
       Alert.alert('Erro', 'Falha ao procurar matrícula: ' + error.message);

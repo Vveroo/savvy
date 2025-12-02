@@ -9,22 +9,18 @@ export function CardapioProvider({ children }) {
   const [produtos, setProdutos] = useState([]);
   const [initialized, setInitialized] = useState(false);
 
-  // Carregar produtos salvos ao iniciar (com mockData como padrão)
   useEffect(() => {
     const carregarProdutos = async () => {
       try {
         const data = await AsyncStorage.getItem('@cardapio');
         if (data) {
-          // Se já existe no AsyncStorage, carrega dali
           setProdutos(JSON.parse(data));
         } else {
-          // Se é primeira vez, usa mockData e salva
           setProdutos(mockProdutos);
           await AsyncStorage.setItem('@cardapio', JSON.stringify(mockProdutos));
         }
       } catch (error) {
         console.log('Erro ao carregar produtos:', error);
-        // Fallback para mockData em caso de erro
         setProdutos(mockProdutos);
       }
       setInitialized(true);
@@ -32,7 +28,6 @@ export function CardapioProvider({ children }) {
     carregarProdutos();
   }, []);
 
-  // Salvar produtos sempre que mudar
   useEffect(() => {
     const salvarProdutos = async () => {
       try {
@@ -44,7 +39,6 @@ export function CardapioProvider({ children }) {
     salvarProdutos();
   }, [produtos]);
 
-  // Função para adicionar item
   const addProduto = (novoProduto) => {
     const produtoComId = {
       ...novoProduto,
@@ -53,19 +47,16 @@ export function CardapioProvider({ children }) {
     setProdutos((prev) => [...prev, produtoComId]);
   };
 
-  // Função para editar item
   const editProduto = (id, produtoAtualizado) => {
     setProdutos((prev) =>
       prev.map((p) => (p.id === id ? { ...p, ...produtoAtualizado } : p))
     );
   };
 
-  // Função para deletar item
   const deleteProduto = (id) => {
     setProdutos((prev) => prev.filter((p) => p.id !== id));
   };
 
-  // Função para limpar cardápio (reseta para mockData)
   const resetCardapio = async () => {
     setProdutos(mockProdutos);
     await AsyncStorage.setItem('@cardapio', JSON.stringify(mockProdutos));
@@ -92,7 +83,6 @@ export function useCardapioContext() {
   return useContext(CardapioContext);
 }
 
-// Alias para compatibilidade com código antigo
 export function useCardapio() {
   return useContext(CardapioContext);
 }

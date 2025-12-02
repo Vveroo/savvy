@@ -7,19 +7,17 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const systemScheme = useColorScheme();
-  const [override, setOverride] = useState(null); // null = segue sistema
+  const [override, setOverride] = useState(null);
 
-  // valor final do tema
+
   const isDarkMode = override !== null 
     ? override === "dark" 
     : systemScheme === "dark";
 
   const toggleTheme = () => {
     if (override === null) {
-      // se estava seguindo sistema, força o oposto
       setOverride(systemScheme === "dark" ? "light" : "dark");
     } else {
-      // alterna manualmente
       setOverride(override === "dark" ? "light" : "dark");
     }
   };

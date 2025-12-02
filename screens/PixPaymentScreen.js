@@ -18,7 +18,7 @@ export default function PixPaymentScreen({ route, navigation }) {
   const { user, saldo, setSaldo } = useUserContext();
 
   const [pixKey] = useState(generatePixKey());
-  const [secondsLeft, setSecondsLeft] = useState(300); // 5 minutes
+  const [secondsLeft, setSecondsLeft] = useState(300); 
   const [expired, setExpired] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,6 @@ export default function PixPaymentScreen({ route, navigation }) {
     }
 
     try {
-      // Atualiza saldo do usuário em AsyncStorage
       const usersJSON = await AsyncStorage.getItem('usuarios');
       const users = usersJSON ? JSON.parse(usersJSON) : [];
       const idx = users.findIndex(u => u.matricula === user.matricula);

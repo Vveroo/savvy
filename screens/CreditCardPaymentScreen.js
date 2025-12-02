@@ -18,14 +18,12 @@ export default function CreditCardPaymentScreen({ route, navigation }) {
   const [cvv, setCvv] = useState('');
 
   const handlePay = async () => {
-    // Basic validation
     if (!cardNumber || !cardName || !expiry || !cvv) {
       Alert.alert('Dados faltando', 'Preencha todos os campos do cartão.');
       return;
     }
 
     try {
-      // Simula processamento e atualiza saldo
       const usersJSON = await AsyncStorage.getItem('usuarios');
       const users = usersJSON ? JSON.parse(usersJSON) : [];
       const idx = users.findIndex(u => u.matricula === user.matricula);

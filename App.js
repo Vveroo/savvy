@@ -26,7 +26,6 @@ import AdminProdutoEditor from './screensAdmin/AdminProdutoEditor';
 
 const Stack = createNativeStackNavigator();
 
-// Inicializar usuários no AsyncStorage
 const initializeUsers = async () => {
   try {
     const existingUsers = await AsyncStorage.getItem('usuarios');

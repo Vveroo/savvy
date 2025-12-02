@@ -13,7 +13,6 @@ export default function AdminScanner({ navigation }) {
   const [scanned, setScanned] = useState(false);
   const [count, setCount] = useState(0);
 
-  // Solicitar permissão e carregar contador inicial
   useEffect(() => {
     (async () => {
       const { status } = await ExpoCamera.requestCameraPermissionsAsync();
@@ -31,7 +30,6 @@ export default function AdminScanner({ navigation }) {
     setScanned(true);
     Alert.alert('Código QR Escaneado', `Dados: ${data}`);
 
-    // Atualizar contador
     const newCount = count + 1;
     setCount(newCount);
     await AsyncStorage.setItem('qrcode_scan_count', newCount.toString());
@@ -44,7 +42,6 @@ export default function AdminScanner({ navigation }) {
   if (hasPermission === false) {
     return <Text>Permissão para acessar a câmera foi negada.</Text>;
   }
-  // Resolve the Camera component safely (some bundlers/platforms export differently)
   const CameraComp = ExpoCamera.Camera ?? ExpoCamera.default ?? ExpoCamera;
 
   return (

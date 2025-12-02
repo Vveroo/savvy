@@ -7,7 +7,6 @@ import { useTheme } from '../contexts/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { getChangePasswordStyles } from '../styles/changePasswordStyles';
 
-// Gerar código temporário
 const generateTempCode = () => {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 };
@@ -17,7 +16,7 @@ export default function ChangePasswordScreen({ navigation }) {
   const { isDarkMode, theme } = useTheme();
   const styles = getChangePasswordStyles(isDarkMode);
 
-  const [step, setStep] = useState('request'); // 'request', 'verify', 'change'
+  const [step, setStep] = useState('request');
   const [tempCode, setTempCode] = useState(null);
   const [codeInput, setCodeInput] = useState('');
   const [senhaAtual, setSenhaAtual] = useState('');
@@ -27,7 +26,6 @@ export default function ChangePasswordScreen({ navigation }) {
   const [codeExpireTime, setCodeExpireTime] = useState(null);
   const [showCodeModal, setShowCodeModal] = useState(false);
 
-  // Passo 1: Solicitar código
   const handleRequestCode = async () => {
     if (!senhaAtual) {
       Alert.alert('Erro', 'Digite sua senha atual');
@@ -35,7 +33,6 @@ export default function ChangePasswordScreen({ navigation }) {
     }
 
     try {
-      // Verifica se a senha atual está correta
       const usuariosJSON = await AsyncStorage.getItem('usuarios');
       const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
       
@@ -46,21 +43,18 @@ export default function ChangePasswordScreen({ navigation }) {
         return;
       }
 
-      // Gera código temporário (válido por 5 minutos)
       const code = generateTempCode();
       setTempCode(code);
-      setCodeExpireTime(Date.now() + 5 * 60 * 1000); // 5 minutos
+      setCodeExpireTime(Date.now() + 5 * 60 * 1000); 
       setShowCodeModal(true);
       setStep('verify');
-      setSenhaAtual(''); // Limpa o campo
+      setSenhaAtual(''); 
     } catch (error) {
       Alert.alert('Erro', 'Falha ao processar: ' + error.message);
     }
   };
 
-  // Passo 2: Verificar código
   const handleVerifyCode = () => {
-    // Verifica se o código ainda é válido
     if (Date.now() > codeExpireTime) {
       Alert.alert('Erro', 'Código expirado. Solicite um novo código.');
       setStep('request');
@@ -78,7 +72,6 @@ export default function ChangePasswordScreen({ navigation }) {
     setCodeInput('');
   };
 
-  // Passo 3: Mudar senha
   const handleChangePassword = async () => {
     if (!novaSenha || !confirmSenha) {
       Alert.alert('Erro', 'Preencha todos os campos');
@@ -96,7 +89,6 @@ export default function ChangePasswordScreen({ navigation }) {
     }
 
     try {
-      // Atualiza a senha no AsyncStorage
       const usuariosJSON = await AsyncStorage.getItem('usuarios');
       const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
       
@@ -109,7 +101,6 @@ export default function ChangePasswordScreen({ navigation }) {
           { text: 'OK', onPress: () => navigation.goBack() }
         ]);
 
-        // Limpa os campos
         setStep('request');
         setNovaSenha('');
         setConfirmSenha('');
@@ -129,7 +120,6 @@ export default function ChangePasswordScreen({ navigation }) {
     }
   };
 
-  // Calcular tempo restante
   const getTimeRemaining = () => {
     if (!codeExpireTime) return 0;
     const remaining = Math.max(0, Math.ceil((codeExpireTime - Date.now()) / 1000));

@@ -137,15 +137,14 @@ export default function HomeScreen() {
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
         <QRCode value={qrValue} size={300} />
       </View>
-      {/* Drawer lateral com animação */}
+      {/* Drawer Modal */}
       <Modal visible={drawerVisible} transparent animationType="none">
         {/* Overlay clicável */}
         <TouchableOpacity
           style={styles.drawerOverlay}
           activeOpacity={1}
-          onPress={closeDrawer} // Fecha ao clicar fora
+          onPress={closeDrawer} 
         >
-          {/* Drawer NÃO fecha ao clicar dentro */}
           <Animated.View
             style={[styles.drawer, { transform: [{ translateX: drawerAnim }] }]}
           >

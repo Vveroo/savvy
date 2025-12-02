@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getPedidosStyles } from "../styles/meusPedidosStyles";
-import { useTheme } from "../contexts/ThemeContext"; // ✅ importa o contexto
+import { useTheme } from "../contexts/ThemeContext"; 
 
 export default function MeusPedidos() {
   const [orders, setOrders] = useState([]);
@@ -20,8 +20,8 @@ export default function MeusPedidos() {
     setOrders(data ? JSON.parse(data) : []);
   };
 
-  const { isDarkMode } = useTheme(); // ✅ pega do contexto
-  const styles = getPedidosStyles(isDarkMode); // ✅ aplica nos estilos
+  const { isDarkMode } = useTheme(); 
+  const styles = getPedidosStyles(isDarkMode); 
 
   useEffect(() => {
     loadOrders();
@@ -56,7 +56,6 @@ export default function MeusPedidos() {
       <Text style={styles.elise}>Valor: R$ {item.valor}</Text>
       <Text style={styles.status}>Status: {item.status}</Text>
 
-      {/* ✅ Botão para cancelar se não estiver concluído ou cancelado */}
       {item.status !== "concluido" &&
         item.status !== "cancelado e reembolsado" && (
           <TouchableOpacity

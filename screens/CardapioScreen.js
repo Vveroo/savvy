@@ -31,23 +31,19 @@ export default function CardapioScreen() {
   const { isDarkMode } = useTheme();
   const styles = getCardapioStyles(isDarkMode);
 
-  // Função para recarregar produtos
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 500);
   };
 
-  // Atualizar automaticamente quando voltar à tela
   useFocusEffect(
     React.useCallback(() => {
-      // Força re-render quando a tela ganha foco
       setRefreshing(true);
       setTimeout(() => setRefreshing(false), 100);
       return () => {};
     }, [])
   );
 
-  // 🔹 Categorias dinâmicas
   const categorias = Array.isArray(produtos)
     ? [
         ...new Set(produtos.map((item) => item.categoria).filter(Boolean)),
@@ -55,7 +51,6 @@ export default function CardapioScreen() {
       ]
     : ['Favoritos'];
 
-  // Resetar índice se inválido
   const validaCategoriaIndex = Math.min(categoriaIndex, categorias.length - 1);
 
   const toggleFavorito = (id) => {

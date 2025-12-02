@@ -26,15 +26,12 @@ export default function CardapioAdminScreen({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getCardapioStyles(isDarkMode);
 
-  // Atualizar automaticamente quando voltar à tela
   useFocusEffect(
     React.useCallback(() => {
-      // Força re-render quando a tela ganha foco
       return () => {};
     }, [produtos])
   );
 
-  // Adicionar novo item
   const handleAddItem = () => {
     setSelectedItem({
       id: Date.now().toString(),
@@ -47,14 +44,12 @@ export default function CardapioAdminScreen({ navigation }) {
     setModalVisible(true);
   };
 
-  // Editar item existente
   const handleEditItem = (item) => {
     setSelectedItem(item);
     setIsEditing(true);
     setModalVisible(true);
   };
 
-  // Salvar item (novo ou editado)
   const handleSaveItem = () => {
     if (!selectedItem.nome || !selectedItem.categoria) {
       alert('Preencha nome e categoria');
@@ -62,16 +57,13 @@ export default function CardapioAdminScreen({ navigation }) {
     }
 
     if (isEditing) {
-      // usa a função do contexto para editar
       editProduto(selectedItem.id, selectedItem);
     } else {
-      // usa a função do contexto para adicionar
       addProduto(selectedItem);
     }
     setModalVisible(false);
   };
 
-  // Excluir item
   const handleDeleteItem = (id) => {
     Alert.alert(
       'Deseja deletar este item?',
@@ -82,7 +74,6 @@ export default function CardapioAdminScreen({ navigation }) {
             text: 'Deletar',
             style: 'destructive',
             onPress: () => {
-              // usa a função do contexto para deletar
               deleteProduto(id);
             },
           },

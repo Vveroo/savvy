@@ -20,7 +20,6 @@ export default function AdminOrderDetails({ route, navigation }) {
     load();
   }, [pedidoId]);
 
-  // 🔹 Atualiza status no Admin e também no histórico do estudante
   const updateStatus = async (newStatus) => {
     try {
       const pJSON = await AsyncStorage.getItem('pedidos');
@@ -32,7 +31,6 @@ export default function AdminOrderDetails({ route, navigation }) {
         setPedido(pedidos[idx]);
       }
 
-      // ✅ Atualiza também no histórico do estudante
       const existingUserOrders = await AsyncStorage.getItem('orders');
       if (existingUserOrders) {
         const userOrders = JSON.parse(existingUserOrders);

@@ -2,8 +2,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useTheme } from "../contexts/ThemeContext"; // ✅ pega o tema
-import { COLORS } from "../styles/colors"; // ✅ importa as cores
+import { useTheme } from "../contexts/ThemeContext"; 
+import { COLORS } from "../styles/colors";
 import HomeScreen from "./HomeScreen";
 import CardapioScreen from "./CardapioScreen";
 import Pedidos from "./MeusPedidos";
@@ -31,11 +31,11 @@ export default function TabNavigator() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: theme.button, // ✅ azul SENAI ou azul vibrante
-        tabBarInactiveTintColor: theme.textMuted, // ✅ cinza claro ou escuro
+        tabBarActiveTintColor: theme.button, 
+        tabBarInactiveTintColor: theme.textMuted, 
         tabBarStyle: {
-          backgroundColor: theme.background, // ✅ fundo da barra
-          borderTopColor: theme.divider, // ✅ linha superior
+          backgroundColor: theme.background, 
+          borderTopColor: theme.divider,
         },
         headerShown: false,
       })}

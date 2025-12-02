@@ -12,14 +12,13 @@ import { getCartStyles } from '../styles/cartStyles';
 import { useTheme } from '../contexts/ThemeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useUserContext } from '../contexts/UserContext'; // 🔹 Importa o contexto do usuário
-
+import { useUserContext } from '../contexts/UserContext'; 
 export default function CartScreen({ navigation }) {
   const { cart, clearCart, removeFromCart, updateQuantity } = useContext(CartContext);
   const { isDarkMode } = useTheme();
   const styles = getCartStyles(isDarkMode);
 
-  const { saldo, setSaldo } = useUserContext(); // 🔹 pega saldo e função para atualizar
+  const { saldo, setSaldo } = useUserContext();
 
   const total = cart.reduce((sum, item) => {
     const precoNumerico = typeof item.preco === 'string'
@@ -32,14 +31,13 @@ export default function CartScreen({ navigation }) {
   const handlePayment = async () => {
     if (cart.length === 0) return;
 
-    // 🔹 Verifica se o usuário tem saldo suficiente
     if (saldo < total) {
       Alert.alert("Saldo insuficiente", "Você não possui saldo suficiente para esta compra.");
       return;
     }
 
     const now = new Date();
-    const nomeUsuario = await AsyncStorage.getItem('userMatricula'); // quem pediu
+    const nomeUsuario = await AsyncStorage.getItem('userMatricula'); 
 
     const order = {
       id: Date.now(),
@@ -53,19 +51,16 @@ export default function CartScreen({ navigation }) {
     };
 
     try {
-      // Salva no histórico do usuário (Meus Pedidos)
       const existingOrders = await AsyncStorage.getItem('orders');
       const orders = existingOrders ? JSON.parse(existingOrders) : [];
       orders.push(order);
       await AsyncStorage.setItem('orders', JSON.stringify(orders));
 
-      // Salva também para o Admin ver (Pedidos Admin)
       const existingPending = await AsyncStorage.getItem('pendingOrders');
       const pendingOrders = existingPending ? JSON.parse(existingPending) : [];
       pendingOrders.push(order);
       await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
 
-      // 🔹 Subtrai o valor da compra do saldo
       setSaldo((prevSaldo) => prevSaldo - total);
 
       clearCart();
@@ -74,10 +69,7 @@ export default function CartScreen({ navigation }) {
         { 
           text: "OK", 
           onPress: () => {
-            // 🔹 Navega para a tela de MeusPedidos
             navigation.navigate("MeusPedidos");
-            // Se quiser também abrir a tela de Admin:
-            // navigation.navigate("PedidosAdmin");
           } 
         }
       ]);
