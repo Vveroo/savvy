@@ -26,8 +26,7 @@ export const getPedidosStyles = (isDarkMode) => {
       borderRadius: 12,
       borderWidth: 1,
       borderColor: theme.divider,
-
-      shadowColor: "#000",
+      shadowColor: isDarkMode ? "#000" : "#555",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.15,
       shadowRadius: 4,
@@ -39,29 +38,70 @@ export const getPedidosStyles = (isDarkMode) => {
       marginBottom: 8,
       color: theme.inputText,
     },
+    subtitle: { 
+      color: theme.text, 
+      fontSize: 15,
+      marginBottom: 4,
+      fontWeight: "500",
+    },
     description: {
-      color: isDarkMode ? "#bbb" : "#666",
+      color: isDarkMode ? "#ccc" : theme.textMuted,
       marginTop: 4,
       fontSize: 15,
       lineHeight: 20,
     },
-    valor: {
-      color: "#2ecc71", 
+    valor: { 
+      color: theme.inputText, 
       fontWeight: "700",
       textAlign: "right",
       marginTop: 6,
       fontSize: 16,
     },
-    status: {
+    status: { 
       fontWeight: "600",
-      color: theme.button,
+      color: isDarkMode ? "#fff" : theme.button, 
       marginTop: 8,
       fontSize: 15,
       paddingVertical: 4,
       paddingHorizontal: 8,
       borderRadius: 6,
       alignSelf: "flex-start",
-      backgroundColor: isDarkMode ? "rgba(0,123,255,0.2)" : "rgba(0,123,255,0.1)",
+      backgroundColor: isDarkMode ? "rgba(0,123,255,0.3)" : "rgba(0,123,255,0.1)",
+    },
+    itemRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingVertical: 4,
+        borderBottomWidth: 1,
+        borderBottomColor: theme.dividerMuted,
+    },
+    itemName: {
+        flex: 3,
+        color: theme.text, 
+        fontSize: 14,
+    },
+    itemQty: {
+        flex: 1,
+        textAlign: "center",
+        color: theme.textMuted,
+        fontSize: 14,
+    },
+    itemPrice: {
+        flex: 2,
+        textAlign: "right",
+        color: theme.inputText,
+        fontSize: 14,
+        fontWeight: "600",
+    },
+    total: {
+      fontSize: 18,
+      fontWeight: "700",
+      color: theme.primary,
+      marginTop: 15,
+      paddingTop: 8,
+      borderTopWidth: 1,
+      borderTopColor: theme.divider,
+      textAlign: "right",
     },
     cancelButton: {
       backgroundColor: theme.error,
@@ -83,7 +123,8 @@ export const getPedidosStyles = (isDarkMode) => {
       letterSpacing: 0.5,
     },
     elise: {
-      color: isDarkMode ? "#bbb" : "#666",
+      color: isDarkMode ? "#ddd" : "#666",
+      fontSize: 13,
     },
   });
 };

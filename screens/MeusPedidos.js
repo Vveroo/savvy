@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -18,7 +17,6 @@ export default function MeusPedidos() {
   const { isDarkMode } = useTheme();
   const styles = getPedidosStyles(isDarkMode);
 
-  // Carregar pedidos do AsyncStorage
   const loadOrders = async () => {
     const data = await AsyncStorage.getItem("orders");
     setOrders(data ? JSON.parse(data) : []);
@@ -34,7 +32,6 @@ export default function MeusPedidos() {
     setRefreshing(false);
   };
 
-  // Cancelar pedido
   const cancelOrder = async (id) => {
     const updatedOrders = orders.map((order) =>
       order.id === id ? { ...order, status: "Cancelado" } : order
@@ -44,14 +41,16 @@ export default function MeusPedidos() {
     Alert.alert("Pedido cancelado com sucesso.");
   };
 
-  // Renderizar cada pedido
   const renderOrder = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>Pedido #{item.id}</Text>
-      <Text style={styles.subtitle}>Status: {item.status}</Text>
+      
       <Text style={styles.elise}>Data: {item.data} - Hora: {item.hora}</Text>
+      
+      <Text style={styles.status}>
+          Status: {item.status}
+      </Text>
 
-      {/* Lista de itens do pedido */}
       <FlatList
         data={item.items || []}
         keyExtractor={(it, i) => (it.id ? it.id.toString() : i.toString())}
@@ -64,10 +63,8 @@ export default function MeusPedidos() {
         )}
       />
 
-      {/* Total */}
       <Text style={styles.total}>Total: R$ {item.total?.toFixed(2) || "0.00"}</Text>
 
-      {/* Botão cancelar */}
       {item.status !== "Concluído" && item.status !== "Cancelado" && (
         <TouchableOpacity style={styles.cancelButton} onPress={() => cancelOrder(item.id)}>
           <Text style={styles.cancelText}>Cancelar Compra</Text>
