@@ -27,15 +27,12 @@ export default function CardapioAdminScreen({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getCardapioStyles(isDarkMode);
 
-  // ⚠️ Usar o nome do contexto (contextProdutos)
   const produtosFiltrados = Array.isArray(contextProdutos)
     ? contextProdutos.filter((item) =>
         item?.nome?.toLowerCase().includes(busca.toLowerCase())
       )
     : [];
     
-  // ... (Restante das funções omitidas por brevidade)
-
   const handleAddItem = () => {
     setSelectedItem({
       id: Date.now().toString(),
@@ -112,28 +109,21 @@ export default function CardapioAdminScreen({ navigation }) {
             </Text>
           ) : (
             produtosFiltrados.map((item) => (
-              <View
-                key={item.id}
-                style={styles.card}
-              >
-                <Text style={styles.nome}>{item.nome}</Text>
-                <Text style={styles.preco}>
-                  R$ {Number(item.preco).toFixed(2)}
-                </Text>
-                {/* 🆕 Adicionando botões de edição e exclusão no card */}
-                <View style={styles.cardActions}>
-                  <TouchableOpacity 
-                    onPress={() => handleEditItem(item)}
-                    style={{ padding: 5, marginRight: 10 }}
-                  >
-                    <Icon name="create-outline" size={24} color="#2196F3" />
-                  </TouchableOpacity>
-                  <TouchableOpacity 
-                    onPress={() => handleDeleteItem(item.id)}
-                    style={{ padding: 5 }}
-                  >
-                    <Icon name="trash-outline" size={24} color="#F44336" />
-                  </TouchableOpacity>
+              <View key={item.id} style={styles.card}>
+                <View style={styles.cardRow}>
+                  <View style={styles.itemInfo}>
+                    <Text style={styles.nome}>{item.nome}</Text>
+                    <Text style={styles.preco}>R$ {Number(item.preco).toFixed(2)}</Text>
+                  </View>
+
+                  <View style={styles.actionsColumn}>
+                    <TouchableOpacity onPress={() => handleEditItem(item)} style={styles.actionButton}>
+                      <Icon name="create-outline" size={20} color="#2196F3" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleDeleteItem(item.id)} style={styles.actionButton}>
+                      <Icon name="trash-outline" size={20} color="#F44336" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             ))

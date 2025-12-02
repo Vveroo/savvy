@@ -66,6 +66,30 @@ export const getCardapioStyles = (isDarkMode) => {
       position: 'relative',
     },
 
+    cardRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+
+    itemInfo: {
+      flex: 1,
+      paddingRight: 12,
+    },
+
+    actionsColumn: {
+      width: 48,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    actionButton: {
+      padding: 6,
+      marginBottom: 8,
+      borderRadius: 6,
+      backgroundColor: 'transparent',
+    },
+
     nome: {
       fontSize: 15,
       fontWeight: '600',
