@@ -42,7 +42,7 @@ const initializeUsers = async () => {
           matricula: 'estudante',
           senha: 'estudante1234',
           role: 'student',
-          saldo: 0.00,
+          saldo: 0,
         },
       ];
       await AsyncStorage.setItem('usuarios', JSON.stringify(defaultUsers));
