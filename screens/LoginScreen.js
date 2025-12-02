@@ -34,71 +34,65 @@ export default function Login() {
   const styles = getLoginStyles(isDarkMode);
 
   const navigation = useNavigation();
-  const { login } = useUserContext();
+  const { signIn, loginLocal } = useUserContext();
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const submit = async (values) => {
-    const fixedLogins = {
-      admin: {
-        matricula: "admin",
-        password: "admin1234",
-        role: "admin",
-        saldo: 0,
-      },
-      estudante: {
-        matricula: "estudante",
-        password: "estudante1234",
-        role: "student",
-        saldo: 100.0,
-      },
-    };
-
+    setIsLoading(true);
     const { matricula, password } = values;
 
     try {
-      let fixedUser = Object.values(fixedLogins).find(
-        (user) => user.matricula === matricula && user.password === password
-      );
+      console.log('Tentando login com:', matricula);
+      
+      // Primeiro tenta com usuários hardcoded para testar
+      const hardcodedUsers = {
+        'A9999': { password: 'password1', role: 'admin' },
+        'ADMIN001': { password: 'admin1234', role: 'admin' },
+        'E0001': { password: 'senha0001', role: 'student' },
+        'E0002': { password: 'senha0002', role: 'student' },
+        'E0003': { password: 'senha0003', role: 'student' },
+        'E0004': { password: 'senha0004', role: 'student' },
+        'E0005': { password: 'senha0005', role: 'student' },
+      };
 
-      if (!fixedUser) {
-        const usuariosJSON = await AsyncStorage.getItem('usuarios');
-        const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
-        const usuarioEncontrado = usuarios.find(
-          (u) => u.matricula === matricula && u.senha === password
-        );
-
-        if (usuarioEncontrado) {
-          fixedUser = {
-            matricula: usuarioEncontrado.matricula,
-            role: usuarioEncontrado.role || 'student',
-            saldo: usuarioEncontrado.saldo || 100.0,
-          };
-        }
-      }
-
-      if (fixedUser) {
-        const token = `fixed-token-${fixedUser.role}`;
-        await AsyncStorage.setItem("userToken", token);
-        await AsyncStorage.setItem("userMatricula", matricula);
-
-        login({
-          nome: matricula,
-          matricula,
-          role: fixedUser.role,
-          saldo: fixedUser.saldo,
-        });
-
-        if (fixedUser.role === "admin") {
-          navigation.replace("AdminTabs");
+      if (hardcodedUsers[matricula] && hardcodedUsers[matricula].password === password) {
+        console.log('Login local bem-sucedido');
+        
+        // Login no contexto
+        const mockRes = await loginLocal(matricula, hardcodedUsers[matricula].role);
+        if (mockRes.success) {
+          if (mockRes.user.role === "admin") {
+            navigation.replace("AdminTabs");
+          } else {
+            navigation.replace("MainTabs");
+          }
         } else {
-          navigation.replace("MainTabs");
+          setApiError("Erro ao processar login");
         }
       } else {
-        setApiError("Matrícula ou senha incorreta");
+        // Tenta logar via Supabase
+        console.log('Tentando Supabase...');
+        const res = await signIn(matricula, password);
+        console.log('Resposta signIn:', res);
+        
+        if (res.success) {
+          const usr = res.user;
+          if (usr.role === "admin") {
+            navigation.replace("AdminTabs");
+          } else {
+            navigation.replace("MainTabs");
+          }
+        } else {
+          setApiError(res.error || "Erro ao fazer login");
+        }
       }
     } catch (error) {
+      console.error('Erro no submit:', error);
       setApiError("Erro ao fazer login: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 

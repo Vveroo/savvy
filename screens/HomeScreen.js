@@ -26,13 +26,19 @@ export default function HomeScreen() {
   const [drawerAnim] = useState(new Animated.Value(-300));
   const navigation = useNavigation();
 
+  console.log('HomeScreen - user:', user);
+  console.log('HomeScreen - saldo:', saldo);
+
   if (!user) {
+    console.log('HomeScreen - Carregando (user é null)');
     return (
       <View style={styles.container}>
         <Text style={styles.greeting}>Carregando...</Text>
       </View>
     );
   }
+
+  console.log('HomeScreen - Renderizando home com user:', user.matricula);
 
   const primeiroNome = user?.nome?.split(" ")[0] || "Usuário";
   const qrValue = user.matricula;

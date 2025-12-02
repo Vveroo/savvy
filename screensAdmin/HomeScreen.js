@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { getHomeStyles } from "../stylesAdmin/homeStyles";
 import { getCommonStyles } from "../styles/commonStyles";
-import { schedulesMock } from "../utils/mockData";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useUserContext } from "../contexts/UserContext";
@@ -40,10 +39,10 @@ export default function HomeScreen() {
         if (saved) {
           setSchedules(JSON.parse(saved));
         } else {
-          setSchedules(schedulesMock);
+          setSchedules({ Manha: [], Tarde: [], Noite: [] });
         }
       } catch (err) {
-        setSchedules(schedulesMock);
+        setSchedules({ Manha: [], Tarde: [], Noite: [] });
       }
     };
     loadSchedules();

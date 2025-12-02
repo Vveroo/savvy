@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, Modal, ActivityIndicator } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { getForgotPasswordStyles } from "../styles/forgotPasswordStyles";
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from "../contexts/ThemeContext";
+import { supabase } from '../utils/supabaseClient'; 
+import { getForgotPasswordStyles } from "../styles/forgotPasswordStyles"; 
 
 const ForgotPasswordSchema = Yup.object().shape({
   matricula: Yup.string().required('Matrícula obrigatória'),
 });
 
+// Função para gerar um código alfanumérico
 const generateResetCode = () => {
   return Math.random().toString(36).substring(2, 10).toUpperCase();
 };
@@ -25,6 +26,7 @@ export default function ForgotPasswordScreen() {
   const [userMatricula, setUserMatricula] = useState(null);
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [codeCopied, setCodeCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCopyCode = async () => {
     try {
@@ -37,28 +39,48 @@ export default function ForgotPasswordScreen() {
   };
 
   const handleSubmit = async (values) => {
+    setIsLoading(true);
     try {
-      const usuariosJSON = await AsyncStorage.getItem('usuarios');
-      const usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
-      
-      const usuarioEncontrado = usuarios.find(u => u.matricula === values.matricula);
+      // 1. Tenta encontrar o usuário pela Matrícula
+      const { data: usuario, error: selectError } = await supabase
+        .from('usuarios')
+        .select('id')
+        .eq('matricula', values.matricula)
+        .single(); // ✅ corrigido
 
-      if (!usuarioEncontrado) {
-        Alert.alert('Erro', 'Matrícula não encontrada.');
+      if (selectError || !usuario) {
+        Alert.alert('Erro', 'Matrícula não encontrada. Verifique as Políticas RLS (SELECT).');
         return;
       }
 
+      // 2. Gera o código de redefinição
       const code = generateResetCode();
       setResetCode(code);
       setUserMatricula(values.matricula);
 
-      const usuarioIndex = usuarios.findIndex(u => u.matricula === values.matricula);
-      usuarios[usuarioIndex].senha = code;
-      await AsyncStorage.setItem('usuarios', JSON.stringify(usuarios));
+      // 3. Atualiza a senha (senha_hash) com o código gerado
+      const { error: updateError } = await supabase
+        .from('usuarios')
+        .update({ 
+            senha_hash: code, 
+            updated_at: new Date().toISOString()
+        })
+        .eq('id', usuario.id); 
 
+      if (updateError) {
+        console.error("Erro ao atualizar senha no Supabase:", updateError);
+        Alert.alert('Erro', 'Falha ao atualizar a senha no BD. Verifique as Políticas RLS (UPDATE).');
+        return;
+      }
+
+      // 4. Mostra o modal de sucesso
       setShowCodeModal(true);
+
     } catch (error) {
-      Alert.alert('Erro', 'Falha ao procurar matrícula: ' + error.message);
+      console.error("Erro no processo de redefinição:", error);
+      Alert.alert('Erro', 'Ocorreu um erro inesperado: ' + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,8 +101,8 @@ export default function ForgotPasswordScreen() {
           validationSchema={ForgotPasswordSchema}
           onSubmit={handleSubmit}
         >
-          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-            <>
+          {({ handleChange, handleBlur, handleSubmit: formikSubmit, values, errors, touched }) => (
+            <View>
               <Text style={styles.subtitle}>
                 Digite sua matrícula de estudante
               </Text>
@@ -101,8 +123,12 @@ export default function ForgotPasswordScreen() {
                 <Text style={styles.error}>{errors.matricula}</Text>
               )}
 
-              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Gerar código</Text>
+              <TouchableOpacity style={styles.button} onPress={formikSubmit} disabled={isLoading}>
+                {isLoading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.buttonText}>Gerar código</Text>
+                )}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -111,7 +137,7 @@ export default function ForgotPasswordScreen() {
               >
                 <Text style={styles.cancelButtonText}>Voltar ao Login</Text>
               </TouchableOpacity>
-            </>
+            </View>
           )}
         </Formik>
       ) : null}

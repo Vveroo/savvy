@@ -6,19 +6,58 @@ import { useTheme } from '../contexts/ThemeContext';
 import { getAdminDashboardStyles } from '../stylesAdmin/adminDashboardStyles';
 import { COLORS } from '../styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase } from '../utils/supabaseClient';
 
 export default function AdminDashboard({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getAdminDashboardStyles(isDarkMode);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const loadOrders = async () => {
-    const pJSON = await AsyncStorage.getItem('orders'); // ✅ corrigido
-    setOrders(pJSON ? JSON.parse(pJSON) : []);
+    setLoading(true);
+    try {
+      // Tenta carregar do Supabase
+      const { data, error } = await supabase
+        .from('pedidos')
+        .select(`
+          id,
+          usuario_id,
+          created_at,
+          total,
+          status,
+          usuarios(matricula)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.log('Erro ao carregar pedidos do Supabase:', error.message);
+        // Fallback para AsyncStorage
+        const pJSON = await AsyncStorage.getItem('orders');
+        setOrders(pJSON ? JSON.parse(pJSON) : []);
+      } else {
+        // Transforma dados do Supabase para formato compatível
+        const formatted = (data || []).map(p => ({
+          id: p.id,
+          usuario: p.usuarios?.matricula || 'Desconhecido',
+          total: p.total,
+          status: p.status,
+          data: p.created_at
+        }));
+        setOrders(formatted);
+      }
+    } catch (error) {
+      console.log('Erro ao carregar pedidos:', error);
+      // Fallback para AsyncStorage
+      const pJSON = await AsyncStorage.getItem('orders');
+      setOrders(pJSON ? JSON.parse(pJSON) : []);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', loadOrders); // ✅ Atualiza ao voltar
+    const unsubscribe = navigation.addListener('focus', loadOrders);
     return unsubscribe;
   }, [navigation]);
 
@@ -64,15 +103,15 @@ export default function AdminDashboard({ navigation }) {
 
       <Text style={styles.sectionTitle}>Pedidos Recentes</Text>
       <FlatList
-        data={orders.slice().reverse().slice(0, 8)}
+        data={orders.slice(0, 8)}
         keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.recentItem}
             onPress={() => navigation.navigate('AdminOrderDetails')}
           >
-            <Text style={styles.recentTitle}>Pedido #{item.id} - {item.status}</Text>
-            <Text style={styles.recentSubtitle}>{item.usuario || '—'} • R$ {item.total?.toFixed(2) || '0.00'}</Text>
+            <Text style={styles.recentTitle}>Pedido #{item.id} - {String(item.status)}</Text>
+            <Text style={styles.recentSubtitle}>{String(item.usuario || '—')} • R$ {typeof item.total === 'number' ? item.total.toFixed(2) : '0.00'}</Text>
           </TouchableOpacity>
         )}
       />

@@ -41,7 +41,7 @@ export default function HistoricoScreen({ navigation }) {
       <Text style={styles.orderDate}>{item.data}</Text>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.orderStatus}>Status: {item.status}</Text>
-        <Text style={styles.orderPrice}> -R$ {item.valor}</Text>
+        <Text style={styles.orderPrice}>R$ {typeof item.total === 'number' ? item.total.toFixed(2) : '0.00'}</Text>
       </View>
     </TouchableOpacity>
   );

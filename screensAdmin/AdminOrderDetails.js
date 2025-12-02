@@ -56,26 +56,26 @@ export default function AdminOrderDetails() {
   const renderOrder = ({ item }) => (
     <View style={styles.card}> {/* Usando styles.card para melhor formatação */}
       <Text style={styles.title}>Pedido #{item.id}</Text>
-      <Text style={styles.subtitle}>Status: {item.status}</Text>
+      <Text style={styles.subtitle}>Status: {String(item.status)}</Text>
 
       <FlatList
         data={item.items || []}
         keyExtractor={(it, i) => (it.id ? it.id.toString() : i.toString())}
         renderItem={({ item: product }) => (
           <View style={styles.itemRow}>
-            <Text style={styles.itemName}>{product.nome}</Text>
+            <Text style={styles.itemName}>{String(product.nome)}</Text>
             <Text style={styles.itemQty}>x{product.quantidade || 1}</Text>
             <Text style={styles.itemPrice}>R$ {(product.preco || 0).toFixed(2)}</Text>
           </View>
         )}
       />
 
-      <Text style={styles.total}>Total: R$ {item.total?.toFixed(2) || '0.00'}</Text>
+      <Text style={styles.total}>Total: R$ {typeof item.total === 'number' ? item.total.toFixed(2) : '0.00'}</Text>
 
       <View style={styles.actionsRow}>
         
         {/* Botão Preparar/Em Preparo */}
-        {item.status === 'Aguardando preparo' && (
+        {String(item.status) === 'Aguardando preparo' && (
           <TouchableOpacity 
             style={[styles.actionButton, { backgroundColor: '#FFA500' }]} 
             onPress={() => updateStatus(item.id, 'Preparando')}
@@ -85,7 +85,7 @@ export default function AdminOrderDetails() {
         )}
         
         {/* Botão Concluir */}
-        {item.status === 'Preparando' && (
+        {String(item.status) === 'Preparando' && (
           <TouchableOpacity 
             style={[styles.actionButton, { backgroundColor: '#4CAF50' }]} 
             onPress={() => updateStatus(item.id, 'Concluído')}
@@ -95,7 +95,7 @@ export default function AdminOrderDetails() {
         )}
         
         {/* Botão Lixeira (Cancelar) */}
-        {(item.status === 'Aguardando preparo' || item.status === 'Preparando') && (
+        {(String(item.status) === 'Aguardando preparo' || String(item.status) === 'Preparando') && (
           <TouchableOpacity
             style={[styles.actionButton, styles.trashButton]}
             onPress={() => updateStatus(item.id, 'Cancelado')}
