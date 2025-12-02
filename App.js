@@ -23,6 +23,7 @@ import AdminOrderDetails from './screensAdmin/AdminOrderDetails';
 import AdminHistorico from './screensAdmin/AdminHistorico';
 import AdminScanner from './screensAdmin/AdminScanner';
 import AdminProdutoEditor from './screensAdmin/AdminProdutoEditor';
+import Pedidos from './screensAdmin/AdminOrderDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +79,7 @@ export default function App() {
                 <Stack.Screen name="PixPayment" component={require('./screens/PixPaymentScreen').default} />
                 <Stack.Screen name="CreditCardPayment" component={require('./screens/CreditCardPaymentScreen').default} />
                 <Stack.Screen name="HistoricoScreen" component={HistoricoScreen} />
+                <Stack.Screen name="Pedidos" component={Pedidos} />
               </Stack.Navigator>
             </NavigationContainer>
           </CardapioProvider>

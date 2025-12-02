@@ -121,23 +121,6 @@ export default function CardapioAdminScreen({ navigation }) {
                   R$ {Number(item.preco).toFixed(2)}
                 </Text>
 
-                <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
-                  {/* Botão de editar */}
-                  <TouchableOpacity
-                    style={[styles.addButton, { flex: 1 }]}
-                    onPress={() => handleEditItem(item)}
-                  >
-                    <Text style={styles.addText}>Editar</Text>
-                  </TouchableOpacity>
-
-                  {/* Botão de excluir */}
-                  <TouchableOpacity
-                    style={[styles.deleteButton, { flex: 1 }]}
-                    onPress={() => handleDeleteItem(item.id)}
-                  >
-                    <Icon name="trash-outline" size={20} color="#fff" />
-                  </TouchableOpacity>
-                </View>
               </View>
             ))
           )}

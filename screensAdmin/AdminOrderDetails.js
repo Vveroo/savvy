@@ -5,93 +5,81 @@ import { useTheme } from '../contexts/ThemeContext';
 import { getAdminOrderDetailsStyles } from '../stylesAdmin/adminOrderDetailsStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AdminOrderDetails({ route, navigation }) {
-  const { pedidoId } = route.params || {};
+export default function AdminOrderDetails() {
   const { isDarkMode } = useTheme();
   const styles = getAdminOrderDetailsStyles(isDarkMode);
-  const [pedido, setPedido] = useState(null);
+  const [orders, setOrders] = useState([]);
+
+  const loadOrders = async () => {
+    const data = await AsyncStorage.getItem('orders');
+    setOrders(data ? JSON.parse(data) : []);
+  };
 
   useEffect(() => {
-    const load = async () => {
-      const pJSON = await AsyncStorage.getItem('pedidos');
-      const pedidos = pJSON ? JSON.parse(pJSON) : [];
-      const found = pedidos.find(p => p.id === pedidoId) || null;
-      setPedido(found);
-    };
-    load();
-  }, [pedidoId]);
+    loadOrders();
+  }, []);
 
-  const updateStatus = async (newStatus) => {
+  const updateStatus = async (id, newStatus) => {
     try {
-      const pJSON = await AsyncStorage.getItem('pedidos');
-      const pedidos = pJSON ? JSON.parse(pJSON) : [];
-      const idx = pedidos.findIndex(p => p.id === pedidoId);
-      if (idx !== -1) {
-        pedidos[idx].status = newStatus;
-        await AsyncStorage.setItem('pedidos', JSON.stringify(pedidos));
-        setPedido(pedidos[idx]);
-      }
-
-      const existingUserOrders = await AsyncStorage.getItem('orders');
-      if (existingUserOrders) {
-        const userOrders = JSON.parse(existingUserOrders);
-        const updatedUserOrders = userOrders.map(order =>
-          order.id === pedidoId ? { ...order, status: newStatus } : order
-        );
-        await AsyncStorage.setItem('orders', JSON.stringify(updatedUserOrders));
-      }
-
+      const updatedOrders = orders.map(order =>
+        order.id === id ? { ...order, status: newStatus } : order
+      );
+      setOrders(updatedOrders);
+      await AsyncStorage.setItem('orders', JSON.stringify(updatedOrders));
       Alert.alert('Sucesso', 'Status atualizado.');
     } catch (err) {
       Alert.alert('Erro', err.message);
     }
   };
 
-  if (!pedido) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Pedido não encontrado</Text>
-      </View>
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Pedido #{pedido.id}</Text>
-      <Text style={styles.subtitle}>Status: {pedido.status}</Text>
+  const renderOrder = ({ item }) => (
+    <View style={{ marginBottom: 20 }}>
+      <Text style={styles.title}>Pedido #{item.id}</Text>
+      <Text style={styles.subtitle}>Status: {item.status}</Text>
 
       <FlatList
-        data={pedido.items || []}
+        data={item.items || []}
         keyExtractor={(it, i) => (it.id ? it.id.toString() : i.toString())}
-        renderItem={({ item }) => (
+        renderItem={({ item: product }) => (
           <View style={styles.itemRow}>
-            <Text style={styles.itemName}>{item.nome}</Text>
-            <Text style={styles.itemQty}>x{item.quantidade || 1}</Text>
-            <Text style={styles.itemPrice}>R$ {(item.preco || 0).toFixed(2)}</Text>
+            <Text style={styles.itemName}>{product.nome}</Text>
+            <Text style={styles.itemQty}>x{product.quantidade || 1}</Text>
+            <Text style={styles.itemPrice}>R$ {(product.preco || 0).toFixed(2)}</Text>
           </View>
         )}
       />
 
-      <Text style={styles.total}>Total: R$ {pedido.total?.toFixed(2) || '0.00'}</Text>
+      <Text style={styles.total}>Total: R$ {item.total?.toFixed(2) || '0.00'}</Text>
 
       <View style={styles.actionsRow}>
-        {pedido.status === 'Aguardando preparo' && (
-          <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus('Preparando')}>
+        {item.status === 'Aguardando preparo' && (
+          <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus(item.id, 'Preparando')}>
             <Text style={styles.actionText}>Preparar</Text>
           </TouchableOpacity>
         )}
-        {pedido.status === 'Preparando' && (
-          <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus('Concluído')}>
+        {item.status === 'Preparando' && (
+          <TouchableOpacity style={styles.actionButton} onPress={() => updateStatus(item.id, 'Concluído')}>
             <Text style={styles.actionText}>Concluir</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
           style={[styles.actionButton, { backgroundColor: '#ff6b6b' }]}
-          onPress={() => updateStatus('Cancelado')}
+          onPress={() => updateStatus(item.id, 'Cancelado')}
         >
           <Text style={styles.actionText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={orders}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderOrder}
+        ListEmptyComponent={<Text style={styles.subtitle}>Nenhum pedido encontrado.</Text>}
+      />
     </View>
   );
 }

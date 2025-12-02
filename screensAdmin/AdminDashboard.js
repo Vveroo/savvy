@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,18 +10,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function AdminDashboard({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getAdminDashboardStyles(isDarkMode);
-  const [pedidos, setPedidos] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  const loadOrders = async () => {
+    const pJSON = await AsyncStorage.getItem('orders'); // ✅ corrigido
+    setOrders(pJSON ? JSON.parse(pJSON) : []);
+  };
 
   useEffect(() => {
-    const load = async () => {
-      const pJSON = await AsyncStorage.getItem('pedidos');
-      setPedidos(pJSON ? JSON.parse(pJSON) : []);
-    };
-    load();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', loadOrders); // ✅ Atualiza ao voltar
+    return unsubscribe;
+  }, [navigation]);
 
-  const pendingCount = pedidos.filter(p => p.status !== 'entregue').length;
-  const totalCount = pedidos.length;
+  const pendingCount = orders.filter(o => o.status !== 'Concluído' && o.status !== 'Cancelado').length;
+  const totalCount = orders.length;
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
   return (
@@ -45,7 +48,7 @@ export default function AdminDashboard({ navigation }) {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('AdminHistorico')}
+        onPress={() => navigation.navigate('AdminHistorico')}	
         style={{
           backgroundColor: theme.button,
           paddingVertical: 8,
@@ -56,20 +59,20 @@ export default function AdminDashboard({ navigation }) {
           marginBottom: 12,
         }}
       >
-        <Text style={{ color: '#fff', fontWeight: '600' }}>Ver histórico completo</Text>
+        <Text style={{ color: '#fff', fontWeight: '600' }}>Ver pedidos</Text>
       </TouchableOpacity>
 
       <Text style={styles.sectionTitle}>Pedidos Recentes</Text>
       <FlatList
-        data={pedidos.slice().reverse().slice(0, 8)}
+        data={orders.slice().reverse().slice(0, 8)}
         keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.recentItem}
-            onPress={() => navigation.navigate('AdminOrderDetails', { pedidoId: item.id })}
+            onPress={() => navigation.navigate('AdminOrderDetails')}
           >
             <Text style={styles.recentTitle}>Pedido #{item.id} - {item.status}</Text>
-            <Text style={styles.recentSubtitle}>{item.userMatricula || '—'} • R$ {item.total?.toFixed(2) || '0.00'}</Text>
+            <Text style={styles.recentSubtitle}>{item.usuario || '—'} • R$ {item.total?.toFixed(2) || '0.00'}</Text>
           </TouchableOpacity>
         )}
       />

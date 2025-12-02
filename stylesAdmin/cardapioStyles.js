@@ -82,36 +82,7 @@ export const getCardapioStyles = (isDarkMode) => {
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
-
-    deleteButton: {
-      position: 'absolute',
-      top: 8,
-      right: 8,
-      backgroundColor: theme.error,
-      paddingVertical: 6,
-      paddingHorizontal: 8,
-      borderRadius: 18,
-      elevation: 2,
-      zIndex: 10,
-    },
-
-    addButton: {
-      marginTop: 6,
-      backgroundColor: theme.button,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderRadius: 18,
-      alignSelf: 'center',
-      width: '100%',
-    },
-
-    addText: {
-      fontSize: 16,
-      color: '#fff',
-      fontWeight: '700',
-      textAlign: 'center',
-    },
-
+    
     carrinhoButton: {
       position: 'absolute',
       bottom: 20,

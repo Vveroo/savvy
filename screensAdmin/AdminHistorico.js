@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,13 +10,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function AdminHistorico({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getAdminHistoricoStyles(isDarkMode);
-  const [pedidos, setPedidos] = useState([]);
+  const [orders, setOrders] = useState([]);
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
   useEffect(() => {
     const load = async () => {
-      const pJSON = await AsyncStorage.getItem('pedidos');
-      setPedidos(pJSON ? JSON.parse(pJSON) : []);
+      const pJSON = await AsyncStorage.getItem('orders'); // ✅ corrigido
+      setOrders(pJSON ? JSON.parse(pJSON) : []);
     };
     load();
   }, []);
@@ -30,7 +31,7 @@ export default function AdminHistorico({ navigation }) {
       </View>
       <Text style={styles.title}>Histórico de Pedidos</Text>
       <FlatList
-        data={pedidos.slice().reverse()}
+        data={orders.slice().reverse()} // ✅ mostra todos os pedidos
         keyExtractor={(p) => p.id?.toString() || Math.random().toString()}
         renderItem={({ item }) => (
           <View style={styles.row}>
@@ -38,6 +39,7 @@ export default function AdminHistorico({ navigation }) {
             <Text style={styles.rowSub}>R$ {item.total?.toFixed(2) || '0.00'}</Text>
           </View>
         )}
+        ListEmptyComponent={<Text style={{ color: theme.textMuted, textAlign: 'center', marginTop: 20 }}>Nenhum pedido encontrado.</Text>}
       />
     </View>
   );

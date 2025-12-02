@@ -1,12 +1,12 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
-import * as ExpoCamera from 'expo-camera';
+import { Camera } from 'expo-camera'; // ✅ Import correto
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { COLORS } from '../styles/colors';
-import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function AdminScanner({ navigation }) {
+export default function AdminScanner() {
   const { isDarkMode } = useTheme();
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
   const [hasPermission, setHasPermission] = useState(null);
@@ -15,7 +15,7 @@ export default function AdminScanner({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      const { status } = await ExpoCamera.requestCameraPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync(); // ✅ Permissão correta
       setHasPermission(status === 'granted');
 
       const cntStr = await AsyncStorage.getItem('qrcode_scan_count');
@@ -42,18 +42,17 @@ export default function AdminScanner({ navigation }) {
   if (hasPermission === false) {
     return <Text>Permissão para acessar a câmera foi negada.</Text>;
   }
-  const CameraComp = ExpoCamera.Camera ?? ExpoCamera.default ?? ExpoCamera;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}> 
-      <CameraComp
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Camera
         style={styles.camera}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
       >
         <View style={styles.overlay}>
           <Text style={[styles.text, { color: theme.text }]}>Escaneie um código QR</Text>
         </View>
-      </CameraComp>
+      </Camera>
       {scanned && (
         <TouchableOpacity
           style={styles.button}
@@ -67,28 +66,10 @@ export default function AdminScanner({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  camera: {
-    flex: 1,
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  button: {
-    backgroundColor: '#2196F3',
-    padding: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
+  container: { flex: 1 },
+  camera: { flex: 1 },
+  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  text: { fontSize: 18, fontWeight: 'bold' },
+  button: { backgroundColor: '#2196F3', padding: 10, alignItems: 'center' },
+  buttonText: { color: '#fff', fontSize: 16 },
 });
