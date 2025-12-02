@@ -65,7 +65,7 @@ export default function AdminOrderDetails() {
 
       <View style={styles.actionsRow}>
         
-        {/* Botão Preparar/Em Preparo */}
+        
         {String(item.status) === 'Aguardando preparo' && (
           <TouchableOpacity 
             style={[styles.actionButton, { backgroundColor: '#FFA500' }]} 
@@ -75,7 +75,7 @@ export default function AdminOrderDetails() {
           </TouchableOpacity>
         )}
         
-        {/* Botão Concluir */}
+        
         {String(item.status) === 'Preparando' && (
           <TouchableOpacity 
             style={[styles.actionButton, { backgroundColor: '#4CAF50' }]} 
@@ -85,7 +85,7 @@ export default function AdminOrderDetails() {
           </TouchableOpacity>
         )}
         
-        {/* Botão Lixeira (Cancelar) */}
+        
         {(String(item.status) === 'Aguardando preparo' || String(item.status) === 'Preparando') && (
           <TouchableOpacity
             style={[styles.actionButton, styles.trashButton]}

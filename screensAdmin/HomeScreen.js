@@ -136,17 +136,17 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* TopBar apenas com perfil */}
+      
       <View style={styles.topBar}>
         <TouchableOpacity style={styles.btnPerfil} onPress={toggleDrawer}>
           <Icon name="person-circle-outline" size={32} color={styles.icon.color} />
         </TouchableOpacity>
       </View>
 
-      {/* Saudação */}
+      
       <Text style={styles.greeting}>Olá {primeiroNome}!</Text>
 
-      {/* Tabelas lado a lado com scroll horizontal */}
+      
       <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Horários</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
@@ -179,7 +179,7 @@ export default function HomeScreen() {
         ))}
       </ScrollView>
 
-      {/* Edit modal for turno */}
+      
         <Modal visible={editModalVisible} transparent animationType="slide" onRequestClose={() => setEditModalVisible(false)}>
           <View style={{ flex: 1, justifyContent: "center", padding: 20, backgroundColor: isDarkMode ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.4)' }}>
             <View style={common.modalCard}>
@@ -228,7 +228,7 @@ export default function HomeScreen() {
         </View>
       </Modal>
 
-      {/* Drawer lateral */}
+      
       <Modal visible={drawerVisible} transparent animationType="none">
         <TouchableOpacity
           style={styles.drawerOverlay}

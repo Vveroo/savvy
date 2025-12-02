@@ -130,7 +130,7 @@ export default function AdminProdutoEditor({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {/* Header */}
+      
       <View style={[styles.header, { borderBottomColor: theme.divider }]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color={theme.text} />
@@ -143,7 +143,7 @@ export default function AdminProdutoEditor({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Barra de busca */}
+      
       <View style={[styles.searchBar, { backgroundColor: theme.cardBackground }]}>
         <Icon name="search" size={20} color={theme.textMuted} />
         <TextInput
@@ -160,7 +160,7 @@ export default function AdminProdutoEditor({ navigation }) {
         )}
       </View>
 
-      {/* Lista de produtos */}
+      
       {produtosFiltrados.length > 0 ? (
         <FlatList
           data={produtosFiltrados}
@@ -177,11 +177,11 @@ export default function AdminProdutoEditor({ navigation }) {
         </View>
       )}
 
-      {/* Modal de edição/criação */}
+      
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={[styles.modalOverlay, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
           <View style={[styles.modalContent, { backgroundColor: theme.background }]}>
-            {/* Modal Header */}
+            
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: theme.text }]}>
                 {editingId ? 'Editar Produto' : 'Novo Produto'}
@@ -192,7 +192,7 @@ export default function AdminProdutoEditor({ navigation }) {
             </View>
 
             <ScrollView style={styles.modalBody}>
-              {/* Nome */}
+              
               <Text style={[styles.label, { color: theme.text }]}>Nome do Produto *</Text>
               <TextInput
                 style={[
@@ -209,7 +209,7 @@ export default function AdminProdutoEditor({ navigation }) {
                 onChangeText={setNome}
               />
 
-              {/* Preço */}
+              
               <Text style={[styles.label, { color: theme.text }]}>Preço (R$) *</Text>
               <TextInput
                 style={[
@@ -227,7 +227,7 @@ export default function AdminProdutoEditor({ navigation }) {
                 onChangeText={setPreco}
               />
 
-              {/* Categoria */}
+              
               <Text style={[styles.label, { color: theme.text }]}>Categoria</Text>
               <TouchableOpacity
                 style={[
@@ -245,7 +245,7 @@ export default function AdminProdutoEditor({ navigation }) {
                 <Icon name="chevron-down" size={20} color={theme.button} />
               </TouchableOpacity>
 
-              {/* Categoria Modal */}
+              
               <Modal visible={categoriaModalVisible} transparent>
                 <View style={[styles.categoryModalOverlay]}>
                   <View
@@ -291,7 +291,7 @@ export default function AdminProdutoEditor({ navigation }) {
               </Modal>
             </ScrollView>
 
-            {/* Modal Footer */}
+            
             <View style={styles.modalFooter}>
               <TouchableOpacity
                 style={[styles.btnCancel, { borderColor: theme.textMuted }]}

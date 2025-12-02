@@ -108,9 +108,9 @@ export default function HomeScreen() {
           />
         </TouchableOpacity>
       </View>
-      {/* Saudação */}
+      
       <Text style={[styles.greeting, { marginBottom: 8 }]}>Olá {primeiroNome}!</Text>
-      {/* Saldo */}
+      
       <TouchableOpacity
         style={styles.saldoBox}
         onPress={() => navigation.navigate("HistoricoScreen")}
@@ -131,21 +131,21 @@ export default function HomeScreen() {
         </View>
       </TouchableOpacity>
 
-      {/*Btn Recarregar*/}
+      
       <View style={{ marginTop: 8, marginBottom: 12 }}>
         <TouchableOpacity style={common.btn} onPress={() => navigation.navigate("Pagamento") }>
           <Text style={common.btnText}>Recarregar</Text>
         </TouchableOpacity>
       </View>
 
-      {/* QR Code */}
+      
       <View style={styles.qrContainer}>
         <Text style={styles.qrLabel}>QR Code para: {primeiroNome}</Text>
         <QRCode value={qrValue} size={300} />
       </View>
-      {/* Drawer Modal */}
+      
       <Modal visible={drawerVisible} transparent animationType="none">
-        {/* Overlay clicável */}
+        
         <TouchableOpacity
           style={styles.drawerOverlay}
           activeOpacity={1}

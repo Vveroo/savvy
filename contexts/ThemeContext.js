@@ -1,4 +1,4 @@
-// ThemeContext.js
+ 
 import React, { createContext, useState, useContext } from "react";
 import { useColorScheme } from "react-native";
 import { COLORS } from "../styles/colors";

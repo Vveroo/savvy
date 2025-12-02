@@ -48,7 +48,7 @@ export default function HistoricoScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -63,7 +63,7 @@ export default function HistoricoScreen({ navigation }) {
         <Text style={styles.title}>Histórico de Compras</Text>
       </View>
 
-      {/* Lista de pedidos */}
+      
       {orders.length > 0 ? (
         <FlatList
           data={orders}
@@ -75,7 +75,7 @@ export default function HistoricoScreen({ navigation }) {
         <Text style={styles.emptyText}>Nenhuma compra encontrada.</Text>
       )}
 
-      {/* Modal de detalhes */}
+      
       <Modal visible={!!selectedOrder} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>

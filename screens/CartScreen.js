@@ -41,7 +41,7 @@ export default function CartScreen({ navigation }) {
     const userMatricula = await AsyncStorage.getItem('userMatricula');
     const userId = await AsyncStorage.getItem('userId');
 
-    // Build local order object (used for AsyncStorage fallback and UI)
+    
     const localOrder = {
       id: Date.now(),
       usuario: userMatricula || 'Usuário',
@@ -53,7 +53,7 @@ export default function CartScreen({ navigation }) {
     };
 
     try {
-      // Try to insert into Supabase first (if userId available)
+      
       let pedidoInsertResult = null;
       if (userId) {
         const pedidoPayload = {
@@ -70,12 +70,12 @@ export default function CartScreen({ navigation }) {
         if (pedidoError) {
           console.warn('Supabase: erro ao inserir pedido:', pedidoError.message || pedidoError);
         } else if (pedidoData && pedidoData.length > 0) {
-          // pedidoData may be an array depending on Supabase client version
+          
           pedidoInsertResult = pedidoData[0];
         }
       }
 
-      // If Supabase insert succeeded, insert items linked to pedido id
+      
       if (pedidoInsertResult && pedidoInsertResult.id) {
         const pedidoId = pedidoInsertResult.id;
         const itemsPayload = cart.map((it) => ({
@@ -91,19 +91,19 @@ export default function CartScreen({ navigation }) {
           console.warn('Supabase: erro ao inserir itens_pedidos:', itensError.message || itensError);
         }
 
-        // Optional: update local cache as well
+        
         const existingOrders = await AsyncStorage.getItem('orders');
         const orders = existingOrders ? JSON.parse(existingOrders) : [];
         orders.push({ ...localOrder, id: pedidoInsertResult.id, created_at: pedidoInsertResult.created_at });
         await AsyncStorage.setItem('orders', JSON.stringify(orders));
 
-        // remove any pending local flags
+        
         const existingPending = await AsyncStorage.getItem('pendingOrders');
         const pendingOrders = existingPending ? JSON.parse(existingPending) : [];
         pendingOrders.push(localOrder);
         await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
       } else {
-        // Supabase insertion not possible or failed — fallback to AsyncStorage
+
         const existingOrders = await AsyncStorage.getItem('orders');
         const orders = existingOrders ? JSON.parse(existingOrders) : [];
         orders.push(localOrder);
@@ -115,7 +115,7 @@ export default function CartScreen({ navigation }) {
         await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
       }
 
-      // Update local saldo and UI
+      
       setSaldo((prevSaldo) => prevSaldo - total);
       clearCart();
 
@@ -134,7 +134,7 @@ export default function CartScreen({ navigation }) {
       ]);
     } catch (error) {
       console.error('Erro ao processar pedido (supabase/async fallback):', error);
-      // final fallback: save locally
+      
       try {
         const existingOrders = await AsyncStorage.getItem('orders');
         const orders = existingOrders ? JSON.parse(existingOrders) : [];
@@ -149,7 +149,7 @@ export default function CartScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
+      
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Icon name="arrow-back" size={24} color={isDarkMode ? '#fff' : '#000'} />

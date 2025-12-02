@@ -46,7 +46,6 @@ export default function Login() {
     try {
       console.log('Tentando login com:', matricula);
       
-      // Primeiro tenta com usuários hardcoded para testar
       const hardcodedUsers = {
         'A9999': { password: 'password1', role: 'admin' },
         'ADMIN001': { password: 'admin1234', role: 'admin' },
@@ -60,7 +59,6 @@ export default function Login() {
       if (hardcodedUsers[matricula] && hardcodedUsers[matricula].password === password) {
         console.log('Login local bem-sucedido');
         
-        // Login no contexto
         const mockRes = await loginLocal(matricula, hardcodedUsers[matricula].role);
         if (mockRes.success) {
           if (mockRes.user.role === "admin") {
@@ -72,7 +70,7 @@ export default function Login() {
           setApiError("Erro ao processar login");
         }
       } else {
-        // Tenta logar via Supabase
+        
         console.log('Tentando Supabase...');
         const res = await signIn(matricula, password);
         console.log('Resposta signIn:', res);

@@ -1,4 +1,4 @@
-// screens/CardapioScreen.js
+
 import React, { useState, useContext, useEffect } from 'react';
 import {
   View,
@@ -78,7 +78,7 @@ export default function CardapioScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Cardápio</Text>
 
-      {/* Busca */}
+      
       <View style={styles.searchWrapper}>
         <Icon name="search" size={20} color="#999" style={styles.searchIcon} />
         <TextInput
@@ -90,7 +90,7 @@ export default function CardapioScreen() {
         />
       </View>
 
-      {/* Categorias dinâmicas */}
+      
       <View style={{ height: 40 }}>
         <ScrollView
           horizontal
@@ -143,7 +143,7 @@ export default function CardapioScreen() {
                   R$ {Number(item.preco).toFixed(2)}
                 </Text>
 
-                {/* botão favorito */}
+                
                 <TouchableOpacity
                   style={[
                     styles.favButton,
@@ -161,7 +161,7 @@ export default function CardapioScreen() {
         </View>
       </ScrollView>
 
-      {/* Modal de detalhes */}
+      
       {selectedItem && (
         <Modal
           visible={modalVisible}
@@ -186,7 +186,7 @@ export default function CardapioScreen() {
                 {selectedItem.descricao}
               </Text>
 
-              {/* quantidade */}
+              
               <View style={styles.quantidadeWrapper}>
                 <TouchableOpacity
                   style={styles.quantidadeBtn}
@@ -203,7 +203,7 @@ export default function CardapioScreen() {
                 </TouchableOpacity>
               </View>
 
-              {/* adicionar ao carrinho */}
+              
               <TouchableOpacity
                 style={styles.cartButton}
                 onPress={() => {
@@ -218,7 +218,7 @@ export default function CardapioScreen() {
         </Modal>
       )}
 
-      {/* Botão flutuante do carrinho */}
+      
       <TouchableOpacity
         style={styles.cartFloatingButton}
         onPress={() => navigation.navigate('Cart')}

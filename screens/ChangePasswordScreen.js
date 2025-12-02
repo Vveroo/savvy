@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { getChangePasswordStyles } from '../styles/changePasswordStyles';
 import { supabase } from '../utils/supabaseClient';
 
-// Geração de código temporário
 const generateTempCode = () => {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 };
@@ -150,7 +149,7 @@ export default function ChangePasswordScreen({ navigation }) {
 
   return (
     <View style={[styles.container, { paddingTop: 20 }]}>
-      {/* Header */}
+      
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color={isDarkMode ? '#fff' : '#000'} />
@@ -253,7 +252,7 @@ export default function ChangePasswordScreen({ navigation }) {
         </View>
       )}
 
-      {/* Modal do código */}
+      
       <Modal
         visible={showCodeModal}
         transparent

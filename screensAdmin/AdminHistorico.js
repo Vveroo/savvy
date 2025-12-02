@@ -36,7 +36,7 @@ export default function AdminHistorico({ navigation }) {
           }));
         }
 
-        // Read local orders and map to same shape
+        
         let localMapped = [];
         try {
           const localJSON = await AsyncStorage.getItem('orders');
@@ -53,14 +53,14 @@ export default function AdminHistorico({ navigation }) {
           console.warn('Erro ao ler pedidos locais:', e);
         }
 
-        // Merge - keep supabase entries first, then local ones not present in supabase
+        
         const supabaseIds = new Set(formatted.map((f) => String(f.id)));
         const merged = [
           ...formatted,
           ...localMapped.filter((l) => !supabaseIds.has(String(l.id)))
         ];
 
-        // Sort by date desc
+        
         merged.sort((a, b) => {
           const ta = a.data ? new Date(a.data).getTime() : 0;
           const tb = b.data ? new Date(b.data).getTime() : 0;

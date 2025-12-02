@@ -16,7 +16,6 @@ export const UserProvider = ({ children }) => {
     try {
       console.log('SignIn iniciado com:', identifier);
       
-      // Busca usuário por matrícula ou email
       const { data: userData, error: userError } = await supabase
         .from('usuarios')
         .select('*')
@@ -34,7 +33,6 @@ export const UserProvider = ({ children }) => {
       const u = userData[0];
       console.log('Usuário encontrado:', u.matricula);
       
-      // Compara senha (comparação simples - sem bcrypt em React Native)
       if (u.senha !== password && u.senha_hash !== password) {
         console.log('Senha incorreta');
         setIsLoading(false);
@@ -62,7 +60,6 @@ export const UserProvider = ({ children }) => {
     try {
       console.log('Login local iniciado com:', matricula);
       
-      // Gera um UUID fake válido (formato: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx)
       const generateUUID = () => {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
           const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);

@@ -13,7 +13,6 @@ const ForgotPasswordSchema = Yup.object().shape({
   matricula: Yup.string().required('Matrícula obrigatória'),
 });
 
-// Função para gerar um código alfanumérico
 const generateResetCode = () => {
   return Math.random().toString(36).substring(2, 10).toUpperCase();
 };
@@ -41,24 +40,23 @@ export default function ForgotPasswordScreen() {
   const handleSubmit = async (values) => {
     setIsLoading(true);
     try {
-      // 1. Tenta encontrar o usuário pela Matrícula
       const { data: usuario, error: selectError } = await supabase
         .from('usuarios')
         .select('id')
         .eq('matricula', values.matricula)
-        .single(); // ✅ corrigido
+        .single();
 
       if (selectError || !usuario) {
         Alert.alert('Erro', 'Matrícula não encontrada. Verifique as Políticas RLS (SELECT).');
         return;
       }
 
-      // 2. Gera o código de redefinição
+      
       const code = generateResetCode();
       setResetCode(code);
       setUserMatricula(values.matricula);
 
-      // 3. Atualiza a senha (senha_hash) com o código gerado
+      
       const { error: updateError } = await supabase
         .from('usuarios')
         .update({ 
@@ -73,7 +71,7 @@ export default function ForgotPasswordScreen() {
         return;
       }
 
-      // 4. Mostra o modal de sucesso
+      
       setShowCodeModal(true);
 
     } catch (error) {

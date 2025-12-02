@@ -7,7 +7,6 @@ import { CartProvider } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { CardapioProvider } from './contexts/CardapioContext';
 
-// Telas
 import LoginScreen from './screens/LoginScreen';
 import TabNavigator from './screens/TabNavigator'; 
 import ForgotPasswordScreen from './screens/ForgotScreen';
@@ -16,7 +15,6 @@ import CartScreen from './screens/CartScreen';
 import HistoricoScreen from './screens/HistoricoScreen';
 import RechargeScreen from './screens/RechargeScreen';
 
-// Admin
 import AdminTabs from './screensAdmin/AdminTabs';
 import AdminDashboard from './screensAdmin/AdminDashboard';
 import AdminOrderDetails from './screensAdmin/AdminOrderDetails';

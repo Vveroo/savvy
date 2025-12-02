@@ -38,7 +38,7 @@ export default function AdminDashboard({ navigation }) {
         console.warn('Erro Supabase (pedidos):', error.message);
       }
 
-      // Read local orders and map to same shape
+      
       let localMapped = [];
       try {
         const localJSON = await AsyncStorage.getItem('orders');
@@ -55,14 +55,14 @@ export default function AdminDashboard({ navigation }) {
         console.warn('Erro ao ler pedidos locais:', e);
       }
 
-      // Merge supabase + local (keep supabase first)
+      
       const supabaseIds = new Set(formatted.map((f) => String(f.id)));
       const merged = [
         ...formatted,
         ...localMapped.filter((l) => !supabaseIds.has(String(l.id))),
       ];
 
-      // Sort by date desc
+      
       merged.sort((a, b) => {
         const ta = a.data ? new Date(a.data).getTime() : 0;
         const tb = b.data ? new Date(b.data).getTime() : 0;
@@ -70,7 +70,7 @@ export default function AdminDashboard({ navigation }) {
       });
 
       setOrders(merged);
-      // load scan events and aggregate by week/shift
+      
       try {
         const events = await getScanEvents();
         const agg = aggregateByWeekAndShift(events);
@@ -119,12 +119,12 @@ export default function AdminDashboard({ navigation }) {
         </View>
       </View>
 
-      {/* Scan stats (week Monday-Thursday, by shift) - table view */}
+      
       <View style={{ marginTop: 16 }}>
         <Text style={styles.sectionTitle}>Scans (Semana Seg-Qui por Turno)</Text>
         {scanStats && scanStats.length > 0 ? (
           <View style={{ marginTop: 8 }}>
-            {/* Table header */}
+            
             <View style={{ flexDirection: 'row', paddingVertical: 8, paddingHorizontal: 6, backgroundColor: '#f2f2f2', borderRadius: 6 }}>
               <Text style={{ flex: 2, fontWeight: '700' }}>Semana</Text>
               <Text style={{ flex: 1, textAlign: 'center', fontWeight: '700' }}>Mat</Text>

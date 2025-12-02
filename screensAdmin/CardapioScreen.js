@@ -82,13 +82,13 @@ export default function CardapioAdminScreen({ navigation }) {
     );
   };
 
-  // ... (Resto da renderização da tela)
+  
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Admin - Cardápio</Text>
 
-      {/* Busca */}
+      
       <View style={styles.searchWrapper}>
         <Icon name="search" size={20} color="#999" style={styles.searchIcon} />
         <TextInput
@@ -100,7 +100,7 @@ export default function CardapioAdminScreen({ navigation }) {
         />
       </View>
 
-      {/* Lista de produtos */}
+      
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.grid}>
           {produtosFiltrados.length === 0 ? (
@@ -130,7 +130,7 @@ export default function CardapioAdminScreen({ navigation }) {
           )}
         </View>
       </ScrollView>
-      {/* Modal de adicionar/editar */}
+      
       {selectedItem && (
         <Modal
           visible={modalVisible}
@@ -181,7 +181,7 @@ export default function CardapioAdminScreen({ navigation }) {
                 }
               />
 
-              {/* Picker de categoria */}
+              
               <Text style={styles.label}>Categoria</Text>
               <View style={styles.pickerWrapper}>
                 <Picker
@@ -230,7 +230,7 @@ export default function CardapioAdminScreen({ navigation }) {
         </Modal>
       )}
 
-      {/* Botão flutuante para adicionar/editar item (Redirecionamento) */}
+      
       <TouchableOpacity
         style={{
           position: 'absolute',
@@ -248,7 +248,6 @@ export default function CardapioAdminScreen({ navigation }) {
           shadowOpacity: 0.3,
           shadowRadius: 3,
         }}
-        // 🆕 Alterado para abrir o modal de adição/edição, que é mais relevante para esta tela de administração
         onPress={handleAddItem} 
       >
         <Icon name="add" size={28} color="#fff" />

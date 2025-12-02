@@ -29,12 +29,10 @@ export default function AdminScanner({ navigation }) {
     Alert.alert("Código QR Escaneado", `Dados: ${data}`);
 
     try {
-      // increment local counter and persist
       const newCount = (Number(count) || 0) + 1;
       setCount(newCount);
       await AsyncStorage.setItem('qrcode_scan_count', String(newCount));
 
-      // add a scan event for dashboard aggregation
       await addScanEvent(data);
     } catch (e) {
       console.warn('Erro ao gravar scan:', e);
@@ -45,7 +43,7 @@ export default function AdminScanner({ navigation }) {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* Back button to previous screen */}
+      
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backButton}
