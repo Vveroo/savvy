@@ -5,7 +5,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
   return StyleSheet.create({
-    // Layout
     container: {
       flex: 1,
       backgroundColor: theme.background,
@@ -22,7 +21,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       marginVertical: 15,
     },
 
-    // Header
     header: {
       flexDirection: "row",
       alignItems: "center",
@@ -39,7 +37,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       color: theme.inputText,
     },
 
-    // Sections
     section: {
       marginBottom: 30,
     },
@@ -50,7 +47,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       marginBottom: 15,
     },
 
-    // Step indicator
     stepIndicator: {
       flexDirection: "row",
       alignItems: "center",
@@ -80,7 +76,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       fontWeight: "500",
     },
 
-    // Inputs
     label: {
       fontSize: 14,
       fontWeight: "600",
@@ -113,7 +108,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       padding: 5,
     },
 
-    // Feedback texts
     error: {
       color: theme.error,
       fontSize: 12,
@@ -136,7 +130,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       fontStyle: "italic",
     },
 
-    // Buttons
     button: {
       width: "100%",
       height: 50,
@@ -176,7 +169,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       color: theme.button,
     },
 
-    // Modal
     modalOverlay: {
       flex: 1,
       backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -229,7 +221,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       fontStyle: "italic",
     },
 
-    // Code card
     codeCard: {
       backgroundColor: theme.cardBackground,
       borderRadius: 12,
@@ -266,7 +257,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       fontWeight: "600",
     },
 
-    // Modal buttons
     modalButtonContainer: {
       flexDirection: "column",
       width: "100%",
@@ -319,7 +309,6 @@ export const getChangePasswordStyles = (isDarkMode) => {
       fontSize: 16,
     },
 
-    // Password requirements
     passwordRequirements: {
       backgroundColor: theme.cardBackground,
       borderRadius: 8,

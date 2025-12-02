@@ -5,7 +5,7 @@ export const getForgotPasswordStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
   return StyleSheet.create({
-    // Layout
+
     container: {
       flex: 1,
       justifyContent: "center",
@@ -14,7 +14,7 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       paddingHorizontal: 20,
     },
 
-    // Texts
+
     title: {
       fontSize: 25,
       marginBottom: 30,
@@ -42,7 +42,7 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       fontStyle: "italic",
     },
 
-    // Inputs
+
     inputContainer: {
       flexDirection: "row",
       alignItems: "center",
@@ -72,7 +72,7 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       paddingVertical: 10,
     },
 
-    // Buttons
+
     button: {
       width: "100%",
       height: 50,
@@ -108,7 +108,7 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       color: theme.button,
     },
 
-    // Modal
+
     modalOverlay: {
       flex: 1,
       backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -140,7 +140,6 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       marginBottom: 20,
     },
 
-    // Code box
     codeBox: {
       backgroundColor: theme.cardBackground,
       borderRadius: 10,
@@ -156,7 +155,7 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       letterSpacing: 2,
     },
 
-    // Modal buttons
+    
     copyButton: {
       backgroundColor: theme.button,
       paddingVertical: 12,

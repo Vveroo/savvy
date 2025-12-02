@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../styles/colors"; // ajuste o caminho conforme sua estrutura
+import { COLORS } from "../styles/colors"; 
 
 export const getPedidosStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
@@ -26,7 +26,7 @@ export const getPedidosStyles = (isDarkMode) => {
       borderRadius: 12,
       borderWidth: 1,
       borderColor: theme.divider,
-      // sombra moderna
+
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.15,
@@ -46,7 +46,7 @@ export const getPedidosStyles = (isDarkMode) => {
       lineHeight: 20,
     },
     valor: {
-      color: "#2ecc71", // verde moderno
+      color: "#2ecc71", 
       fontWeight: "700",
       textAlign: "right",
       marginTop: 6,

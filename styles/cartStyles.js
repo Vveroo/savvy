@@ -30,22 +30,22 @@ export const getCartStyles = (isDarkMode) => {
         color: theme.inputText, 
       },
 
-      // --- NOVOS ESTILOS PARA O CARD ---
+
       itemContainer: {
-        flexDirection: 'row',          // Alinha itens na horizontal
-        justifyContent: 'space-between', // Texto na ponta esquerda, ícone na direita
-        alignItems: 'center',          // Centraliza verticalmente
+        flexDirection: 'row',          
+        justifyContent: 'space-between', 
+        alignItems: 'center',          
         paddingVertical: 12,
         borderBottomWidth: 1,
         borderBottomColor: theme.divider,
       },
       itemText: {
-        flex: 1,                       // Ocupa todo o espaço disponível, empurrando o ícone
+        flex: 1,                      
         fontSize: 16,
         color: theme.inputText,
       },
       deleteButton: {
-        padding: 10,                   // Área de toque maior para o dedo
+        padding: 10,                  
         marginLeft: 10,
       },
 

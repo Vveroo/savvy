@@ -9,10 +9,9 @@ const baseStyles = StyleSheet.create({
     paddingTop: 40,
   },
 
-  /** Barra superior com ícones */
   topBar: {
     flexDirection: "row",
-    justifyContent: "space-between", // perfil à esquerda, saldo à direita
+    justifyContent: "space-between", 
     alignItems: "center",
     marginBottom: 24,
     position: "relative",

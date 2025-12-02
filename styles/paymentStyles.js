@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { COLORS } from './colors';
 
-// 🔹 Estilos dinâmicos (dependem do tema)
 export const getPaymentStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
@@ -24,8 +23,15 @@ export const getPaymentStyles = (isDarkMode) => {
       alignItems: 'center',
       marginTop: 16,
     },
-    buttonText: { color: '#fff', fontWeight: '700' },
-    modal: { padding: 16, backgroundColor: theme.inputBackground, borderRadius: 10 },
+    buttonText: { 
+      color: '#fff', 
+      fontWeight: '700' 
+    },
+    modal: { 
+      padding: 16, 
+      backgroundColor: theme.inputBackground, 
+      borderRadius: 10 
+    },
     optionButton: {
       paddingVertical: 12,
       paddingHorizontal: 10,
@@ -33,16 +39,35 @@ export const getPaymentStyles = (isDarkMode) => {
       marginTop: 8,
       backgroundColor: theme.cardBackground,
     },
-    optionText: { color: theme.inputText, fontWeight: '600' },
-    pixBox: { padding: 12, backgroundColor: theme.cardBackground, borderRadius: 8, marginTop: 12 },
-    pixCode: { fontFamily: 'monospace', color: theme.inputText, marginTop: 8 },
-    timerText: { color: theme.textMuted, marginTop: 8 },
-    formRow: { marginTop: 12 },
-    smallText: { color: theme.textMuted, marginTop: 8 },
+    optionText: { 
+      color: theme.inputText, 
+      fontWeight: '600' 
+    },
+    pixBox: { 
+      padding: 12, 
+      backgroundColor: theme.cardBackground, 
+      borderRadius: 8, 
+      marginTop: 12 
+    },
+    pixCode: { 
+      fontFamily: 'monospace', 
+      color: theme.inputText,
+       marginTop: 8 
+      },
+    timerText: { 
+      color: theme.textMuted, 
+      marginTop: 8 
+    },
+    formRow: { 
+      marginTop: 12 
+    },
+    smallText: { 
+      color: theme.textMuted, 
+      marginTop: 8 
+    },
   });
 };
 
-// 🔹 Estilos fixos (independentes de tema)
 export const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,

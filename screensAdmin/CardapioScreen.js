@@ -243,7 +243,6 @@ export default function CardapioAdminScreen({ navigation }) {
         </Modal>
       )}
 
-      {/* FAB - Floating Action Button para abrir editor completo */}
       <TouchableOpacity
         style={{
           position: 'absolute',

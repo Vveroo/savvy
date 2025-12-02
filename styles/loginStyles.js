@@ -7,8 +7,8 @@ export const getLoginStyles = (isDarkMode) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: "center",   // Centraliza verticalmente
-      alignItems: "center",       // Centraliza horizontalmente
+      justifyContent: "center",   
+      alignItems: "center",       
       backgroundColor: theme.background,
       paddingHorizontal: 20,
     },
@@ -31,7 +31,7 @@ export const getLoginStyles = (isDarkMode) => {
     inputContainer: {
       flexDirection: "row",
       alignItems: "center",
-      width: "80%", // largura fixa para centralizar
+      width: "80%", 
       height: 50,
       backgroundColor: theme.inputBackground,
       borderRadius: 25,
@@ -43,7 +43,7 @@ export const getLoginStyles = (isDarkMode) => {
       shadowOpacity: 0.1,
       shadowOffset: { width: 0, height: 2 },
       shadowRadius: 4,
-      elevation: 2, // sombra no Android
+      elevation: 2, 
     },
 
     icon: {
@@ -70,7 +70,7 @@ export const getLoginStyles = (isDarkMode) => {
     },
 
     button: {
-      width: "80%", // igual aos inputs
+      width: "80%", 
       height: 50,
       backgroundColor: theme.button,
       borderRadius: 25,

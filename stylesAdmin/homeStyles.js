@@ -8,10 +8,9 @@ const baseStyles = StyleSheet.create({
     paddingTop: 40,
   },
 
-  /** Barra superior com ícones */
   topBar: {
     flexDirection: "row",
-    justifyContent: "flex-start", // apenas perfil à esquerda
+    justifyContent: "flex-start", 
     alignItems: "center",
     marginBottom: 24,
     zIndex: 10,
@@ -34,7 +33,6 @@ const baseStyles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  /** Tabela de horários */
   sectionTitle: {
     fontSize: 20,
     fontWeight: "700",
@@ -73,7 +71,6 @@ const baseStyles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  /** Drawer lateral */
   drawerOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",

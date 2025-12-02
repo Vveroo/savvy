@@ -170,7 +170,6 @@ export const getCardapioStyles = (isDarkMode) => {
     },
 
 
-    /** estilos para o modal */
     modalOverlay: {
       flex: 1,
       backgroundColor: 'rgba(0,0,0,0.5)',

@@ -5,7 +5,6 @@ export const getCardapioStyles = (isDarkMode) => {
   const theme = isDarkMode ? COLORS.dark : COLORS.light;
 
   return StyleSheet.create({
-    // Layout base
     container: {
       flex: 1,
       backgroundColor: theme.telaCardapio,
@@ -21,7 +20,6 @@ export const getCardapioStyles = (isDarkMode) => {
       textAlign: 'center',
     },
 
-    // Busca
     searchWrapper: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -45,7 +43,6 @@ export const getCardapioStyles = (isDarkMode) => {
       color: theme.inputText,
     },
 
-    // Grid e card
     grid: {
       flexDirection: 'column',
       alignItems: 'center',
@@ -86,7 +83,6 @@ export const getCardapioStyles = (isDarkMode) => {
       alignSelf: 'flex-start',
     },
 
-    // Botões no card
     deleteButton: {
       position: 'absolute',
       top: 8,
@@ -116,7 +112,6 @@ export const getCardapioStyles = (isDarkMode) => {
       textAlign: 'center',
     },
 
-    // Botão global de adicionar
     carrinhoButton: {
       position: 'absolute',
       bottom: 20,
@@ -127,7 +122,6 @@ export const getCardapioStyles = (isDarkMode) => {
       elevation: 5,
     },
 
-    // Modal
     modalOverlay: {
       flex: 1,
       backgroundColor: 'rgba(0,0,0,0.5)',
@@ -152,7 +146,6 @@ export const getCardapioStyles = (isDarkMode) => {
       zIndex: 20,
     },
 
-    // Inputs
     label: {
       alignSelf: 'flex-start',
       marginBottom: 6,
@@ -173,7 +166,6 @@ export const getCardapioStyles = (isDarkMode) => {
       fontSize: 14,
     },
 
-    // Picker de categoria
     pickerWrapper: {
       width: '100%',
       borderWidth: 1,

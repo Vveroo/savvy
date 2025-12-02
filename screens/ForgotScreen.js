@@ -116,7 +116,6 @@ export default function ForgotPasswordScreen() {
         </Formik>
       ) : null}
 
-      {/* Modal com código para copiar */}
       <Modal
         visible={showCodeModal}
         transparent
