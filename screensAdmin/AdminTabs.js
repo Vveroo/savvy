@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../contexts/ThemeContext';
 import { COLORS } from '../styles/colors';
 import HomeScreen from "./HomeScreen";
-import AdminOrderDetails from "./AdminOrderDetails"; // ✅ Alterado aqui
+import AdminOrderDetails from "./AdminOrderDetails"; 
 import CardapioScreen from "./CardapioScreen";
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +37,7 @@ export default function TabNavigator() {
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ title: "Início" }} />
       <Tab.Screen name="Cardapio" component={CardapioScreen} options={{ title: "Menu" }} />
-      <Tab.Screen name="Pedidos" component={AdminOrderDetails} options={{ title: "Pedidos" }} /> {/* ✅ Alterado aqui */}
+      <Tab.Screen name="Pedidos" component={AdminOrderDetails} options={{ title: "Pedidos" }} /> 
     </Tab.Navigator>
   );
 }
