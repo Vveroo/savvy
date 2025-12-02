@@ -18,54 +18,60 @@ export default function AdminDashboard({ navigation }) {
   const loadOrders = async () => {
     setLoading(true);
     try {
-      // Observação: precisa existir FK pedidos.usuario_id -> usuarios.id e RLS permitir SELECT em ambas
       const { data, error } = await supabase
         .from('pedidos')
-        .select(`
-          id,
-          usuario_id,
-          created_at,
-          total,
-          status,
-          usuarios(matricula)
-        `)
+        .select(`id, usuario_id, created_at, total, status, usuarios(matricula)`)
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.log('Erro Supabase (pedidos):', error.message);
-        const pJSON = await AsyncStorage.getItem('orders');
-        const fallback = pJSON ? JSON.parse(pJSON) : [];
-        // Garante formato mínimo esperado
-        const formattedFallback = fallback.map(p => ({
-          id: p.id,
-          usuario: p.usuario || p.matricula || 'Desconhecido',
-          total: typeof p.total === 'number' ? p.total : Number(p.total) || 0,
-          status: p.status || '—',
-          data: p.created_at || p.data,
-        }));
-        setOrders(formattedFallback);
-      } else {
-        const formatted = (data || []).map(p => ({
+      let formatted = [];
+      if (!error && Array.isArray(data)) {
+        formatted = data.map((p) => ({
           id: p.id,
           usuario: p.usuarios?.matricula || 'Desconhecido',
           total: typeof p.total === 'number' ? p.total : Number(p.total) || 0,
           status: p.status,
-          data: p.created_at,
+          data: p.created_at || null,
         }));
-        setOrders(formatted);
+      } else if (error) {
+        console.warn('Erro Supabase (pedidos):', error.message);
       }
+
+      // Read local orders and map to same shape
+      let localMapped = [];
+      try {
+        const localJSON = await AsyncStorage.getItem('orders');
+        const local = localJSON ? JSON.parse(localJSON) : [];
+        localMapped = (local || []).map((o) => ({
+          id: o.id,
+          usuario: o.usuario || o.usuario_id || 'Desconhecido',
+          total: o.total || 0,
+          status: o.status || 'pending',
+          data: o.created_at || o.data || null,
+          _local: true,
+        }));
+      } catch (e) {
+        console.warn('Erro ao ler pedidos locais:', e);
+      }
+
+      // Merge supabase + local (keep supabase first)
+      const supabaseIds = new Set(formatted.map((f) => String(f.id)));
+      const merged = [
+        ...formatted,
+        ...localMapped.filter((l) => !supabaseIds.has(String(l.id))),
+      ];
+
+      // Sort by date desc
+      merged.sort((a, b) => {
+        const ta = a.data ? new Date(a.data).getTime() : 0;
+        const tb = b.data ? new Date(b.data).getTime() : 0;
+        return tb - ta;
+      });
+
+      setOrders(merged);
     } catch (err) {
-      console.log('Erro ao carregar pedidos:', err);
+      console.warn('Erro ao carregar pedidos no dashboard:', err);
       const pJSON = await AsyncStorage.getItem('orders');
-      const fallback = pJSON ? JSON.parse(pJSON) : [];
-      const formattedFallback = fallback.map(p => ({
-        id: p.id,
-        usuario: p.usuario || p.matricula || 'Desconhecido',
-        total: typeof p.total === 'number' ? p.total : Number(p.total) || 0,
-        status: p.status || '—',
-        data: p.created_at || p.data,
-      }));
-      setOrders(formattedFallback);
+      setOrders(pJSON ? JSON.parse(pJSON) : []);
     } finally {
       setLoading(false);
     }
