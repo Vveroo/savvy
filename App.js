@@ -25,31 +25,6 @@ import Pedidos from './screensAdmin/AdminOrderDetails';
 
 const Stack = createNativeStackNavigator();
 
-const initializeUsers = async () => {
-  try {
-    const existingUsers = await AsyncStorage.getItem('usuarios');
-    if (!existingUsers) {
-      const defaultUsers = [
-        {
-          matricula: 'admin',
-          senha: 'admin1234',
-          role: 'admin',
-          saldo: 0,
-        },
-        {
-          matricula: 'estudante',
-          senha: 'estudante1234',
-          role: 'student',
-          saldo: 0,
-        },
-      ];
-      await AsyncStorage.setItem('usuarios', JSON.stringify(defaultUsers));
-    }
-  } catch (error) {
-    console.log('Erro ao inicializar usuários:', error);
-  }
-};
-
 export default function App() {
   useEffect(() => {
     initializeUsers();
