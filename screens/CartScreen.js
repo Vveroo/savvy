@@ -19,7 +19,7 @@ export default function CartScreen({ navigation }) {
   const { cart, clearCart, removeFromCart, updateQuantity } = useContext(CartContext);
   const { isDarkMode } = useTheme();
   const styles = getCartStyles(isDarkMode);
-  const { saldo, setSaldo, user } = useUserContext();
+  const { saldo, updateSaldo, user } = useUserContext();
 
   const total = cart.reduce((sum, item) => {
     const precoNumerico = typeof item.preco === 'string'
@@ -92,31 +92,79 @@ export default function CartScreen({ navigation }) {
         }
 
         
-        const existingOrders = await AsyncStorage.getItem('orders');
+        const globalOrdersKey = 'orders';
+        const userOrdersKey = userId ? `orders_${userId}` : null;
+
+        const existingOrders = await AsyncStorage.getItem(globalOrdersKey);
         const orders = existingOrders ? JSON.parse(existingOrders) : [];
-        orders.push({ ...localOrder, id: pedidoInsertResult.id, created_at: pedidoInsertResult.created_at });
-        await AsyncStorage.setItem('orders', JSON.stringify(orders));
+        const orderToPush = { ...localOrder, id: pedidoInsertResult.id, created_at: pedidoInsertResult.created_at };
+        orders.push(orderToPush);
+        await AsyncStorage.setItem(globalOrdersKey, JSON.stringify(orders));
+
+        if (userOrdersKey) {
+          const existingUserOrders = await AsyncStorage.getItem(userOrdersKey);
+          const userOrders = existingUserOrders ? JSON.parse(existingUserOrders) : [];
+          userOrders.push(orderToPush);
+          await AsyncStorage.setItem(userOrdersKey, JSON.stringify(userOrders));
+        }
 
         
-        const existingPending = await AsyncStorage.getItem('pendingOrders');
+        const globalPendingKey = 'pendingOrders';
+        const userPendingKey = userId ? `pendingOrders_${userId}` : null;
+
+        const existingPending = await AsyncStorage.getItem(globalPendingKey);
         const pendingOrders = existingPending ? JSON.parse(existingPending) : [];
         pendingOrders.push(localOrder);
-        await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
+        await AsyncStorage.setItem(globalPendingKey, JSON.stringify(pendingOrders));
+
+        if (userPendingKey) {
+          const existingUserPending = await AsyncStorage.getItem(userPendingKey);
+          const userPending = existingUserPending ? JSON.parse(existingUserPending) : [];
+          userPending.push(localOrder);
+          await AsyncStorage.setItem(userPendingKey, JSON.stringify(userPending));
+        }
       } else {
 
-        const existingOrders = await AsyncStorage.getItem('orders');
+        const globalOrdersKey = 'orders';
+        const userOrdersKey = userId ? `orders_${userId}` : null;
+
+        const existingOrders = await AsyncStorage.getItem(globalOrdersKey);
         const orders = existingOrders ? JSON.parse(existingOrders) : [];
         orders.push(localOrder);
-        await AsyncStorage.setItem('orders', JSON.stringify(orders));
+        await AsyncStorage.setItem(globalOrdersKey, JSON.stringify(orders));
 
-        const existingPending = await AsyncStorage.getItem('pendingOrders');
+        if (userOrdersKey) {
+          const existingUserOrders = await AsyncStorage.getItem(userOrdersKey);
+          const userOrders = existingUserOrders ? JSON.parse(existingUserOrders) : [];
+          userOrders.push(localOrder);
+          await AsyncStorage.setItem(userOrdersKey, JSON.stringify(userOrders));
+        }
+
+        const globalPendingKey = 'pendingOrders';
+        const userPendingKey = userId ? `pendingOrders_${userId}` : null;
+
+        const existingPending = await AsyncStorage.getItem(globalPendingKey);
         const pendingOrders = existingPending ? JSON.parse(existingPending) : [];
         pendingOrders.push(localOrder);
-        await AsyncStorage.setItem('pendingOrders', JSON.stringify(pendingOrders));
+        await AsyncStorage.setItem(globalPendingKey, JSON.stringify(pendingOrders));
+
+        if (userPendingKey) {
+          const existingUserPending = await AsyncStorage.getItem(userPendingKey);
+          const userPending = existingUserPending ? JSON.parse(existingUserPending) : [];
+          userPending.push(localOrder);
+          await AsyncStorage.setItem(userPendingKey, JSON.stringify(userPending));
+        }
       }
 
       
-      setSaldo((prevSaldo) => prevSaldo - total);
+      try {
+        const res = await updateSaldo(-total);
+        if (!res.success) {
+          Alert.alert('Aviso', 'Compra realizada, mas falha ao atualizar saldo no servidor.');
+        }
+      } catch (e) {
+        console.error('Erro ao atualizar saldo:', e);
+      }
       clearCart();
 
       Alert.alert("Sucesso", "Compra realizada com sucesso!", [
@@ -136,10 +184,28 @@ export default function CartScreen({ navigation }) {
       console.error('Erro ao processar pedido (supabase/async fallback):', error);
       
       try {
-        const existingOrders = await AsyncStorage.getItem('orders');
+        const globalOrdersKey = 'orders';
+        const userOrdersKey = userId ? `orders_${userId}` : null;
+
+        const existingOrders = await AsyncStorage.getItem(globalOrdersKey);
         const orders = existingOrders ? JSON.parse(existingOrders) : [];
         orders.push(localOrder);
-        await AsyncStorage.setItem('orders', JSON.stringify(orders));
+        await AsyncStorage.setItem(globalOrdersKey, JSON.stringify(orders));
+
+        if (userOrdersKey) {
+          const existingUserOrders = await AsyncStorage.getItem(userOrdersKey);
+          const userOrders = existingUserOrders ? JSON.parse(existingUserOrders) : [];
+          userOrders.push(localOrder);
+          await AsyncStorage.setItem(userOrdersKey, JSON.stringify(userOrders));
+        }
+
+        // update saldo in fallback as well
+        try {
+          const res = await updateSaldo(-total);
+          if (!res.success) console.warn('Falha ao atualizar saldo no fallback:', res.error);
+        } catch (e) {
+          console.error('Erro ao atualizar saldo no fallback:', e);
+        }
       } catch (e) {
         console.error('Erro ao salvar pedido em AsyncStorage no fallback:', e);
       }

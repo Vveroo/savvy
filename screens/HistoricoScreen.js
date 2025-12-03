@@ -7,48 +7,59 @@ import {
   Modal,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUserContext } from "../contexts/UserContext";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getHistoricoStyles } from "../styles/historicoStyles";
 import { useTheme } from "../contexts/ThemeContext";
 
-export default function HistoricoScreen({ navigation }) { 
+export default function HistoricoScreen({ navigation }) {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const { isDarkMode } = useTheme(); 
-  const styles = getHistoricoStyles(isDarkMode); 
+  const { user } = useUserContext();
+
+  const { isDarkMode } = useTheme();
+  const styles = getHistoricoStyles(isDarkMode);
 
   useEffect(() => {
     const fetchOrders = async () => {
+
+      if (!user || !user.id) {
+        setOrders([]);
+        return;
+      }
+
       try {
-        const data = await AsyncStorage.getItem("orders");
+        const key = `orders_${user.id}`;
+        const data = await AsyncStorage.getItem(key);
+
         if (data) {
           setOrders(JSON.parse(data));
+        } else {
+          setOrders([]);
         }
       } catch (error) {
         console.error("Erro ao carregar histórico:", error);
+        setOrders([]);
       }
     };
     fetchOrders();
-  }, []);
+  }, [user?.id]);
 
   const renderOrder = ({ item }) => (
-    <TouchableOpacity
-      style={styles.orderItem}
-      onPress={() => setSelectedOrder(item)}
-    >
-      <Text style={styles.orderTitle}>Compra Realizada</Text> 
+    <View style={styles.card}>
+      <Text style={styles.orderTitle}>Compra Realizada</Text>
       <Text style={styles.orderDate}>{item.data}</Text>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.orderStatus}>Status: {item.status}</Text>
         <Text style={styles.orderPrice}>R$ {typeof item.total === 'number' ? item.total.toFixed(2) : '0.00'}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
     <View style={styles.container}>
-      
+
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -57,13 +68,13 @@ export default function HistoricoScreen({ navigation }) {
           <Icon
             name="arrow-back"
             size={24}
-            color={isDarkMode ? "#fff" : "#000"} 
+            color={isDarkMode ? "#fff" : "#000"}
           />
-        </TouchableOpacity> 
+        </TouchableOpacity>
         <Text style={styles.title}>Histórico de Compras</Text>
       </View>
 
-      
+
       {orders.length > 0 ? (
         <FlatList
           data={orders}
@@ -74,36 +85,6 @@ export default function HistoricoScreen({ navigation }) {
       ) : (
         <Text style={styles.emptyText}>Nenhuma compra encontrada.</Text>
       )}
-
-      
-      <Modal visible={!!selectedOrder} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Detalhes da Compra</Text>
-            {selectedOrder && (
-              <>
-                <Text>
-                  Data: {selectedOrder.data} {selectedOrder.hora}
-                </Text>
-                <Text>Valor: R$ {selectedOrder.valor}</Text>
-                <Text>Status: {selectedOrder.status}</Text>
-                <Text style={{ marginTop: 10 }}>Itens:</Text>
-                {selectedOrder.itens.map((item, idx) => (
-                  <Text key={idx}>
-                    - {item.nome} (R$ {item.preco.toFixed(2)})
-                  </Text>
-                ))}
-              </>
-            )}
-            <TouchableOpacity
-              onPress={() => setSelectedOrder(null)}
-              style={styles.closeButton}
-            >
-              <Text style={{ color: "#fff" }}>Fechar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }

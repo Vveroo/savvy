@@ -10,6 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getPedidosStyles } from "../styles/meusPedidosStyles";
 import { useTheme } from "../contexts/ThemeContext";
+import { useUserContext } from "../contexts/UserContext";
 
 export default function MeusPedidos() {
   const [orders, setOrders] = useState([]);
@@ -17,14 +18,22 @@ export default function MeusPedidos() {
   const { isDarkMode } = useTheme();
   const styles = getPedidosStyles(isDarkMode);
 
+  const { user } = useUserContext();
+
   const loadOrders = async () => {
-    const data = await AsyncStorage.getItem("orders");
-    setOrders(data ? JSON.parse(data) : []);
+    try {
+      const key = user && user.id ? `orders_${user.id}` : 'orders';
+      const data = await AsyncStorage.getItem(key);
+      setOrders(data ? JSON.parse(data) : []);
+    } catch (err) {
+      console.error('Erro ao carregar pedidos:', err);
+      setOrders([]);
+    }
   };
 
   useEffect(() => {
     loadOrders();
-  }, []);
+  }, [user?.id]);
 
   const onRefresh = async () => {
     setRefreshing(true);

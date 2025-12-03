@@ -12,13 +12,11 @@ function generatePixKey() {
 }
 
 export default function PixPaymentScreen({ route, navigation }) {
-  const { amount } = route.params || { amount: 0 };
-  const { isDarkMode } = useTheme();
+  const { amount, onPaymentSuccess } = route.params || { amount: 0, onPaymentSuccess: () => { } }; const { isDarkMode } = useTheme();
   const styles = getPaymentStyles(isDarkMode);
-  const { user, saldo, setSaldo } = useUserContext();
 
   const [pixKey] = useState(generatePixKey());
-  const [secondsLeft, setSecondsLeft] = useState(300); 
+  const [secondsLeft, setSecondsLeft] = useState(300);
   const [expired, setExpired] = useState(false);
 
   useEffect(() => {
@@ -47,16 +45,14 @@ export default function PixPaymentScreen({ route, navigation }) {
     }
 
     try {
-      const usersJSON = await AsyncStorage.getItem('usuarios');
-      const users = usersJSON ? JSON.parse(usersJSON) : [];
-      const idx = users.findIndex(u => u.matricula === user.matricula);
-      if (idx !== -1) {
-        users[idx].saldo = (users[idx].saldo || 0) + amount;
-        await AsyncStorage.setItem('usuarios', JSON.stringify(users));
+      const result = await onPaymentSuccess(amount);
+
+      if (result.success) {
+        Alert.alert('Pagamento confirmado', `R$ ${amount.toFixed(2)} creditado no seu saldo.`);
+        navigation.navigate('MainTabs', { screen: 'Home' });
+      } else {
+        throw new Error('Falha ao atualizar saldo no sistema.');
       }
-      setSaldo(prev => prev + amount);
-      Alert.alert('Pagamento confirmado', `R$ ${amount.toFixed(2)} creditado no seu saldo.`);
-      navigation.navigate('MainTabs', { screen: 'Home' });
     } catch (err) {
       Alert.alert('Erro', 'Falha ao atualizar saldo: ' + (err.message || err));
     }

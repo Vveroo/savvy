@@ -3,12 +3,15 @@ import { View, Text, TextInput, TouchableOpacity, Modal, Alert } from 'react-nat
 import { getPaymentStyles } from '../styles/paymentStyles';
 import { useTheme } from '../contexts/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useUserContext } from '../contexts/UserContext';
+
 
 export default function RechargeScreen({ navigation }) {
   const { isDarkMode } = useTheme();
   const styles = getPaymentStyles(isDarkMode);
   const [amount, setAmount] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const { updateSaldo } = useUserContext();
 
   const onContinue = () => {
     const value = parseFloat(amount.replace(',', '.'));
@@ -19,14 +22,19 @@ export default function RechargeScreen({ navigation }) {
     setModalVisible(true);
   };
 
+  const getPaymentParams = () => ({
+    amount: parseFloat(amount.replace(',', '.')),
+    onPaymentSuccess: (value) => updateSaldo(value)
+  });
+
   const goToPix = () => {
     setModalVisible(false);
-    navigation.navigate('PixPayment', { amount: parseFloat(amount.replace(',', '.')) });
+    navigation.navigate('PixPayment', getPaymentParams()); // Envia { amount, onPaymentSuccess }
   };
 
   const goToCard = () => {
     setModalVisible(false);
-    navigation.navigate('CreditCardPayment', { amount: parseFloat(amount.replace(',', '.')) });
+    navigation.navigate('CreditCardPayment', getPaymentParams()); // Envia { amount, onPaymentSuccess }
   };
 
   return (

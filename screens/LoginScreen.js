@@ -34,7 +34,7 @@ export default function Login() {
   const styles = getLoginStyles(isDarkMode);
 
   const navigation = useNavigation();
-  const { signIn, loginLocal } = useUserContext();
+  const { signIn } = useUserContext();
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [apiError, setApiError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,46 +45,19 @@ export default function Login() {
 
     try {
       console.log('Tentando login com:', matricula);
-      
-      const hardcodedUsers = {
-        'A9999': { password: 'password1', role: 'admin' },
-        'ADMIN001': { password: 'admin1234', role: 'admin' },
-        'E0001': { password: 'senha0001', role: 'student' },
-        'E0002': { password: 'senha0002', role: 'student' },
-        'E0003': { password: 'senha0003', role: 'student' },
-        'E0004': { password: 'senha0004', role: 'student' },
-        'E0005': { password: 'senha0005', role: 'student' },
-      };
+      console.log('Tentando Supabase...');
+      const res = await signIn(matricula, password);
+      console.log('Resposta signIn:', res);
 
-      if (hardcodedUsers[matricula] && hardcodedUsers[matricula].password === password) {
-        console.log('Login local bem-sucedido');
-        
-        const mockRes = await loginLocal(matricula, hardcodedUsers[matricula].role);
-        if (mockRes.success) {
-          if (mockRes.user.role === "admin") {
-            navigation.replace("AdminTabs");
-          } else {
-            navigation.replace("MainTabs");
-          }
+      if (res.success) {
+        const usr = res.user;
+        if (usr.role === "admin") {
+          navigation.replace("AdminTabs");
         } else {
-          setApiError("Erro ao processar login");
+          navigation.replace("MainTabs");
         }
       } else {
-        
-        console.log('Tentando Supabase...');
-        const res = await signIn(matricula, password);
-        console.log('Resposta signIn:', res);
-        
-        if (res.success) {
-          const usr = res.user;
-          if (usr.role === "admin") {
-            navigation.replace("AdminTabs");
-          } else {
-            navigation.replace("MainTabs");
-          }
-        } else {
-          setApiError(res.error || "Erro ao fazer login");
-        }
+        setApiError(res.error || "Erro ao fazer login");
       }
     } catch (error) {
       console.error('Erro no submit:', error);
