@@ -26,10 +26,6 @@ import Pedidos from './screensAdmin/AdminOrderDetails';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  useEffect(() => {
-    initializeUsers();
-  }, []);
-
   return (
     <UserProvider>
       <CartProvider>
