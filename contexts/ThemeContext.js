@@ -14,6 +14,7 @@ export const ThemeProvider = ({ children }) => {
     ? override === "dark" 
     : systemScheme === "dark";
 
+
   const toggleTheme = () => {
     if (override === null) {
       setOverride(systemScheme === "dark" ? "light" : "dark");

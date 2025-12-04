@@ -81,8 +81,4 @@ export function CardapioProvider({ children }) {
 
 export function useCardapioContext() {
   return useContext(CardapioContext);
-}
-
-export function useCardapio() {
-  return useContext(CardapioContext);
-}
+};
