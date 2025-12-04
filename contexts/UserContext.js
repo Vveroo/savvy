@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [saldo, setSaldo] = useState(0.0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     const loadUserFromStorage = async () => {

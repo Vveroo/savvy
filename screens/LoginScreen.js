@@ -19,13 +19,17 @@ const loginValidationSchema = yup.object().shape({
   matricula: yup
     .string()
     .matches(
-      /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:,.?\/|\\~]+$/,
+      /^[a-zA-Z0-9]+$/,
       "Matrícula inválida!"
     )
     .required("Obrigatório"),
   password: yup
     .string()
     .min(8, ({ min }) => `A senha deve ter ${min} caracteres`)
+    .matches(
+      /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]+/,
+      "A senha deve conter pelo menos um caractere especial."
+    )
     .required("Obrigatório"),
 });
 
