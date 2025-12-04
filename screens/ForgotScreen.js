@@ -100,7 +100,7 @@ export default function ForgotPasswordScreen() {
           onSubmit={handleSubmit}
         >
           {({ handleChange, handleBlur, handleSubmit: formikSubmit, values, errors, touched }) => (
-            <View>
+            <View style={styles.form}>
               <Text style={styles.subtitle}>
                 Digite sua matrícula de estudante
               </Text>
