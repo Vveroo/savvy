@@ -141,10 +141,10 @@ export default function AdminDashboard({ navigation }) {
               renderItem={({ item }) => (
                 <View style={{ flexDirection: 'row', paddingVertical: 10, paddingHorizontal: 6, borderBottomWidth: 1, borderBottomColor: '#eee' }}>
                   <Text style={{ flex: 2 }}>{item.week}</Text>
-                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.Matutino}</Text>
-                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.Vespertino}</Text>
-                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.Noturno}</Text>
-                  <Text style={{ flex: 1, textAlign: 'center' }}>{item.total}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center', color: theme.inputText}}>{item.Matutino}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center', color: theme.inputText }}>{item.Vespertino}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center', color: theme.inputText }}>{item.Noturno}</Text>
+                  <Text style={{ flex: 1, textAlign: 'center', color: theme.inputText }}>{item.total}</Text>
                 </View>
               )}
             />

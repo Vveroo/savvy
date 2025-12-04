@@ -2,9 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function getShift(date = new Date()) {
   const h = date.getHours();
-  if (h >= 6 && h < 14) return 'Matutino';
-  if (h >= 14 && h < 22) return 'Vespertino';
-  return 'Noturno';
+  if (h >= 8 && h < 12) return 'Matutino';
+  if (h >= 13 && h < 18) return 'Vespertino';
+  if (h >= 18 && h< 22) 'Noturno';
 }
 
 export async function addScanEvent(data) {

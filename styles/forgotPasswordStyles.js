@@ -14,7 +14,10 @@ export const getForgotPasswordStyles = (isDarkMode) => {
       paddingHorizontal: 20,
     },
 
-
+    form: {
+      alighItems: "center",
+      width: "100%",
+    },
     title: {
       fontSize: 25,
       marginBottom: 30,
