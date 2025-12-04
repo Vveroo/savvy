@@ -79,6 +79,6 @@ export function CardapioProvider({ children }) {
   );
 }
 
-export function useCardapioContext() {
+export function useCardapio() {
   return useContext(CardapioContext);
 };
